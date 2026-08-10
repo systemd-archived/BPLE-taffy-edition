@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "NYYBqtaQjBQ=",
+  "success": true,
+  "projectFilePath": "D:\\Symlinks (Destination)\\Downloads\\OneDrive_1_09-08-2026\\BPLE-TF-1.0.0\\Assets\\Scripts\\Assembly-CSharp\\Assembly-CSharp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Niri\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.3\\microsoft.netframework.referenceassemblies.1.0.3.nupkg.sha512",
+    "C:\\Users\\Niri\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net40\\1.0.3\\microsoft.netframework.referenceassemblies.net40.1.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

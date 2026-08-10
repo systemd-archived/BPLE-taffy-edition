@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e4486f1282953ec0e6aa4c1db9249b8, type: 3}
+  m_Name: ResourceData
+  m_EditorClassIdentifier:
+  Prefabs:
+  - {fileID: 1709254077376921, guid: 291094f07ec04d947b528e29bae2c784, type: 2}
+  - {fileID: 1709254077376921, guid: 10861311752656f40b8750d34b820b2b, type: 2}
+  - {fileID: 1709254077376921, guid: e17a12cd60886b74e8f732c306ff9bdb, type: 2}
+  - {fileID: 1709254077376921, guid: b2061a46cf2178143bb67cea3c179914, type: 2}
+  - {fileID: 1709254077376921, guid: 1cbacf1291e53bc42805ea241dfaa234, type: 2}
+  - {fileID: 1709254077376921, guid: 97fe64cde0aa4714d8c0996f300ea831, type: 2}
+  - {fileID: 1709254077376921, guid: 84737e5a4d98fee4db1215e175580180, type: 2}
+  - {fileID: 1709254077376921, guid: 34a2a36682cb98449a140cae29131655, type: 2}
+  - {fileID: 1709254077376921, guid: 58e93771821216d4f98ff047fcb2ae14, type: 2}
+  - {fileID: 1709254077376921, guid: dcf31c67dc1cb504a94a37eb5eee3060, type: 2}
+  Fonts:
+  - {fileID: 12800000, guid: c7334e789aa1183418472e3fe01b048e, type: 3}
+  - {fileID: 12800000, guid: d076fe86c833ade46b4fb5c4ec7c9205, type: 3}
+  Textures:
+  - {fileID: 2800000, guid: ec09eae797f1292448f4e4f59bd273b4, type: 3}
+  Shaders:
+  - {fileID: 4800000, guid: a4eae19b99ef8124599920b964a367eb, type: 3}
+  - {fileID: 4800000, guid: 0dcb8a90087ee2d4fb1a06ac37402b5c, type: 3}
+  - {fileID: 4800000, guid: ec095cff82db4544ab1f9d81bc66afc1, type: 3}
+  - {fileID: 4800000, guid: c4e873a6a2c95b641af61176b9bb8799, type: 3}
+  - {fileID: 4800000, guid: 0648b8e41afaefc4abecc2983ca11394, type: 3}
+  - {fileID: 4800000, guid: 7b2f6030b71d9b648ac29c1625f41a1d, type: 3}
+  - {fileID: 4800000, guid: affb907da3d693040aba3457355ca419, type: 3}
+  Materials:
+  - {fileID: 2100000, guid: fb3ac38534c4d1e40b6b015c4c20b73a, type: 2}
+  - {fileID: 2100000, guid: 90ee310142658df45ae5423ae7c50701, type: 2}
+  - {fileID: 2100000, guid: 3ad86c492678676488039ccf8a25f669, type: 2}
+  - {fileID: 2100000, guid: 368a8fffcfb8c744d852452badd129a7, type: 2}
+  - {fileID: 2100000, guid: c4b26a13369e7d845bd6c5a61b09ba9c, type: 2}
+  - {fileID: 2100000, guid: 06f58092157bc0044aac063c09b72051, type: 2}
+  - {fileID: 2100000, guid: 7e85a2afe59e28647a075615cb799471, type: 2}
+  - {fileID: 2100000, guid: 5efadb3dd34ccdb42a37ae7eb4dfae03, type: 2}
+  TextAssets:
+  - {fileID: 4900000, guid: fb2f07b8ec211284285525de494d04a0, type: 3}
+  - {fileID: 4900000, guid: d5117a72e75b1cf44b8a8fcccbf59e8c, type: 3}
+  - {fileID: 4900000, guid: ccdb1f7815b1bce4e816cd6e1c4e75cf, type: 3}
+  - {fileID: 4900000, guid: e1af035faab9ef0448cb86044cb153a2, type: 3}
+  - {fileID: 4900000, guid: c9eadcf8e12d9d44bae49af16b6a1df3, type: 3}
+  - {fileID: 4900000, guid: b4f277ad454f4894e822a642905d9331, type: 3}
+  - {fileID: 4900000, guid: 7291fc603473c8147a7835f5dcce9c50, type: 3}
+  - {fileID: 4900000, guid: 7096b5929b4b83849875204f8bbc5b54, type: 3}
+  - {fileID: 4900000, guid: 19f4450240f219e448f4f8b3cfda1d1f, type: 3}
+  - {fileID: 4900000, guid: 959ed7f0e65e7e04aa3788a44a3ae12b, type: 3}
+  - {fileID: 4900000, guid: 489f14a49bfbba0469feac2c2f8990fc, type: 3}
+  ScriptableObjects:
+  - {fileID: 11400000, guid: f6daafeddcc840044a9fd4c5c282e958, type: 2}

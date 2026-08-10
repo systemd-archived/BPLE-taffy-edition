@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1709254077376921
+GameObject:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Component:
+  - component: {fileID: 4730242686860875}
+  - component: {fileID: 114724804207875695}
+  m_Layer: 0
+  m_Name: LootCrateGraphicsSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4730242686860875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -0, z: -0}
+--- !u!114 &114724804207875695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c284c4de8093c178ff5aeb21b943cd39, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  woodCrate: {fileID: 1709254077376921, guid: 48f7f2b20bf71264f97f60e90488e541, type: 2}
+  metalCrate: {fileID: 1709254077376921, guid: 7046e571b62703440b859c4f5ed74264, type: 2}
+  goldCrate: {fileID: 1709254077376921, guid: 42cb9c9f57344504095967f1557e623f, type: 2}
+  cardboardCrate: {fileID: 1709254077376921, guid: 761b4cc5e3db0e84fb6c405ba9bb521d, type: 2}
+  glassCrate: {fileID: 1709254077376921, guid: ab1a03365a12b8b49b111201ff0ebfa9, type: 2}
+  bronzeCrate: {fileID: 1709254077376921, guid: 42a7b68dc49995e43ae5a57003763a13, type: 2}
+  marbleCrate: {fileID: 1709254077376921, guid: 059fa00b1b9f31e47a7f532c10548856, type: 2}
+  woodCrateSmall: {fileID: 1709254077376921, guid: e2dc0772980d8a24995e72daba3bef71, type: 2}
+  metalCrateSmall: {fileID: 1709254077376921, guid: cf209af85afce054eb2082b666ca63b4, type: 2}
+  goldCrateSmall: {fileID: 1709254077376921, guid: 592435e002826dd4b8082907a16f0c49, type: 2}
+  cardboardCrateSmall: {fileID: 1709254077376921, guid: c67b74d8f41860944a3300a748243586, type: 2}
+  glassCrateSmall: {fileID: 1709254077376921, guid: 58d63299c12aa0e468782eef1f141285, type: 2}
+  bronzeCrateSmall: {fileID: 1709254077376921, guid: 847258fca2a4a8f478f3e377b4a52d5d, type: 2}
+  marbleCrateSmall: {fileID: 1709254077376921, guid: 423d8dcb038f560439d413ab8dce23ab, type: 2}
+  woodCrateSilhouette: {fileID: 1709254077376921, guid: c95199ca17eb61245a01b99756736606, type: 2}
+  metalCrateSilhouette: {fileID: 1709254077376921, guid: 382cbe702b18aa645a3702695dc89a58, type: 2}
+  goldCrateSilhouette: {fileID: 1709254077376921, guid: 860c08531368b78479171cd93cc0eec9, type: 2}
+  cardboardCrateSilhouette: {fileID: 1709254077376921, guid: b6c7096e1dcea194f8b28549c18ca7fd, type: 2}
+  glassCrateSilhouette: {fileID: 1709254077376921, guid: 7544ee0c4d633784d831f22a013526e8, type: 2}
+  bronzeCrateSilhouette: {fileID: 1709254077376921, guid: 2ad2e9d7500a6f9479c6a5dcb5f10815, type: 2}
+  marbleCrateSilhouette: {fileID: 1709254077376921, guid: 3df431fef78844241bfcdda14c84f7ab, type: 2}

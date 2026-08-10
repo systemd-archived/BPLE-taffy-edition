@@ -1,0 +1,189 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d0766d7326654e9abd1ffd9191da339, type: 3}
+  m_Name: PartListData
+  m_EditorClassIdentifier:
+  CustomPartPrefab: {fileID: 1709254077376921, guid: 24bbcbf862fe4dc478ed29e4df39836c, type: 2}
+  PartIconPrefab: {fileID: 1709254077376921, guid: 69667dbc1ad9e9b4eb51642b9113a183, type: 2}
+  Parts:
+  - {fileID: 1709254077376921, guid: b5847721c1d1cf0419c316111a8e61c7, type: 2}
+  - {fileID: 1709254077376921, guid: 1058dfafd5783da4b9f11b76bfb16d73, type: 2}
+  - {fileID: 1709254077376921, guid: 7630951274163e7438d4393444d6ac38, type: 2}
+  - {fileID: 1709254077376921, guid: 8c1163a64f73ec24fac2c4dc80b2447c, type: 2}
+  - {fileID: 1709254077376921, guid: f99df084f688b7f4694408afb0021fe2, type: 2}
+  - {fileID: 1709254077376921, guid: 39957c80b5a5f834eab74e39fcc0f157, type: 2}
+  - {fileID: 1709254077376921, guid: a0c9414068aceb74a9f1aab8aaf730ef, type: 2}
+  - {fileID: 1709254077376921, guid: f19e34a433cc9ad43a1605d189414360, type: 2}
+  - {fileID: 1709254077376921, guid: d9eafd476b9ded141ab8ed26f429dc32, type: 2}
+  - {fileID: 1709254077376921, guid: ad721aebc04f55a45af245fb81b6c201, type: 2}
+  - {fileID: 1709254077376921, guid: e44fc77f379e6b843bb5f2ae9a47d8fd, type: 2}
+  - {fileID: 1709254077376921, guid: 9d74bc7839913a645a0a234071907ffe, type: 2}
+  - {fileID: 1709254077376921, guid: e20aceff3652fc9409e98d4ddea742c2, type: 2}
+  - {fileID: 1709254077376921, guid: 674e8408e8ddaf242a76629c70dc4293, type: 2}
+  - {fileID: 1709254077376921, guid: 84821a824412ee3419b1f7032ddfa273, type: 2}
+  - {fileID: 1709254077376921, guid: cfc61ea1a90fc42459ac530b101a65ea, type: 2}
+  - {fileID: 1709254077376921, guid: 575190616f128c8418262b1f6cda192f, type: 2}
+  - {fileID: 1709254077376921, guid: 187fe3812c95e71489e80fe8ee7ed373, type: 2}
+  - {fileID: 1709254077376921, guid: a5b214fcb0861364eb1308451434a0db, type: 2}
+  - {fileID: 1709254077376921, guid: 5cd704be57404854190c8bd8cf31bb98, type: 2}
+  - {fileID: 1709254077376921, guid: 788470432ea826145b5f3baa3734a21d, type: 2}
+  - {fileID: 1709254077376921, guid: cbbdfe32555bad644b3c420e1df43400, type: 2}
+  - {fileID: 1709254077376921, guid: 06ab57667a25c9b40a11c7d62e914ec2, type: 2}
+  - {fileID: 1709254077376921, guid: 609d39b9db180f74a8468d0ba00591e8, type: 2}
+  - {fileID: 1709254077376921, guid: 263ee107adf3c2642a56c28177da0a0d, type: 2}
+  - {fileID: 1709254077376921, guid: 246ec7b3cae7723428034dbc0c50101a, type: 2}
+  - {fileID: 1709254077376921, guid: 35c8898546d93cb4b99a06e1600d5523, type: 2}
+  - {fileID: 1709254077376921, guid: 761b1609d7cff3e4fa49635ca7644eed, type: 2}
+  - {fileID: 1709254077376921, guid: c2f62fdf242941241b5bf0214757ebea, type: 2}
+  - {fileID: 1709254077376921, guid: 09019dac4f68b104db78301b9af09925, type: 2}
+  - {fileID: 1709254077376921, guid: ee4ca89866ee09741adbd85dc4779463, type: 2}
+  - {fileID: 1709254077376921, guid: 0638ea2489b6a97429da4308151bf700, type: 2}
+  - {fileID: 1709254077376921, guid: 4ed373717664da24483a74f9c9d26702, type: 2}
+  - {fileID: 1709254077376921, guid: 282c3d86830e1c249a1d98578f033462, type: 2}
+  - {fileID: 1709254077376921, guid: fd5f8aacd4e1d6241a24dba827ae57a6, type: 2}
+  - {fileID: 1709254077376921, guid: 15045299626060a409f74ee7ce44ef27, type: 2}
+  - {fileID: 1709254077376921, guid: 7759c4cb08bb7924db3afdfbf369c8a3, type: 2}
+  - {fileID: 1709254077376921, guid: 291880007d827bc4488c313d394d0402, type: 2}
+  - {fileID: 1709254077376921, guid: ae45fee35b9a4bc42b30bc54bfa7dba4, type: 2}
+  - {fileID: 1709254077376921, guid: c5f8c2aef2c1d7e4e9c685fbf6506223, type: 2}
+  - {fileID: 1709254077376921, guid: 28ae50d5cb802f94e81bea1c888aa28c, type: 2}
+  - {fileID: 1709254077376921, guid: 062b8795d7bc5b844b19fad8c11448fc, type: 2}
+  - {fileID: 1709254077376921, guid: 86e337801fa2fc8438d13891d8637da4, type: 2}
+  - {fileID: 1709254077376921, guid: c18063f3f99463249a65c4fc35e81502, type: 2}
+  - {fileID: 1709254077376921, guid: cb02420c9425cd84380d3b4b5c37f247, type: 2}
+  - {fileID: 1709254077376921, guid: 7f57c43f95a575c469af4b460f2defa9, type: 2}
+  - {fileID: 1709254077376921, guid: cf23ec76863cb2b44a36c88012c6ad4b, type: 2}
+  - {fileID: 1709254077376921, guid: 773e0eed13788044c9fa22bfbb85b2dd, type: 2}
+  - {fileID: 1709254077376921, guid: 03230f6d51795df4bbf33511e8de780f, type: 2}
+  - {fileID: 1709254077376921, guid: 9bf4f04cc62ef124281ce1ad0a8b0977, type: 2}
+  - {fileID: 1709254077376921, guid: 1063488494243d944a033e2bdd0e4939, type: 2}
+  - {fileID: 1709254077376921, guid: a52856d94f51d714abdbc83568908cc9, type: 2}
+  - {fileID: 1709254077376921, guid: 1d35a8587804b244488abf3bd0a96eb2, type: 2}
+  PartIcons:
+  - Part: {fileID: 1709254077376921, guid: 788470432ea826145b5f3baa3734a21d, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Wire1_IconSprite
+  - Part: {fileID: 1709254077376921, guid: cbbdfe32555bad644b3c420e1df43400, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Wire2_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 06ab57667a25c9b40a11c7d62e914ec2, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Wire3_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 609d39b9db180f74a8468d0ba00591e8, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Wire4_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 86e337801fa2fc8438d13891d8637da4, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Interface1_IconSprite
+  - Part: {fileID: 1709254077376921, guid: c18063f3f99463249a65c4fc35e81502, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Interface2_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 263ee107adf3c2642a56c28177da0a0d, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Switch_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 246ec7b3cae7723428034dbc0c50101a, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Switch2_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 35c8898546d93cb4b99a06e1600d5523, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Resistor1_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 761b1609d7cff3e4fa49635ca7644eed, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Resistor2_IconSprite
+  - Part: {fileID: 1709254077376921, guid: c2f62fdf242941241b5bf0214757ebea, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Resistor3_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 09019dac4f68b104db78301b9af09925, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Resistor4_IconSprite
+  - Part: {fileID: 1709254077376921, guid: ee4ca89866ee09741adbd85dc4779463, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Resistor5_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 0638ea2489b6a97429da4308151bf700, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Resistor6_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 4ed373717664da24483a74f9c9d26702, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: PowerSource1_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 282c3d86830e1c249a1d98578f033462, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: PowerSource2_IconSprite
+  - Part: {fileID: 1709254077376921, guid: fd5f8aacd4e1d6241a24dba827ae57a6, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: PowerSource3_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 15045299626060a409f74ee7ce44ef27, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Capacitor1_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 7759c4cb08bb7924db3afdfbf369c8a3, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Capacitor2_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 291880007d827bc4488c313d394d0402, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Capacitor3_IconSprite
+  - Part: {fileID: 1709254077376921, guid: ae45fee35b9a4bc42b30bc54bfa7dba4, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Voltmeter_IconSprite
+  - Part: {fileID: 1709254077376921, guid: c5f8c2aef2c1d7e4e9c685fbf6506223, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Ammeter_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 28ae50d5cb802f94e81bea1c888aa28c, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Ground_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 062b8795d7bc5b844b19fad8c11448fc, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: Vcc_IconSprite
+  - Part: {fileID: 1709254077376921, guid: cb02420c9425cd84380d3b4b5c37f247, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: PowerTransmitter1_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 7f57c43f95a575c469af4b460f2defa9, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: PowerTransmitter2_IconSprite
+  - Part: {fileID: 1709254077376921, guid: cf23ec76863cb2b44a36c88012c6ad4b, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: PointCharge_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 773e0eed13788044c9fa22bfbb85b2dd, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: ElectricFieldGenerator_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 03230f6d51795df4bbf33511e8de780f, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: MagneticFieldGenerator_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 9bf4f04cc62ef124281ce1ad0a8b0977, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: PartTrigger_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 1063488494243d944a033e2bdd0e4939, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: PressureSensor_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 1d35a8587804b244488abf3bd0a96eb2, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: PartTrigger2_IconSprite
+  - Part: {fileID: 1709254077376921, guid: a52856d94f51d714abdbc83568908cc9, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: DigitalDisplay_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 39957c80b5a5f834eab74e39fcc0f157, type: 2}
+    MaterialName: IngameAtlas4
+    SpriteName: BlasterTNT_IconSprite
+  PartRanges:
+  - Part: {fileID: 1709254077376921, guid: d8df765b81b84234f99a84aeb21430a4, type: 2}
+    Count: 16
+    PartName: Part_IntegratedCircuit_{0:D2}_SET
+  - Part: {fileID: 1709254077376921, guid: 5aae2f1e051be98429f73b20a1e9e108, type: 2}
+    Count: 5
+    PartName: Part_MechanicalGate_{0:D2}_SET
+  PartIconRanges:
+  - Part: {fileID: 1709254077376921, guid: d8df765b81b84234f99a84aeb21430a4, type: 2}
+    Count: 16
+    MaterialName: IngameAtlas4
+    SpriteName: IntegratedCircuit{0}_IconSprite
+  - Part: {fileID: 1709254077376921, guid: 5aae2f1e051be98429f73b20a1e9e108, type: 2}
+    Count: 5
+    MaterialName: IngameAtlas4
+    SpriteName: MechanicalGate{0}_IconSprite
