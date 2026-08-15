@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ExplodingGrapplingHookProjectile : WPFMonoBehaviour
@@ -39,8 +38,6 @@ public class ExplodingGrapplingHookProjectile : WPFMonoBehaviour
 		m_forceDirection = base.transform.parent.TransformDirection(Vector3.right);
 		base.rigidbody.AddForceAtPosition(m_forceDirection * m_force * INSettings.GetFloat(INFeature.GunProjectileSpeed), Vector3.zero, ForceMode.Impulse);
 		StartCoroutine(TTL(m_ttl * INSettings.GetFloat(INFeature.GunProjectileExplosionTime)));
-		Explode();
-		Explode();
 	}
 
 	private void OnDestroy()
@@ -59,49 +56,28 @@ public class ExplodingGrapplingHookProjectile : WPFMonoBehaviour
 		{
 			return;
 		}
-		m_explosionCount = 0;
+		m_explosionCount--;
 		if (m_explosionCount <= 0)
 		{
 			m_triggered = true;
 		}
-		float num = 96f;
-		float num2 = 22.5f;
-		Vector3 normalized = m_forceDirection.normalized;
-		Collider[] array = Physics.OverlapSphere(base.transform.position, num);
-		HashSet<Rigidbody> hashSet = new HashSet<Rigidbody>();
-		Collider[] array2 = array;
-		foreach (Collider collider in array2)
+		Collider[] array = Physics.OverlapSphere(base.transform.position, m_explosionRadius * INSettings.GetFloat(INFeature.GunProjectileExplosionRadius));
+		foreach (Collider collider in array)
 		{
-			Vector3 to = collider.transform.position - base.transform.position;
-			if (!(to.magnitude <= num) || !(Vector3.Angle(normalized, to) <= num2))
-			{
-				continue;
-			}
 			GameObject gameObject = FindParentWithRigidBody(collider.gameObject);
 			if (gameObject != null)
 			{
-				Rigidbody component = gameObject.GetComponent<Rigidbody>();
-				if (component != null && !hashSet.Contains(component))
-				{
-					hashSet.Add(component);
-					component.velocity = Vector3.zero;
-					component.angularVelocity = Vector3.zero;
-					component.velocity = new Vector3(0f, -200f, 0f);
-				}
+				int num = CountChildColliders(gameObject, 0);
+				AddExplosionForce(gameObject, INSettings.GetFloat(INFeature.GunProjectileExplosionForce) / (float)num);
 			}
-			BasePart component2 = collider.GetComponent<BasePart>();
-			TNT tNT = component2 as TNT;
-			if (tNT != null && !component2.HasGeneratorRef)
+			BasePart component = collider.GetComponent<BasePart>();
+			if (component is TNT tNT && !component.HasGeneratorRef)
 			{
 				tNT.Explode();
 			}
-			if (INSettings.GetBool(INFeature.BlasterTNT))
+			if (INSettings.GetBool(INFeature.BlasterTNT) && component is BlasterTNT blasterTNT && !component.HasGeneratorRef && Vector.DistanceSquared2(base.transform.position, component.transform.position) < 4f)
 			{
-				BlasterTNT blasterTNT = component2 as BlasterTNT;
-				if (blasterTNT != null && !component2.HasGeneratorRef && Vector.DistanceSquared2(base.transform.position, component2.transform.position) < 4f)
-				{
-					blasterTNT.ExplodeSpecial();
-				}
+				blasterTNT.ExplodeSpecial();
 			}
 		}
 		WPFMonoBehaviour.effectManager.CreateParticles(m_smokeCloud, base.transform.position - Vector3.forward * 12f, force: true);

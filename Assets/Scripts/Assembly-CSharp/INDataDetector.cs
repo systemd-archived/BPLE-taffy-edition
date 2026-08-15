@@ -29,7 +29,7 @@ public class INDataDetector : MonoBehaviour
 		{
 			if (m_stopwatch.IsRunning)
 			{
-				m_frameCount++;
+				m_frameCount += 1f;
 				float num = (float)m_stopwatch.ElapsedMilliseconds / 1000f;
 				if (num >= m_updateInterval)
 				{

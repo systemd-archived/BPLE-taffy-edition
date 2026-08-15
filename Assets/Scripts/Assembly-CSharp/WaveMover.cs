@@ -63,14 +63,14 @@ public class WaveMover : MonoBehaviour
 		m_lastRT = realtimeSinceStartup;
 		float num2 = num * m_speedX;
 		m_periodX += num2;
-		if (m_periodX > (float)Math.PI)
+		if (m_periodX > MathF.PI)
 		{
-			m_periodX -= (float)Math.PI * 2f;
+			m_periodX -= MathF.PI * 2f;
 		}
 		m_periodY += num * m_speedY;
-		if (m_periodY > (float)Math.PI)
+		if (m_periodY > MathF.PI)
 		{
-			m_periodY -= (float)Math.PI * 2f;
+			m_periodY -= MathF.PI * 2f;
 		}
 		Vector3 position = m_origPos + cachedTransform.up * Mathf.Sin(m_periodX) * m_rangeX + cachedTransform.right * Mathf.Sin(m_periodY) * m_rangeY;
 		float b = ((cachedTransform.position.y - position.y > 0f) ? 50 : 0);
@@ -82,9 +82,9 @@ public class WaveMover : MonoBehaviour
 			child.eulerAngles = new Vector3(Mathf.Lerp(x, b, num2), 0f, 0f);
 		}
 		m_periodScale += num * m_speedScale;
-		if (m_periodScale > (float)Math.PI)
+		if (m_periodScale > MathF.PI)
 		{
-			m_periodScale -= (float)Math.PI * 2f;
+			m_periodScale -= MathF.PI * 2f;
 		}
 		Vector3 localScale = m_origScale + Mathf.Sin(m_periodScale) * m_rangeScale * m_origScale;
 		cachedTransform.localScale = localScale;

@@ -6,31 +6,31 @@ public class Effector : WPFMonoBehaviour
 {
 	public enum Type
 	{
-		Wind,
-		Magnet,
-		Formula,
-		Bumper
+		Wind = 0,
+		Magnet = 1,
+		Formula = 2,
+		Bumper = 3
 	}
 
 	public enum Shape
 	{
-		Box,
-		Circle,
-		Capsule
+		Box = 0,
+		Circle = 1,
+		Capsule = 2
 	}
 
 	public enum InteractionType
 	{
-		Include,
-		Exclude
+		Include = 0,
+		Exclude = 1
 	}
 
 	public enum FormulaType
 	{
-		Sin,
-		Cos,
-		AbsSin,
-		AbsCos
+		Sin = 0,
+		Cos = 1,
+		AbsSin = 2,
+		AbsCos = 3
 	}
 
 	public Shape m_shape;
@@ -83,11 +83,11 @@ public class Effector : WPFMonoBehaviour
 			case Type.Wind:
 				if (m_hasLinearFadeout)
 				{
-					influence.GetComponent<Rigidbody>().AddForce((Vector3.right * Mathf.Cos(m_angle * ((float)Math.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * ((float)Math.PI / 180f))) * m_strenght / Mathf.Clamp((influence.transform.position - base.transform.position).magnitude, 1f, 100f), ForceMode.Force);
+					influence.GetComponent<Rigidbody>().AddForce((Vector3.right * Mathf.Cos(m_angle * (MathF.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * (MathF.PI / 180f))) * m_strenght / Mathf.Clamp((influence.transform.position - base.transform.position).magnitude, 1f, 100f), ForceMode.Force);
 				}
 				else
 				{
-					influence.GetComponent<Rigidbody>().AddForce((Vector3.right * Mathf.Cos(m_angle * ((float)Math.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * ((float)Math.PI / 180f))) * m_strenght, ForceMode.Force);
+					influence.GetComponent<Rigidbody>().AddForce((Vector3.right * Mathf.Cos(m_angle * (MathF.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * (MathF.PI / 180f))) * m_strenght, ForceMode.Force);
 				}
 				break;
 			case Type.Magnet:
@@ -148,16 +148,16 @@ public class Effector : WPFMonoBehaviour
 		switch (type)
 		{
 		case FormulaType.Sin:
-			rb.AddForce((Vector3.right * Mathf.Cos(m_angle * ((float)Math.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * ((float)Math.PI / 180f))) * m_strenght * Mathf.Sin(Time.time), ForceMode.Force);
+			rb.AddForce((Vector3.right * Mathf.Cos(m_angle * (MathF.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * (MathF.PI / 180f))) * m_strenght * Mathf.Sin(Time.time), ForceMode.Force);
 			break;
 		case FormulaType.Cos:
-			rb.AddForce((Vector3.right * Mathf.Cos(m_angle * ((float)Math.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * ((float)Math.PI / 180f))) * m_strenght * Mathf.Cos(Time.time), ForceMode.Force);
+			rb.AddForce((Vector3.right * Mathf.Cos(m_angle * (MathF.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * (MathF.PI / 180f))) * m_strenght * Mathf.Cos(Time.time), ForceMode.Force);
 			break;
 		case FormulaType.AbsSin:
-			rb.AddForce((Vector3.right * Mathf.Cos(m_angle * ((float)Math.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * ((float)Math.PI / 180f))) * m_strenght * Mathf.Abs(Mathf.Cos(Time.time)), ForceMode.Force);
+			rb.AddForce((Vector3.right * Mathf.Cos(m_angle * (MathF.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * (MathF.PI / 180f))) * m_strenght * Mathf.Abs(Mathf.Cos(Time.time)), ForceMode.Force);
 			break;
 		case FormulaType.AbsCos:
-			rb.AddForce((Vector3.right * Mathf.Cos(m_angle * ((float)Math.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * ((float)Math.PI / 180f))) * m_strenght * Mathf.Abs(Mathf.Cos(Time.time)), ForceMode.Force);
+			rb.AddForce((Vector3.right * Mathf.Cos(m_angle * (MathF.PI / 180f)) + Vector3.up * Mathf.Sin(m_angle * (MathF.PI / 180f))) * m_strenght * Mathf.Abs(Mathf.Cos(Time.time)), ForceMode.Force);
 			break;
 		}
 	}

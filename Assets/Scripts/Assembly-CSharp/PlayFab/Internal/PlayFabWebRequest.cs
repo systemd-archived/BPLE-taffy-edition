@@ -318,7 +318,7 @@ namespace PlayFab.Internal
 			reqContainer.HttpState = HttpRequestState.Error;
 			lock (ResultQueue)
 			{
-				ResultQueue.Enqueue((Action)delegate
+				ResultQueue.Enqueue(delegate
 				{
 					PlayFabHttp.SendErrorEvent(reqContainer.ApiRequest, reqContainer.Error);
 					if (reqContainer.ErrorCallback != null)
@@ -346,14 +346,14 @@ namespace PlayFab.Internal
 				SingletonMonoBehaviour<PlayFabHttp>.instance.OnPlayFabApiResult(reqContainer.ApiResult);
 				lock (ResultQueue)
 				{
-					ResultQueue.Enqueue((Action)delegate
+					ResultQueue.Enqueue(delegate
 					{
 						PlayFabDeviceUtil.OnPlayFabLogin(reqContainer.ApiResult);
 					});
 				}
 				lock (ResultQueue)
 				{
-					ResultQueue.Enqueue((Action)delegate
+					ResultQueue.Enqueue(delegate
 					{
 						try
 						{
@@ -381,8 +381,8 @@ namespace PlayFab.Internal
 			{
 				while (ResultQueue.Count > 0)
 				{
-					Action action = ResultQueue.Dequeue();
-					_tempActions.Enqueue(action);
+					Action item = ResultQueue.Dequeue();
+					_tempActions.Enqueue(item);
 				}
 			}
 			while (_tempActions.Count > 0)

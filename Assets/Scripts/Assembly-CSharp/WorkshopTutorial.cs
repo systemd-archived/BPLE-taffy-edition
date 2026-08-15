@@ -7,11 +7,11 @@ public class WorkshopTutorial : WPFMonoBehaviour
 {
 	private enum Mode
 	{
-		None,
-		WatchPopup,
-		ScrapInsert,
-		StartMachine,
-		Finished
+		None = 0,
+		WatchPopup = 1,
+		ScrapInsert = 2,
+		StartMachine = 3,
+		Finished = 4
 	}
 
 	private const string FINISHED_TUTORIAL = "Workshop_Tutorial";

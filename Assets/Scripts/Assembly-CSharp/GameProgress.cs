@@ -15,9 +15,9 @@ public class GameProgress : MonoBehaviour
 
 	public enum ButtonUnlockState
 	{
-		Locked,
-		Unlocked,
-		UnlockNow
+		Locked = 0,
+		Unlocked = 1,
+		UnlockNow = 2
 	}
 
 	public static Action OnScrapAmountChanged;
@@ -99,7 +99,7 @@ public class GameProgress : MonoBehaviour
 				path = $"Progress_{m_currentPlayer}.dat";
 				key = string.Format("{0}{1}", m_currentPlayer, "z9dD2wS2,h");
 			}
-			m_data = new SettingsData(Path.Combine(Application.persistentDataPath, path), useEncryption: true, key);
+			m_data = new SettingsData(Path.Combine(INFileSystem.Root, path), useEncryption: true, key);
 			m_data.Load();
 			bool isNewGameProgress = false;
 			if (!m_data.GetBool("GameProgress_initialized", defaultValue: false))
@@ -222,7 +222,7 @@ public class GameProgress : MonoBehaviour
 		{
 			m_data.SetInt(levelName + "_challenge_" + challengeNumber, (!snoutCoinsCollected) ? 1 : 2);
 		}
-		else if (completed & isOdyssey)
+		else if (completed && isOdyssey)
 		{
 			m_data.SetInt(levelName + "_challenge_" + challengeNumber, 1);
 		}
@@ -361,7 +361,7 @@ public class GameProgress : MonoBehaviour
 			num2++;
 			m_data.SetInt(key2, num2);
 		}
-		else if ((num == 1) & snoutCoinsCollected)
+		else if (num == 1 && snoutCoinsCollected)
 		{
 			m_data.SetInt(key, 2);
 		}
@@ -818,7 +818,7 @@ public class GameProgress : MonoBehaviour
 		{
 			return new string[0];
 		}
-		return text.Split(',');
+		return text.Split(new char[1] { ',' });
 	}
 
 	public static void SetTimerIds(string[] ids)

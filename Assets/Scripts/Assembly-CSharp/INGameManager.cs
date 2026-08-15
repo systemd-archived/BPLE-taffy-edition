@@ -38,7 +38,7 @@ public class INGameManager : MonoBehaviour
 
 	private void Update()
 	{
-		if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.F))
+		if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.F11))
 		{
 			bool flag = !Screen.fullScreen;
 			INSettingsInterface.Instance?.SetValue("GeneralSettings_FullScreen", flag);

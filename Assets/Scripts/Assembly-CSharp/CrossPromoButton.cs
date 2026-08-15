@@ -5,8 +5,8 @@ public class CrossPromoButton : MonoBehaviour
 {
 	public enum CrossPromoType
 	{
-		Main,
-		Episode
+		Main = 0,
+		Episode = 1
 	}
 
 	[SerializeField]

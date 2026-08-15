@@ -9,7 +9,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using UnityEngine;
 
-public class JsonService : IJsonService
+internal class JsonService : IJsonService
 {
 	private class Vector2Converter : JsonConverter<Vector2>
 	{
@@ -209,7 +209,7 @@ public class JsonService : IJsonService
 
 	private static float[] ReadSingleArray(string text)
 	{
-		string[] array = text.Split(',', StringSplitOptions.None);
+		string[] array = text.Split(',');
 		float[] array2 = new float[array.Length];
 		for (int i = 0; i < array.Length; i++)
 		{
@@ -220,6 +220,6 @@ public class JsonService : IJsonService
 
 	private static string WriteSingleArray(params float[] values)
 	{
-		return string.Join<float>(',', (IEnumerable<float>)values);
+		return string.Join(',', values);
 	}
 }

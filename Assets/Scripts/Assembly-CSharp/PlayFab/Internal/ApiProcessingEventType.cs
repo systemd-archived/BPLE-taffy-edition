@@ -2,7 +2,7 @@ namespace PlayFab.Internal
 {
 	public enum ApiProcessingEventType
 	{
-		Pre,
-		Post
+		Pre = 0,
+		Post = 1
 	}
 }

@@ -6,8 +6,8 @@ public class AudioArea : MonoBehaviour
 {
 	private enum TriggeringType
 	{
-		Pig,
-		AudioListener
+		Pig = 0,
+		AudioListener = 1
 	}
 
 	[SerializeField]

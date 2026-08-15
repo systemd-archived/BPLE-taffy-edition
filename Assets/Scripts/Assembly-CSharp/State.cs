@@ -1,8 +1,8 @@
 internal enum State
 {
-	Inactive,
-	DelayedStart,
-	SpinUp,
-	SpinDown,
-	Spinning
+	Inactive = 0,
+	DelayedStart = 1,
+	SpinUp = 2,
+	SpinDown = 3,
+	Spinning = 4
 }

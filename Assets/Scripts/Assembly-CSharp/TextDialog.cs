@@ -218,9 +218,9 @@ public class TextDialog : WPFMonoBehaviour
 			base.gameObject.SetActive(value: true);
 			UpdateTextMeshSpriteIcons();
 			PlayAppearAnimation();
-			if (onOpen != null)
+			if (this.onOpen != null)
 			{
-				onOpen();
+				this.onOpen();
 			}
 		}
 	}
@@ -229,17 +229,17 @@ public class TextDialog : WPFMonoBehaviour
 	{
 		isOpened = false;
 		base.gameObject.SetActive(value: false);
-		if (onClose != null)
+		if (this.onClose != null)
 		{
-			onClose();
+			this.onClose();
 		}
 	}
 
 	public void Confirm()
 	{
-		if (onConfirm != null)
+		if (this.onConfirm != null)
 		{
-			onConfirm();
+			this.onConfirm();
 		}
 	}
 
@@ -264,9 +264,9 @@ public class TextDialog : WPFMonoBehaviour
 			{
 				Singleton<IapManager>.Instance.OpenShopPage(null, shopPage);
 			}
-			if (onShopPageOpened != null)
+			if (this.onShopPageOpened != null)
 			{
-				onShopPageOpened();
+				this.onShopPageOpened();
 			}
 		}
 		Close();

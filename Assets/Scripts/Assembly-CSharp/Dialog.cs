@@ -13,18 +13,18 @@ public class Dialog : MonoBehaviour
 	public void Open()
 	{
 		base.gameObject.SetActive(value: true);
-		if (onOpen != null)
+		if (this.onOpen != null)
 		{
-			onOpen();
+			this.onOpen();
 		}
 	}
 
 	public void Close()
 	{
 		base.gameObject.SetActive(value: false);
-		if (onClose != null)
+		if (this.onClose != null)
 		{
-			onClose();
+			this.onClose();
 		}
 	}
 

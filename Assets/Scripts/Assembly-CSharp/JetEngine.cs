@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Innovation;
 using UnityEngine;
 
-public class JetEngine : BasePropulsion
+public class JetEngine : BasePropulsion, IFuelConsumer, IBasePart
 {
 	private readonly struct PartComparisonData : IComparable<PartComparisonData>
 	{
@@ -109,8 +110,8 @@ public class JetEngine : BasePropulsion
 			float num5 = m_renderLength * (1f + num);
 			float num6 = m_renderLength / m_originalLength;
 			float num7 = Math.Min(0.5f * (num6 + 1f), 2f * num6);
-			float x = Mathf.Cos(m_renderAngle * ((float)Math.PI / 180f));
-			float y = Mathf.Sin(m_renderAngle * ((float)Math.PI / 180f));
+			float x = Mathf.Cos(m_renderAngle * (MathF.PI / 180f));
+			float y = Mathf.Sin(m_renderAngle * (MathF.PI / 180f));
 			Vector3 vector = (0f - num4) * num5 * 0.5f * new Vector3(x, y);
 			Vector3 vector2 = new Vector3((0f - num4) * m_originalLength * 0.5f, 0f);
 			Vector3 localScale = new Vector3(num6 * (1f + num), num3 * num7 * (1f + num2), 1f);
@@ -188,7 +189,7 @@ public class JetEngine : BasePropulsion
 	{
 		if (!base.HasGeneratorRef)
 		{
-			return FuelSystem.Instance.GetFuelComponent(m_fuelComponentIndex).FuelBoxCount > 0;
+			return FuelSystem.Instance.GetFuelComponent(m_fuelComponentIndex).FuelContainerCount > 0;
 		}
 		return false;
 	}
@@ -344,12 +345,12 @@ public class JetEngine : BasePropulsion
 	private Vector3 GetForceDirection()
 	{
 		Vector3 right = base.transform.right;
-		float num = Mathf.Cos((0f - m_angle) * ((float)Math.PI / 180f));
-		float num2 = Mathf.Sin((0f - m_angle) * ((float)Math.PI / 180f));
+		float num = Mathf.Cos((0f - m_angle) * (MathF.PI / 180f));
+		float num2 = Mathf.Sin((0f - m_angle) * (MathF.PI / 180f));
 		return new Vector3(right.x * num - right.y * num2, right.x * num2 + right.y * num);
 	}
 
-	public void SupplyFuel(float fuelAmount)
+	public void ConsumeFuel(float fuelAmount)
 	{
 		if (!m_enabled)
 		{
@@ -419,7 +420,7 @@ public class JetEngine : BasePropulsion
 
 	private void SetRealForce(float force)
 	{
-		force *= Mathf.Cos(m_angle * ((float)Math.PI / 180f));
+		force *= Mathf.Cos(m_angle * (MathF.PI / 180f));
 		m_realForce = ((force >= 0f) ? force : (0.5f * force));
 		m_flameController.SetLength(m_realForce / 100f);
 	}

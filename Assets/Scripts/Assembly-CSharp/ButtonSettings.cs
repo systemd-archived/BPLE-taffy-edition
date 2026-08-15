@@ -9,6 +9,10 @@ public class ButtonSettings : SettingsBase
 
 	private float m_scrollViewHeightScale;
 
+	private int m_layoutMode;
+
+	private bool m_highPartTypePriority;
+
 	private int m_maxSeparationCount;
 
 	private bool m_displayButtonIndex;
@@ -21,7 +25,11 @@ public class ButtonSettings : SettingsBase
 		}
 		set
 		{
-			m_enabled = value;
+			if (m_enabled != value)
+			{
+				m_enabled = value;
+				OnPropertyChanged("Enabled");
+			}
 		}
 	}
 
@@ -33,9 +41,10 @@ public class ButtonSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value))
+			if (m_buttonScale != value && float.IsFinite(value))
 			{
 				m_buttonScale = value;
+				OnPropertyChanged("ButtonScale");
 			}
 		}
 	}
@@ -48,9 +57,42 @@ public class ButtonSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value))
+			if (m_scrollViewHeightScale != value && float.IsFinite(value))
 			{
 				m_scrollViewHeightScale = value;
+				OnPropertyChanged("ScrollViewHeightScale");
+			}
+		}
+	}
+
+	public int LayoutMode
+	{
+		get
+		{
+			return m_layoutMode;
+		}
+		set
+		{
+			if (m_layoutMode != value && value >= 0 && value <= 1)
+			{
+				m_layoutMode = value;
+				OnPropertyChanged("LayoutMode");
+			}
+		}
+	}
+
+	public bool HighPartTypePriority
+	{
+		get
+		{
+			return m_highPartTypePriority;
+		}
+		set
+		{
+			if (m_highPartTypePriority != value)
+			{
+				m_highPartTypePriority = value;
+				OnPropertyChanged("HighPartTypePriority");
 			}
 		}
 	}
@@ -63,9 +105,10 @@ public class ButtonSettings : SettingsBase
 		}
 		set
 		{
-			if (value >= 0)
+			if (m_maxSeparationCount != value && value >= 0)
 			{
 				m_maxSeparationCount = value;
+				OnPropertyChanged("MaxSeparationCount");
 			}
 		}
 	}
@@ -78,7 +121,11 @@ public class ButtonSettings : SettingsBase
 		}
 		set
 		{
-			m_displayButtonIndex = value;
+			if (m_displayButtonIndex != value)
+			{
+				m_displayButtonIndex = value;
+				OnPropertyChanged("DisplayButtonIndex");
+			}
 		}
 	}
 
@@ -95,10 +142,6 @@ public class ButtonSettings : SettingsBase
 		: this()
 	{
 		Update(settings);
-	}
-
-	public override void Apply()
-	{
 	}
 
 	public void Update(ButtonSettings settings)

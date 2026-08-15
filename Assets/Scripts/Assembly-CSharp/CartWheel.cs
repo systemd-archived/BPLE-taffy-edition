@@ -39,13 +39,13 @@ public class CartWheel : BasePart
 		{
 			m_axle = m_wheelPivot;
 			m_radius = m_wheelPivot.GetComponent<SphereCollider>().radius;
-			m_circumference = (float)Math.PI * 2f * m_radius;
+			m_circumference = MathF.PI * 2f * m_radius;
 		}
 		else
 		{
 			m_axle = m_fakeWheelPivot;
 			m_radius = m_fakeWheelPivot.GetComponent<SphereCollider>().radius;
-			m_circumference = (float)Math.PI * 2f * m_radius;
+			m_circumference = MathF.PI * 2f * m_radius;
 		}
 		if ((bool)base.transform.Find("SupportCollider"))
 		{
@@ -102,7 +102,7 @@ public class CartWheel : BasePart
 			}
 			if ((bool)m_fakeWheelPivot)
 			{
-				float angle = 0f - z + Mathf.Sin(2f * m_angle * ((float)Math.PI / 180f)) * 8f;
+				float angle = 0f - z + Mathf.Sin(2f * m_angle * (MathF.PI / 180f)) * 8f;
 				m_fakeWheelPivot.localRotation = Quaternion.AngleAxis(angle, Vector3.forward);
 			}
 			UpdateSoundEffect();

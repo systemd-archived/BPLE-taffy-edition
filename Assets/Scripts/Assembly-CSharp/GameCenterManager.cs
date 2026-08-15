@@ -258,9 +258,9 @@ public class GameCenterManager : MonoBehaviour, ISocialProvider
 		{
 			SyncAllAchievementsNow();
 		}
-		if (onAuthenticationSucceeded != null)
+		if (GameCenterManager.onAuthenticationSucceeded != null)
 		{
-			onAuthenticationSucceeded(success);
+			GameCenterManager.onAuthenticationSucceeded(success);
 		}
 	}
 

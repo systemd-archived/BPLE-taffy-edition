@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Innovation;
 using Innovation.Script;
 using Microsoft.CodeAnalysis;
@@ -12,7 +14,6 @@ using Microsoft.CodeAnalysis.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using UnityEngine.Video;
 
 public class INCommandManager : Singleton<INCommandManager>
 {
@@ -201,18 +202,22 @@ public class INCommandManager : Singleton<INCommandManager>
 					break;
 				}
 			}
-			foreach (SyntaxTrivia leadingTrivium in token.LeadingTrivia)
+			SyntaxTriviaList.Enumerator enumerator = token.LeadingTrivia.GetEnumerator();
+			while (enumerator.MoveNext())
 			{
-				HandleTrivia(leadingTrivium, theme);
+				SyntaxTrivia current = enumerator.Current;
+				HandleTrivia(current, theme);
 			}
 			TextSpan span = token.Span;
 			if (span.Length > 0 && color.RGBA != 0)
 			{
 				m_spans.Add(new Span(span.Start, span.End, color));
 			}
-			foreach (SyntaxTrivia trailingTrivium in token.TrailingTrivia)
+			enumerator = token.TrailingTrivia.GetEnumerator();
+			while (enumerator.MoveNext())
 			{
-				HandleTrivia(trailingTrivium, theme);
+				SyntaxTrivia current2 = enumerator.Current;
+				HandleTrivia(current2, theme);
 			}
 		}
 
@@ -317,61 +322,39 @@ public class INCommandManager : Singleton<INCommandManager>
 
 	private static IEnumerable<AssemblyReference> GetReferences()
 	{
+		return from data in GetReferencePaths().Select(LoadFileWithMaybe)
+			where data.HasValue
+			select new AssemblyByteReference((byte[])data);
+	}
+
+	private static IEnumerable<string> GetReferencePaths()
+	{
 		string[] array = new string[29]
 		{
 			"mscorlib", "netstandard", "System.Private.CoreLib", "System", "System.Collections", "System.Collections.Concurrent", "System.Console", "System.Diagnostics.Debug", "System.Diagnostics.Process", "System.Diagnostics.StackTrace",
 			"System.Globalization", "System.IO", "System.IO.FileSystem", "System.IO.FileSystem.Primitives", "System.Reflection", "System.Reflection.Extensions", "System.Reflection.Primitives", "System.Runtime", "System.Runtime.Extensions", "System.Runtime.InteropServices",
 			"System.Text.Encoding", "System.Text.Encoding.CodePages", "System.Text.Encoding.Extensions", "System.Text.RegularExpressions", "System.Threading", "System.Threading.Tasks", "System.Threading.Tasks.Parallel", "System.Threading.Thread", "System.ValueTuple"
 		};
-		string directory = Path.GetDirectoryName(typeof(object).Assembly.Location);
+		string systemDirectory = Path.GetDirectoryName(typeof(object).Assembly.Location);
 		string[] array2 = array;
-		byte[] bytes;
 		foreach (string text in array2)
 		{
-			if (TryLoadFile(Path.Combine(directory, text + ".dll"), out bytes))
-			{
-				yield return new AssemblyByteReference(bytes);
-			}
+			yield return Path.Combine(systemDirectory, text + ".dll");
 		}
-		if (TryLoadFile(typeof(UnityEngine.Object).Assembly.Location, out bytes))
-		{
-			yield return new AssemblyByteReference(bytes);
-		}
-		if (TryLoadFile(typeof(AudioClip).Assembly.Location, out bytes))
-		{
-			yield return new AssemblyByteReference(bytes);
-		}
-		if (TryLoadFile(typeof(VideoClip).Assembly.Location, out bytes))
-		{
-			yield return new AssemblyByteReference(bytes);
-		}
-		if (TryLoadFile(typeof(Physics).Assembly.Location, out bytes))
-		{
-			yield return new AssemblyByteReference(bytes);
-		}
-		if (TryLoadFile(typeof(AssetBundle).Assembly.Location, out bytes))
-		{
-			yield return new AssemblyByteReference(bytes);
-		}
-		string directoryName = Path.GetDirectoryName(typeof(INUnity).Assembly.Location);
-		string innovationDirectory = directoryName;
-		if (TryLoadFile(Path.Combine(innovationDirectory, "Innovation.Module.dll"), out bytes))
-		{
-			yield return new AssemblyByteReference(bytes);
-		}
-		if (TryLoadFile(Path.Combine(innovationDirectory, "Innovation.Shared.dll"), out bytes))
-		{
-			yield return new AssemblyByteReference(bytes);
-		}
+		string unityDirectory = Path.GetDirectoryName(typeof(UnityEngine.Object).Assembly.Location);
+		yield return Path.Combine(unityDirectory, "UnityEngine.AndroidJNIModule.dll");
+		yield return Path.Combine(unityDirectory, "UnityEngine.AssetBundleModule.dll");
+		yield return Path.Combine(unityDirectory, "UnityEngine.AudioModule.dll");
+		yield return Path.Combine(unityDirectory, "UnityEngine.CoreModule.dll");
+		yield return Path.Combine(unityDirectory, "UnityEngine.PhysicsModule.dll");
+		yield return Path.Combine(unityDirectory, "UnityEngine.UIModule.dll");
+		yield return Path.Combine(unityDirectory, "UnityEngine.UnityWebRequestModule.dll");
+		yield return Path.Combine(unityDirectory, "UnityEngine.VideoModule.dll");
+		yield return typeof(Graphic).Assembly.Location;
+		yield return typeof(BP).Assembly.Location;
 	}
 
-	private static bool TryLoadFile(string path, out byte[] bytes)
-	{
-		bytes = LoadFileImmediate(path);
-		return bytes != null;
-	}
-
-	private static byte[] LoadFileImmediate(string path)
+	private static byte[] LoadFile(string path)
 	{
 		UnityWebRequest unityWebRequest = UnityWebRequest.Get(new Uri(path));
 		unityWebRequest.SendWebRequest();
@@ -379,6 +362,18 @@ public class INCommandManager : Singleton<INCommandManager>
 		{
 		}
 		byte[] result = ((unityWebRequest.result == UnityWebRequest.Result.Success) ? unityWebRequest.downloadHandler.data : null);
+		unityWebRequest.Dispose();
+		return result;
+	}
+
+	private static Maybe<byte[]> LoadFileWithMaybe(string path)
+	{
+		UnityWebRequest unityWebRequest = UnityWebRequest.Get(new Uri(path));
+		unityWebRequest.SendWebRequest();
+		while (!unityWebRequest.isDone)
+		{
+		}
+		Maybe<byte[]> result = ((unityWebRequest.result == UnityWebRequest.Result.Success) ? Maybe<byte[]>.Just(unityWebRequest.downloadHandler.data) : Maybe<byte[]>.Nothing());
 		unityWebRequest.Dispose();
 		return result;
 	}
@@ -411,13 +406,13 @@ public class INCommandManager : Singleton<INCommandManager>
 		m_noticeButton.onClick.AddListener(OpenNoticePage);
 		m_copyButton.onClick.AddListener(OnCopyButtonClicked);
 		m_inputField.onSubmit.AddListener(OnInputFieldSubmit);
-		m_noticePage.transform.Find("Content").Find("Back Button").GetComponent<UnityEngine.UI.Button>()
+		m_noticePage.transform.Find("Content").Find("BackButton").GetComponent<UnityEngine.UI.Button>()
 			.onClick.AddListener(CloseNoticePage);
 		m_writer = new ScriptWriter();
 		m_highlighter = new SyntaxHighlighter();
 		m_stringBuilder = new StringBuilder();
 		m_engine = CreateEngine();
-		Task.Factory.StartNew(() => CreateEngine().Run(";"));
+		Task.Run(() => CreateEngine().Run(";"));
 		LoadSettings(save: true);
 		ILogHandler logHandler = Debug.unityLogger.logHandler;
 		Debug.unityLogger.logHandler = new CustomLogHandler(logHandler);

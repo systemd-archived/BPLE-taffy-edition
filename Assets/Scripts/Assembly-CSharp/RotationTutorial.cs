@@ -6,10 +6,10 @@ public class RotationTutorial : WPFMonoBehaviour
 {
 	private enum State
 	{
-		Initial,
-		Waiting,
-		Playing,
-		Stopped
+		Initial = 0,
+		Waiting = 1,
+		Playing = 2,
+		Stopped = 3
 	}
 
 	public class Pointer

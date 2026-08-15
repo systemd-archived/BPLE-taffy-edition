@@ -37,10 +37,6 @@ public class FaceRotation : MonoBehaviour
 
 	private Vector3 m_target2Position;
 
-	private Camera m_mainCamera;
-
-	private Camera m_hudCamera;
-
 	[SerializeField]
 	[HideInInspector]
 	private bool m_positionsSet;
@@ -80,21 +76,13 @@ public class FaceRotation : MonoBehaviour
 			}
 		}
 		m_targetDirectionSet = false;
-		GameObject mainCamGo = GameObject.FindGameObjectWithTag("MainCamera");
-		if (mainCamGo != null)
-			m_mainCamera = mainCamGo.GetComponent<Camera>();
-		GameObject hudCamGo = GameObject.FindGameObjectWithTag("HUDCamera");
-		if (hudCamGo != null)
-			m_hudCamera = hudCamGo.GetComponent<Camera>();
 	}
 
 	private void Update()
 	{
 		if (m_followMouse)
 		{
-			Camera cam = (m_mainCamera != null) ? m_mainCamera : m_hudCamera;
-			if (cam == null) return;
-			Vector3 vector = cam.ScreenToWorldPoint(Input.mousePosition);
+			Vector3 vector = ((!GameObject.FindGameObjectWithTag("MainCamera")) ? GameObject.FindGameObjectWithTag("HUDCamera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition) : GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition));
 			Vector3 vector2 = vector - base.transform.position;
 			vector2.z = 0f;
 			m_normalizedDirection = 0.3f * vector2;

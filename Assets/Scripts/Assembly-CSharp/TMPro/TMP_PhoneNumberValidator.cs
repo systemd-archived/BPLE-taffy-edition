@@ -8,9 +8,7 @@ namespace TMPro
 	{
 		public override char Validate(ref string text, ref int pos, char ch)
 		{
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 			Debug.Log("Trying to validate...");
-#endif
 			if (ch < '0' && ch > '9')
 			{
 				return '\0';

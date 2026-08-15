@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Video;
 
 public class INInitializer : MonoBehaviour
 {
@@ -19,22 +18,63 @@ public class INInitializer : MonoBehaviour
 	private bool m_useAlphaAnimation;
 
 	private float m_time;
+	private float AnimationInTime = 0f;
+	private float AnimationOutTime = 0.5f;
 
 	public bool Initialized => m_initialized;
+	
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern System.IntPtr GetActiveWindow();
+
+    [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
+    private static extern int DwmSetWindowAttribute(System.IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
+    private const int DWMWA_USE_IMMERSIVE_DARK_MODE_OLD = 19;
+
+    private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+#endif
 
 	private void Awake()
 	{
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+        bool systemIsDark;
+
+        try
+        {
+            object value = Microsoft.Win32.Registry.GetValue(
+                @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
+                "AppsUseLightTheme", 1);
+            systemIsDark = value is int i && i == 0;
+        }
+        catch
+        {
+            systemIsDark = false;
+        }
+
+        if (systemIsDark)
+		{
+			System.IntPtr hwnd = GetActiveWindow();
+			int useDark = 1;
+
+			if (DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref useDark, sizeof(int)) != 0)
+			{
+	            DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE_OLD, ref useDark, sizeof(int));
+	        }
+		}
+#endif
+
 		m_useAlphaAnimation = true;
-		m_time = 3f;
-		StartCoroutine(Initialize());
+		m_time = 15f;
+		Initialize().Forget();
 	}
 
-	private IEnumerator Initialize()
+	private async UniTask Initialize()
 	{
 		for (int i = 0; i < m_splashes.Count; i++)
 		{
 			GameObject splash = Object.Instantiate(m_splashes[i], Vector3.zero, Quaternion.identity);
-			yield return PlayAnimation(splash);
+			await PlayAnimation(splash);
 			Object.Destroy(splash);
 		}
 		INUnity.Initialize(m_resourceData);
@@ -42,47 +82,15 @@ public class INInitializer : MonoBehaviour
 		{
 			Object.Instantiate(prefab);
 		}
-		float versionTimeout = 15f;
-		while (!INSettings.VersionSelected && versionTimeout > 0f)
-		{
-			versionTimeout -= Time.unscaledDeltaTime;
-			yield return null;
-		}
-		if (!INSettings.VersionSelected)
-		{
-			Debug.LogWarning("[INInitializer] INSettings.VersionSelected timed out, forcing version 3 (B)");
-			INSettings.Initialize(3);
-		}
+		await UniTask.WaitUntil(() => INSettings.VersionSelected);
 		m_initialized = true;
-		yield return LoadMainMenu();
+		await LoadMainMenu();
 	}
 
-	private IEnumerator LoadMainMenu()
+	private async UniTask LoadMainMenu()
 	{
-		float spawnTimeout = 30f;
-		while (!SingletonSpawner.SpawnDone && spawnTimeout > 0f)
-		{
-			spawnTimeout -= Time.unscaledDeltaTime;
-			yield return null;
-		}
-		if (!SingletonSpawner.SpawnDone)
-		{
-			Debug.LogWarning("[INInitializer] SingletonSpawner.SpawnDone timed out after 30s, continuing");
-		}
-		float bundleCfgTimeout = 30f;
-		while ((!Bundle.initialized || Bundle.checkingBundles || !Singleton<GameConfigurationManager>.Instance.HasData) && bundleCfgTimeout > 0f)
-		{
-			bundleCfgTimeout -= Time.unscaledDeltaTime;
-			yield return null;
-		}
-		if (!Singleton<GameConfigurationManager>.Instance.HasData)
-		{
-			Debug.LogWarning("[INInitializer] GameConfigurationManager.HasData still false, continuing anyway");
-		}
-		if (!Bundle.initialized)
-		{
-			Debug.LogWarning("[INInitializer] Bundle.initialized still false, continuing anyway");
-		}
+		await UniTask.WaitUntil(() => SingletonSpawner.SpawnDone);
+		await UniTask.WaitUntil(() => Bundle.initialized && !Bundle.checkingBundles && Singleton<GameConfigurationManager>.Instance.HasData).TimeoutWithoutException(System.TimeSpan.FromSeconds(15f));
 		PostInitialize();
 		Singleton<GameManager>.Instance.LoadMainMenu(showLoadingScreen: true);
 	}
@@ -91,7 +99,7 @@ public class INInitializer : MonoBehaviour
 	{
 		if (INSettings.GetBool(INFeature.RuntimeGameData))
 		{
-			Object.Instantiate(INUnity.LoadGameObject("INRuntimeGameData"));
+			Object.Instantiate(INUnity.LoadGameObject("INPartFactoryManager"));
 		}
 		if (INSettings.GetBool(INFeature.ApplicationInterface))
 		{
@@ -103,35 +111,19 @@ public class INInitializer : MonoBehaviour
 		}
 	}
 
-	private IEnumerator PlayAnimation(GameObject gameObject)
+	private async UniTask PlayAnimation(GameObject gameObject)
 	{
-		VideoPlayer vp = gameObject.GetComponent<VideoPlayer>();
-		if (vp != null && vp.clip != null)
-		{
-			vp.Play();
-			float startTimeout = 2f;
-			while (!vp.isPlaying && startTimeout > 0f)
-			{
-				startTimeout -= Time.unscaledDeltaTime;
-				yield return null;
-			}
-			while (vp.isPlaying)
-			{
-				yield return null;
-			}
-			yield break;
-		}
 		if (!m_useAlphaAnimation)
 		{
-			yield return new WaitForSeconds(m_time);
-			yield break;
+			await UniTask.Delay((int)(m_time * 1000f), ignoreTimeScale: true);
+			return;
 		}
-		CanvasRenderer cr = gameObject.GetComponentInChildren<CanvasRenderer>();
-		if (cr != null)
+		CanvasRenderer canvasRenderer = gameObject.GetComponentInChildren<CanvasRenderer>();
+		if (canvasRenderer != null)
 		{
-			yield return cr.PlayFadeInAnimation(m_time / 3f);
-			yield return new WaitForSeconds(m_time / 3f);
-			yield return cr.PlayFadeOutAnimation(m_time / 3f);
+			await canvasRenderer.PlayFadeInAnimation(AnimationInTime, ignoreTimeScale: true);
+			await UniTask.Delay((int)(m_time / 3f * 1000f), ignoreTimeScale: true);
+			await canvasRenderer.PlayFadeOutAnimation(AnimationOutTime, ignoreTimeScale: true);
 		}
 	}
 }

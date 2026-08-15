@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using CakeRace;
 using UnityEngine;
 
@@ -213,7 +214,11 @@ public class GameData : ScriptableObject
 
 	private Dictionary<BasePart.PartType, PartReaction> m_partReactions;
 
-	public GameObject GetPart(BasePart.PartType type)
+	public virtual IEnumerable<GameObject> Parts => m_parts;
+
+	public virtual IEnumerable<IReadOnlyList<BasePart>> CustomParts => m_customParts.Select((CustomPartInfo unit) => unit.PartList);
+
+	public virtual GameObject GetPart(BasePart.PartType type)
 	{
 		foreach (GameObject part in m_parts)
 		{
@@ -225,7 +230,7 @@ public class GameData : ScriptableObject
 		return null;
 	}
 
-	public CustomPartInfo GetCustomPart(BasePart.PartType type)
+	public virtual CustomPartInfo GetCustomPart(BasePart.PartType type)
 	{
 		foreach (CustomPartInfo customPart in m_customParts)
 		{
@@ -237,12 +242,8 @@ public class GameData : ScriptableObject
 		return null;
 	}
 
-	public int GetCustomPartIndex(BasePart.PartType type, string partName)
+	public virtual int GetCustomPartIndex(BasePart.PartType type, string partName)
 	{
-		if (INSettings.GetBool(INFeature.RuntimeGameData))
-		{
-			return Singleton<INRuntimeGameData>.Instance.GetCustomPartIndex(type, partName);
-		}
 		GameObject part = GetPart(type);
 		if (part != null && part.name.Equals(partName))
 		{
@@ -259,12 +260,8 @@ public class GameData : ScriptableObject
 		return -1;
 	}
 
-	public BasePart GetCustomPart(BasePart.PartType type, int customIndex)
+	public virtual BasePart GetCustomPart(BasePart.PartType type, int customIndex)
 	{
-		if (INSettings.GetBool(INFeature.RuntimeGameData))
-		{
-			return Singleton<INRuntimeGameData>.Instance.GetCustomPart(type, customIndex);
-		}
 		if (customIndex <= 0)
 		{
 			GameObject part = GetPart(type);
@@ -301,6 +298,10 @@ public class GameData : ScriptableObject
 
 	private void ReadPartReactions()
 	{
+		if (m_partReactionList == null)
+		{
+			return;
+		}
 		m_partReactions = new Dictionary<BasePart.PartType, PartReaction>();
 		string text = m_partReactionList.text;
 		char[] separator = new char[1] { '\n' };

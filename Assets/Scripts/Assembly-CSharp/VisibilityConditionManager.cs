@@ -81,7 +81,7 @@ public class VisibilityConditionManager : Singleton<VisibilityConditionManager>
 	{
 		check = new ConditionCheck[conditionCount];
 		string autoBuild = Singleton<GameManager>.Instance.CurrentSceneName + "_autobuild_available";
-		bool gameCenterAvailable = DeviceInfo.ActiveDeviceFamily == DeviceInfo.DeviceFamily.Ios;
+		bool gameCenterAvailable = true;
 		bool chiefPigExploded = GameProgress.GetBool("ChiefPigExploded") || INSettings.GetBool(INFeature.EnableDesserts);
 		bool iapEnabled = Singleton<BuildCustomizationLoader>.Instance.IAPEnabled;
 		bool isCheat = Singleton<BuildCustomizationLoader>.Instance.CheatsEnabled;
@@ -102,7 +102,7 @@ public class VisibilityConditionManager : Singleton<VisibilityConditionManager>
 		check[11] = () => true;
 		check[12] = () => true;
 		check[13] = () => false;
-		check[14] = () => ((m_levelManager != null && m_levelManager.m_autoBuildUnlocked) & iapEnabled) && m_levelManager.gameState != LevelManager.GameState.AutoBuilding && m_levelManager.gameState != LevelManager.GameState.SuperAutoBuilding && m_levelManager.gameState != LevelManager.GameState.ShowingUnlockedParts && !GameProgress.GetBool(autoBuild) && GameProgress.GetBool("PermanentBlueprint");
+		check[14] = () => m_levelManager != null && m_levelManager.m_autoBuildUnlocked && iapEnabled && m_levelManager.gameState != LevelManager.GameState.AutoBuilding && m_levelManager.gameState != LevelManager.GameState.SuperAutoBuilding && m_levelManager.gameState != LevelManager.GameState.ShowingUnlockedParts && !GameProgress.GetBool(autoBuild) && GameProgress.GetBool("PermanentBlueprint");
 		check[15] = () => m_levelManager != null && m_levelManager.TutorialBookPage != null && m_levelManager.gameState != LevelManager.GameState.AutoBuilding && m_levelManager.gameState != LevelManager.GameState.SuperAutoBuilding && m_levelManager.gameState != LevelManager.GameState.ShowingUnlockedParts;
 		check[16] = () => (m_levelManager != null && m_levelManager.gameState == LevelManager.GameState.AutoBuilding) || m_levelManager.gameState == LevelManager.GameState.SuperAutoBuilding;
 		check[17] = () => m_levelManager != null && m_levelManager.ContraptionProto != null && m_levelManager.ContraptionProto.DynamicPartCount() > 0 && m_levelManager.gameState != LevelManager.GameState.AutoBuilding && m_levelManager.gameState != LevelManager.GameState.SuperAutoBuilding && m_levelManager.gameState != LevelManager.GameState.ShowingUnlockedParts;
@@ -117,7 +117,7 @@ public class VisibilityConditionManager : Singleton<VisibilityConditionManager>
 		check[29] = () => Singleton<BuildCustomizationLoader>.Instance.IsContentLimited;
 		check[30] = () => Singleton<BuildCustomizationLoader>.Instance.IsHDVersion;
 		check[31] = () => Singleton<BuildCustomizationLoader>.Instance.IsOdyssey;
-		check[32] = () => DeviceInfo.ActiveDeviceFamily == DeviceInfo.DeviceFamily.Ios;
+		check[32] = () => true;
 		check[33] = () => isCheat;
 		check[34] = () => isDebug;
 		check[35] = () => FreeLootCrate.FreeShopLootCrateCollected;

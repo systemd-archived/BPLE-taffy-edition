@@ -4,8 +4,8 @@ public class AudioFX : MonoBehaviour
 {
 	public enum FXType
 	{
-		Preprocess,
-		Continuous
+		Preprocess = 0,
+		Continuous = 1
 	}
 
 	[SerializeField]

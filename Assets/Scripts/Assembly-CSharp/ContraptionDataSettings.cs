@@ -32,7 +32,11 @@ public class ContraptionDataSettings : SettingsBase
 		}
 		set
 		{
-			m_enabled = value;
+			if (m_enabled != value)
+			{
+				m_enabled = value;
+				OnPropertyChanged("Enabled");
+			}
 		}
 	}
 
@@ -44,9 +48,10 @@ public class ContraptionDataSettings : SettingsBase
 		}
 		set
 		{
-			if (value >= 3 && value <= 8)
+			if (m_slotCount != value && value >= 3 && value <= 8)
 			{
 				m_slotCount = value;
+				OnPropertyChanged("SlotCount");
 			}
 		}
 	}
@@ -59,9 +64,10 @@ public class ContraptionDataSettings : SettingsBase
 		}
 		set
 		{
-			if (Enum.IsDefined(typeof(SerializationFormat), value))
+			if (m_loadFormat != value && Enum.IsDefined(typeof(SerializationFormat), value))
 			{
 				m_loadFormat = value;
+				OnPropertyChanged("LoadFormat");
 			}
 		}
 	}
@@ -74,9 +80,10 @@ public class ContraptionDataSettings : SettingsBase
 		}
 		set
 		{
-			if (Enum.IsDefined(typeof(SerializationFormat), value))
+			if (m_saveFormat != value && Enum.IsDefined(typeof(SerializationFormat), value))
 			{
 				m_saveFormat = value;
+				OnPropertyChanged("SaveFormat");
 			}
 		}
 	}
@@ -89,7 +96,11 @@ public class ContraptionDataSettings : SettingsBase
 		}
 		set
 		{
-			m_backupData = value;
+			if (m_backupData != value)
+			{
+				m_backupData = value;
+				OnPropertyChanged("BackupData");
+			}
 		}
 	}
 
@@ -101,7 +112,11 @@ public class ContraptionDataSettings : SettingsBase
 		}
 		set
 		{
-			m_backupOriginalData = value;
+			if (m_backupOriginalData != value)
+			{
+				m_backupOriginalData = value;
+				OnPropertyChanged("BackupOriginalData");
+			}
 		}
 	}
 
@@ -113,7 +128,11 @@ public class ContraptionDataSettings : SettingsBase
 		}
 		set
 		{
-			m_saveAsOriginalData = value;
+			if (m_saveAsOriginalData != value)
+			{
+				m_saveAsOriginalData = value;
+				OnPropertyChanged("SaveAsOriginalData");
+			}
 		}
 	}
 
@@ -132,10 +151,6 @@ public class ContraptionDataSettings : SettingsBase
 		: this()
 	{
 		Update(settings);
-	}
-
-	public override void Apply()
-	{
 	}
 
 	public void Update(ContraptionDataSettings settings)

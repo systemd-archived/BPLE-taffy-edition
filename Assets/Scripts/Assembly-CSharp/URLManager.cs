@@ -4,30 +4,30 @@ public class URLManager : Singleton<URLManager>
 {
 	public enum LinkType
 	{
-		Youtube,
-		Facebook,
-		Twitter,
-		Renren,
-		Weibos,
-		YoutubeChina,
-		Eula,
-		Privacy,
-		FBLike,
-		GetPCRegistrationKey,
-		CrossPromoClassic,
-		CrossPromoSpace,
-		CrossPromoAlex,
-		CrossPromoShop,
-		CrossPromoNewsLetter,
-		CrossPromoSeasons,
-		BadPiggiesAppStore,
-		CrossPromoStarWars,
-		CrossPromoStarWars2,
-		CrossPromoAngryBirdsFriends,
-		CrossPromoAngryBirdsGo,
-		CrossPromoAngryBirdsRio,
-		MajorLazerMusic,
-		AppRaterLink
+		Youtube = 0,
+		Facebook = 1,
+		Twitter = 2,
+		Renren = 3,
+		Weibos = 4,
+		YoutubeChina = 5,
+		Eula = 6,
+		Privacy = 7,
+		FBLike = 8,
+		GetPCRegistrationKey = 9,
+		CrossPromoClassic = 10,
+		CrossPromoSpace = 11,
+		CrossPromoAlex = 12,
+		CrossPromoShop = 13,
+		CrossPromoNewsLetter = 14,
+		CrossPromoSeasons = 15,
+		BadPiggiesAppStore = 16,
+		CrossPromoStarWars = 17,
+		CrossPromoStarWars2 = 18,
+		CrossPromoAngryBirdsFriends = 19,
+		CrossPromoAngryBirdsGo = 20,
+		CrossPromoAngryBirdsRio = 21,
+		MajorLazerMusic = 22,
+		AppRaterLink = 23
 	}
 
 	private string m_baseURLString = string.Empty;
@@ -45,26 +45,7 @@ public class URLManager : Singleton<URLManager>
 
 	private void GenerateURLBaseString()
 	{
-		m_baseURLString = "http://cloud.rovio.com/link/redirect/?";
-		switch (DeviceInfo.ActiveDeviceFamily)
-		{
-		case DeviceInfo.DeviceFamily.Android:
-			m_baseURLString += "d=android";
-			break;
-		case DeviceInfo.DeviceFamily.Pc:
-			m_baseURLString += "d=windows";
-			break;
-		case DeviceInfo.DeviceFamily.Osx:
-			m_baseURLString += "d=osx";
-			break;
-		case DeviceInfo.DeviceFamily.BB10:
-			m_baseURLString += "d=blackberry";
-			break;
-		case DeviceInfo.DeviceFamily.WP8:
-			m_baseURLString += "d=wp8";
-			break;
-		}
-		m_baseURLString += "&p=bps";
+		m_baseURLString = "http://cloud.rovio.com/link/redirect/?p=bps";
 		if (Singleton<BuildCustomizationLoader>.Instance.IsContentLimited)
 		{
 			m_baseURLString += "&a=free";
@@ -85,7 +66,7 @@ public class URLManager : Singleton<URLManager>
 
 	public string MakeProductTarget(string target)
 	{
-		if (Singleton<BuildCustomizationLoader>.Instance.CustomerID != "Rovio" && DeviceInfo.ActiveDeviceFamily == DeviceInfo.DeviceFamily.Android)
+		if (Singleton<BuildCustomizationLoader>.Instance.CustomerID != "Rovio")
 		{
 			target = target + "_" + Singleton<BuildCustomizationLoader>.Instance.CustomerID;
 		}
@@ -170,7 +151,7 @@ public class URLManager : Singleton<URLManager>
 			text = ((!Singleton<BuildCustomizationLoader>.Instance.IsContentLimited) ? (text + "badpiggiesfull") : (text + "badpiggiesfree"));
 			break;
 		}
-		if (DeviceInfo.IsDesktop && Screen.fullScreen)
+		if (Screen.fullScreen)
 		{
 			Screen.fullScreen = false;
 		}

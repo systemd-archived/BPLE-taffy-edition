@@ -780,7 +780,7 @@ public class CakeRaceMode : GameMode
 		LootCrateType lootCrateType = LootCrateType.Cardboard;
 		if (Singleton<GameConfigurationManager>.Instance.HasValue("cake_race", "loot_crates"))
 		{
-			string[] array = Singleton<GameConfigurationManager>.Instance.GetValue<string>("cake_race", "loot_crates").Split(',');
+			string[] array = Singleton<GameConfigurationManager>.Instance.GetValue<string>("cake_race", "loot_crates").Split(new char[1] { ',' });
 			int num = rewardIndex % array.Length;
 			if (array != null && array.Length != 0 && num >= 0 && int.TryParse(array[num], out var result))
 			{

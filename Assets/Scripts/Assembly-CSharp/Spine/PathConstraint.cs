@@ -154,7 +154,7 @@ namespace Spine
 			ExposedList<float> exposedList = spaces.Resize(num4);
 			ExposedList<float> exposedList2 = null;
 			float num5 = spacing;
-			if (flag4 | flag2)
+			if (flag4 || flag2)
 			{
 				if (flag4)
 				{
@@ -221,7 +221,7 @@ namespace Spine
 					float c = bone2.c;
 					float d = bone2.d;
 					float num20 = (flag3 ? array[num13 - 1] : ((exposedList.Items[num12 + 1] != 0f) ? MathUtils.Atan2(num17, num16) : array[num13 + 2]));
-					num20 -= MathUtils.Atan2(c, a) - offsetRotation * ((float)Math.PI / 180f);
+					num20 -= MathUtils.Atan2(c, a) - offsetRotation * (MathF.PI / 180f);
 					float num21;
 					float num22;
 					if (flag5)
@@ -232,13 +232,13 @@ namespace Spine
 						num10 += (length2 * (num21 * a - num22 * c) - num16) * num;
 						num11 += (length2 * (num22 * a + num21 * c) - num17) * num;
 					}
-					if (num20 > (float)Math.PI)
+					if (num20 > MathF.PI)
 					{
-						num20 -= (float)Math.PI * 2f;
+						num20 -= MathF.PI * 2f;
 					}
-					else if (num20 < -(float)Math.PI)
+					else if (num20 < -MathF.PI)
 					{
-						num20 += (float)Math.PI * 2f;
+						num20 += MathF.PI * 2f;
 					}
 					num20 *= num;
 					num21 = MathUtils.Cos(num20);

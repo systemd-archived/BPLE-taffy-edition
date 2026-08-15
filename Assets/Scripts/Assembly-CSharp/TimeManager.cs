@@ -65,7 +65,7 @@ public class TimeManager : Singleton<TimeManager>
 				confirming = true;
 				OnServerTimeSuccessfull(0uL);
 			}
-			if (!fired && onTimedOut != null && TimeLeft < 0f)
+			if (!fired && this.onTimedOut != null && TimeLeft < 0f)
 			{
 				return confirmed;
 			}
@@ -74,9 +74,9 @@ public class TimeManager : Singleton<TimeManager>
 
 		public void Fire()
 		{
-			if (onTimedOut != null)
+			if (this.onTimedOut != null)
 			{
-				onTimedOut((int)(time - (float)Singleton<TimeManager>.Instance.TimeFromStart.TotalSeconds));
+				this.onTimedOut((int)(time - (float)Singleton<TimeManager>.Instance.TimeFromStart.TotalSeconds));
 				fired = true;
 			}
 		}
@@ -186,9 +186,9 @@ public class TimeManager : Singleton<TimeManager>
 			}
 		}
 		initialized = true;
-		if (OnInitialize != null)
+		if (this.OnInitialize != null)
 		{
-			OnInitialize();
+			this.OnInitialize();
 		}
 	}
 

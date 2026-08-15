@@ -6,9 +6,9 @@ namespace MentalTools
 	{
 		public enum AxisSpace
 		{
-			XY,
-			XZ,
-			YZ
+			XY = 0,
+			XZ = 1,
+			YZ = 2
 		}
 
 		public static float s { get; set; }

@@ -4,9 +4,9 @@ public class ActivatedHingeDoor : MonoBehaviour
 {
 	private enum RotationState
 	{
-		Kinematic,
-		Opening,
-		Closing
+		Kinematic = 0,
+		Opening = 1,
+		Closing = 2
 	}
 
 	[SerializeField]

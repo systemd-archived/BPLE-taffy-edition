@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class LevelSelector : WPFMonoBehaviour
@@ -188,10 +189,7 @@ public class LevelSelector : WPFMonoBehaviour
 		IapManager.onPurchaseSucceeded += HandleIapManageronPurchaseSucceeded;
 		EventManager.Connect<UIEvent>(ReceiveUIEvent);
 		KeyListener.keyReleased += HandleKeyListenerkeyReleased;
-		if (DeviceInfo.IsDesktop)
-		{
-			KeyListener.mouseWheel += HandleKeyListenerMouseWheel;
-		}
+		KeyListener.mouseWheel += HandleKeyListenerMouseWheel;
 	}
 
 	private void HandleKeyListenerkeyReleased(KeyCode obj)
@@ -200,11 +198,11 @@ public class LevelSelector : WPFMonoBehaviour
 		{
 			GoToEpisodeSelection();
 		}
-		else if (DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.Android && obj == KeyCode.RightArrow && m_rightScroll.activeInHierarchy)
+		else if (obj == KeyCode.RightArrow && m_rightScroll.activeInHierarchy)
 		{
 			NextPage();
 		}
-		else if (DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.Android && obj == KeyCode.LeftArrow && m_leftScroll.activeInHierarchy)
+		else if (obj == KeyCode.LeftArrow && m_leftScroll.activeInHierarchy)
 		{
 			PreviousPage();
 		}
@@ -227,10 +225,7 @@ public class LevelSelector : WPFMonoBehaviour
 		IapManager.onPurchaseSucceeded -= HandleIapManageronPurchaseSucceeded;
 		EventManager.Disconnect<UIEvent>(ReceiveUIEvent);
 		KeyListener.keyReleased -= HandleKeyListenerkeyReleased;
-		if (DeviceInfo.IsDesktop)
-		{
-			KeyListener.mouseWheel -= HandleKeyListenerMouseWheel;
-		}
+		KeyListener.mouseWheel -= HandleKeyListenerMouseWheel;
 	}
 
 	private void Awake()
@@ -267,11 +262,8 @@ public class LevelSelector : WPFMonoBehaviour
 		CreateButtons();
 		CreatePageDots();
 		LayoutButtons(m_page);
-		if (DeviceInfo.UsesTouchInput)
-		{
-			m_leftScroll.SetActive(value: false);
-			m_rightScroll.SetActive(value: false);
-		}
+		m_leftScroll.SetActive(value: false);
+		m_rightScroll.SetActive(value: false);
 		if (GameProgress.TotalDessertCount() > 0)
 		{
 			EventManager.Send(new PulseButtonEvent(UIEvent.Type.None));
@@ -314,7 +306,7 @@ public class LevelSelector : WPFMonoBehaviour
 		}
 		startedLevelLoading = true;
 		SendStandardFlurryEvent("Select Level", levelIndex);
-		int num = int.Parse(levelIndex);
+		int num = int.Parse(levelIndex, CultureInfo.InvariantCulture);
 		if (num >= 0)
 		{
 			if (m_oneTimeCutscene.enabled && !GameProgress.GetBool(m_oneTimeCutscene.saveId))
@@ -355,12 +347,12 @@ public class LevelSelector : WPFMonoBehaviour
 		SendStandardFlurryEvent("Select Level", levelIndex);
 		if (m_oneTimeCutscene.enabled && !GameProgress.GetBool(m_oneTimeCutscene.saveId))
 		{
-			Singleton<GameManager>.Instance.LoadLevelAfterCutScene(m_levels[int.Parse(levelIndex)], m_oneTimeCutscene.cutScene);
+			Singleton<GameManager>.Instance.LoadLevelAfterCutScene(m_levels[int.Parse(levelIndex, CultureInfo.InvariantCulture)], m_oneTimeCutscene.cutScene);
 			GameProgress.SetBool(m_oneTimeCutscene.saveId, value: true);
 		}
 		else
 		{
-			Singleton<GameManager>.Instance.LoadStarLevelTransition(m_levels[int.Parse(levelIndex)]);
+			Singleton<GameManager>.Instance.LoadStarLevelTransition(m_levels[int.Parse(levelIndex, CultureInfo.InvariantCulture)]);
 		}
 	}
 
@@ -447,7 +439,7 @@ public class LevelSelector : WPFMonoBehaviour
 			button.name = "LevelButton";
 			button.transform.parent = m_buttonGrid.transform;
 			m_buttonGrid.AddButton(button);
-			if (num3 || (((flag6 | flag7) & flag5) && !flag2))
+			if (num3 || ((flag6 || flag7) && flag5 && !flag2))
 			{
 				num = i;
 				UnlockLevel(button, i, flag2);
@@ -460,20 +452,20 @@ public class LevelSelector : WPFMonoBehaviour
 			{
 				LockLevel(button, i, flag2, isContentLimited: false, isAdUnlocked: false);
 			}
-			else if (flag4 & flag8 & flag3)
+			else if (flag4 && flag8 && flag3)
 			{
 				AddUnlockPanel(button, num2, page, EpisodeIndex, flag5);
-				LockLevel(button, i, flag2, LevelInfo.IsContentLimited(EpisodeIndex, i), flag6 | flag7);
+				LockLevel(button, i, flag2, LevelInfo.IsContentLimited(EpisodeIndex, i), flag6 || flag7);
 			}
 			else if (flag4 && !flag8)
 			{
 				AddLockedPanel(button);
-				LockLevel(button, i, flag2, LevelInfo.IsContentLimited(EpisodeIndex, i), flag6 | flag7);
+				LockLevel(button, i, flag2, LevelInfo.IsContentLimited(EpisodeIndex, i), flag6 || flag7);
 			}
 			else
 			{
 				bool isContentLimited = LevelInfo.IsContentLimited(EpisodeIndex, i);
-				LockLevel(button, i, flag2, isContentLimited, flag6 | flag7);
+				LockLevel(button, i, flag2, isContentLimited, flag6 || flag7);
 			}
 			if (showRowUnlockStarEffect)
 			{
@@ -653,27 +645,21 @@ public class LevelSelector : WPFMonoBehaviour
 				{
 					UserSettings.SetInt(Singleton<GameManager>.Instance.CurrentSceneName + "_active_page", m_page);
 				}
-				if (!DeviceInfo.UsesTouchInput)
-				{
-					m_rightScroll.SetActive(value: true);
-					m_leftScroll.SetActive(value: true);
-				}
+				m_rightScroll.SetActive(value: true);
+				m_leftScroll.SetActive(value: true);
 			}
-			else if (!DeviceInfo.UsesTouchInput)
+			else
 			{
 				m_rightScroll.SetActive(value: false);
 				m_leftScroll.SetActive(value: false);
 			}
-			if (!DeviceInfo.UsesTouchInput)
+			if (CurrentPage == 0)
 			{
-				if (CurrentPage == 0)
-				{
-					m_leftScroll.SetActive(value: false);
-				}
-				if (CurrentPage == m_pageCount || m_pageCount == 1)
-				{
-					m_rightScroll.SetActive(value: false);
-				}
+				m_leftScroll.SetActive(value: false);
+			}
+			if (CurrentPage == m_pageCount || m_pageCount == 1)
+			{
+				m_rightScroll.SetActive(value: false);
 			}
 		}
 		if (m_isIapOpen || m_isDialogOpen)
@@ -695,7 +681,7 @@ public class LevelSelector : WPFMonoBehaviour
 			float num = vector3.x - vector2.x;
 			m_buttonGrid.transform.localPosition = new Vector3(Mathf.Clamp(m_buttonGrid.transform.localPosition.x + num, m_rightDragLimit, m_leftDragLimit), m_buttonGrid.transform.localPosition.y, m_buttonGrid.transform.localPosition.z);
 			Vector3 vector4 = WPFMonoBehaviour.hudCamera.ScreenToWorldPoint(m_initialInputPos);
-			if (!DeviceInfo.UsesTouchInput && Mathf.Abs(vector3.x - vector4.x) > 0.2f)
+			if (Mathf.Abs(vector3.x - vector4.x) > 0.2f)
 			{
 				m_rightScroll.SetActive(value: false);
 				m_leftScroll.SetActive(value: false);
@@ -849,7 +835,7 @@ public class LevelSelector : WPFMonoBehaviour
 			bool flag4 = i + 1 <= num;
 			bool flag5 = i + 1 <= num2 || Singleton<BuildCustomizationLoader>.Instance.IsOdyssey;
 			array[i].SetActive(flag4 && !flag5);
-			array[i + 3].SetActive(flag4 & flag5);
+			array[i + 3].SetActive(flag4 && flag5);
 		}
 		if (isJoker)
 		{

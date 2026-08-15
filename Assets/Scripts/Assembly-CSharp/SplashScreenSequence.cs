@@ -58,18 +58,9 @@ public class SplashScreenSequence : MonoBehaviour
 
 	private IEnumerator RunStartUpChecks()
 	{
-		// 预热静态缓存，减少后续 FindObjectsOfType 开销
-		WPFMonoBehaviour.WarmupCaches();
-
-		float bundleTimeout = 30f;
-		while ((!Bundle.initialized || Bundle.checkingBundles) && bundleTimeout > 0f)
+		while (!Bundle.initialized || Bundle.checkingBundles)
 		{
-			bundleTimeout -= GameTime.RealTimeDelta;
 			yield return null;
-		}
-		if (!Bundle.initialized)
-		{
-			Debug.LogWarning("[SplashScreenSequence] Bundle initialization timed out after 30s, continuing anyway");
 		}
 		float timeout = 5f;
 		while (!Singleton<GameConfigurationManager>.Instance.HasData && timeout > 0f)

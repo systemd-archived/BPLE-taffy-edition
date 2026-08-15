@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using Innovation;
 using UnityEngine;
@@ -7,107 +8,142 @@ using UnityEngine.UI;
 
 public class INSettingsInterface : MonoBehaviour
 {
-	private delegate TOutput Converter<TInput, TOutput>(TInput input);
-
-	private delegate bool TryConverter<TInput, TOutput>(TInput input, out TOutput output);
-
 	private class SettingsGroup
 	{
-		public SettingsBase Source { get; private set; }
+		private SettingsBase m_source;
 
-		public GameObject GameObject { get; private set; }
+		private GameObject m_gameObject;
 
-		public Text GroupName { get; private set; }
+		private Text m_groupName;
 
-		public UITextLocale GroupNameLocale { get; private set; }
+		private UITextLocale m_groupNameLocale;
 
-		public List<SettingsElement> Elements { get; private set; }
+		private List<SettingsItem> m_items;
+
+		public SettingsBase Source => m_source;
+
+		public GameObject GameObject => m_gameObject;
+
+		public Text GroupName => m_groupName;
+
+		public UITextLocale GroupNameLocale => m_groupNameLocale;
+
+		public List<SettingsItem> Items => m_items;
 
 		public SettingsGroup(SettingsBase source, GameObject gameObject)
-			: this(source, gameObject, new List<SettingsElement>())
 		{
+			m_source = source;
+			m_gameObject = gameObject;
+			m_groupName = gameObject.transform.Find("GroupName").GetComponent<Text>();
+			m_groupNameLocale = GroupName.GetComponent<UITextLocale>();
+			m_items = new List<SettingsItem>();
 		}
 
-		public SettingsGroup(SettingsBase source, GameObject gameObject, List<SettingsElement> elements)
+		public void Render()
 		{
-			Source = source;
-			GameObject = gameObject;
-			GroupName = gameObject.transform.Find("GroupName").GetComponent<Text>();
-			GroupNameLocale = GroupName.GetComponent<UITextLocale>();
-			Elements = elements;
-		}
-
-		public void UpdateValues()
-		{
-			foreach (SettingsElement element in Elements)
+			foreach (SettingsItem item in m_items)
 			{
-				element.UpdateValue();
+				item.Render();
 			}
 		}
 	}
 
-	private abstract class SettingsElement
+	private abstract class SettingsItem
 	{
-		public SettingsGroup Group { get; private set; }
+		protected SettingsGroup m_group;
 
-		public GameObject GameObject { get; private set; }
+		protected GameObject m_gameObject;
 
-		public Text Name { get; private set; }
+		protected Text m_name;
 
-		public UITextLocale NameLocale { get; private set; }
+		protected UITextLocale m_nameLocale;
 
-		public SettingsElement(SettingsGroup group, GameObject gameObject)
+		public SettingsGroup Group => m_group;
+
+		public GameObject GameObject => m_gameObject;
+
+		public Text Name => m_name;
+
+		public UITextLocale NameLocale => m_nameLocale;
+
+		public SettingsItem(SettingsGroup group, GameObject gameObject)
 		{
-			Group = group;
-			GameObject = gameObject;
-			Name = gameObject.transform.Find("Name").GetComponent<Text>();
-			NameLocale = Name.GetComponent<UITextLocale>();
+			m_group = group;
+			m_gameObject = gameObject;
+			m_name = gameObject.transform.Find("Name").GetComponent<Text>();
+			m_nameLocale = m_name.GetComponent<UITextLocale>();
 		}
 
 		public abstract object GetBoxedValue();
 
 		public abstract void SetBoxedValue(object value);
 
-		public abstract void UpdateValue();
+		public abstract void Render();
 	}
 
-	private abstract class SettingsElement<T> : SettingsElement
+	private abstract class SettingsItem<T> : SettingsItem
 	{
-		public Func<T> Getter { get; private set; }
+		protected DependencyProperty<T> m_property;
 
-		public Action<T> Setter { get; private set; }
-
-		public SettingsElement(SettingsGroup group, GameObject gameObject, Func<T> getter, Action<T> setter)
+		public SettingsItem(SettingsGroup group, GameObject gameObject)
 			: base(group, gameObject)
 		{
-			Getter = getter;
-			Setter = setter;
+			m_property = new DependencyProperty<T>();
 		}
 
-		public abstract T GetValue();
-
-		public abstract void SetValue(T value);
-	}
-
-	private class SettingsElementToggle : SettingsElement<bool>
-	{
-		public Toggle Toggle { get; private set; }
-
-		public SettingsElementToggle(SettingsGroup group, GameObject gameObject, Func<bool> getter, Action<bool> setter)
-			: base(group, gameObject, getter, setter)
+		public void Bind(string propertyName, Func<T> getter, Action<T> setter)
 		{
-			Toggle = gameObject.transform.Find("Toggle").GetComponent<Toggle>();
-			Toggle.gameObject.SetActive(value: true);
-			Toggle.isOn = getter();
-			if (base.Setter != null)
+			Binding.Bind(m_group.Source, propertyName, delegate
 			{
-				Toggle.onValueChanged.AddListener(OnValueChanged);
-			}
+				SetValue(getter());
+			});
+			Binding.Bind(delegate
+			{
+				setter(GetValue());
+				SetValue(getter());
+			});
+		}
+
+		public void Bind(PropertyInfo property)
+		{
+			Func<T> getter = (Func<T>)Delegate.CreateDelegate(typeof(Func<T>), m_group.Source, property.GetGetMethod());
+			Action<T> setter = (Action<T>)Delegate.CreateDelegate(typeof(Action<T>), m_group.Source, property.GetSetMethod());
+			Bind(property.Name, getter, setter);
 		}
 
 		public override object GetBoxedValue()
 		{
-			return Toggle.isOn;
+			return GetValue();
+		}
+
+		public override void SetBoxedValue(object value)
+		{
+			SetValue((T)value);
+		}
+
+		public virtual T GetValue()
+		{
+			return m_property.Value;
+		}
+
+		public virtual void SetValue(T value)
+		{
+			m_property.Value = value;
+		}
+	}
+
+	private class SettingsItemWithToggle : SettingsItem<bool>
+	{
+		private ToggleSwitch m_toggle;
+
+		public ToggleSwitch Toggle => m_toggle;
+
+		public SettingsItemWithToggle(SettingsGroup group, GameObject gameObject)
+			: base(group, gameObject)
+		{
+			m_toggle = gameObject.transform.Find("ToggleSwitch").GetComponent<ToggleSwitch>();
+			m_toggle.gameObject.SetActive(value: true);
+			m_toggle.OnValueChanged.AddListener(OnValueChanged);
 		}
 
 		public override void SetBoxedValue(object value)
@@ -125,60 +161,44 @@ public class INSettingsInterface : MonoBehaviour
 			throw new InvalidCastException();
 		}
 
-		public override void UpdateValue()
-		{
-			Toggle.isOn = base.Getter();
-		}
-
-		public override bool GetValue()
-		{
-			return Toggle.isOn;
-		}
-
 		public override void SetValue(bool value)
 		{
-			bool num = base.Getter();
-			base.Setter(value);
-			if (num != base.Getter())
+			if (m_property.RawValue != value)
 			{
-				Instance.IsChanged = true;
-				base.Group.Source.Apply();
+				base.SetValue(value);
+				m_group.Source.Apply();
+				Render();
 			}
-			UpdateValue();
 		}
 
 		private void OnValueChanged(bool value)
 		{
-			try
-			{
-				SetValue(value);
-			}
-			catch
-			{
-			}
-			UpdateValue();
+			SetValue(value);
+			Render();
+		}
+
+		public override void Render()
+		{
+			m_toggle.IsOn = m_property.RawValue;
 		}
 	}
 
-	private class SettingsElementInputField<T> : SettingsElement<T>
+	private class SettingsItemWithInputField<T> : SettingsItem<T>
 	{
-		public InputField InputField { get; private set; }
+		private InputField m_inputField;
 
-		public TryConverter<string, T> Converter { get; private set; }
+		private Parsable.TryParser<T> m_parser;
 
-		public SettingsElementInputField(SettingsGroup group, GameObject gameObject, Func<T> getter, Action<T> setter, TryConverter<string, T> converter)
-			: base(group, gameObject, getter, setter)
+		public InputField InputField => m_inputField;
+
+		public SettingsItemWithInputField(SettingsGroup group, GameObject gameObject, Parsable.TryParser<T> parser)
+			: base(group, gameObject)
 		{
-			InputField = gameObject.transform.Find("InputField").GetComponent<InputField>();
-			InputField.gameObject.SetActive(value: true);
-			InputField.text = getter().ToString();
-			InputField.onEndEdit.AddListener(OnEndEdit);
-			Converter = converter;
-		}
-
-		public override object GetBoxedValue()
-		{
-			return base.Getter();
+			m_inputField = gameObject.transform.Find("InputField").GetComponent<InputField>();
+			m_inputField.gameObject.SetActive(value: true);
+			m_inputField.onEndEdit.AddListener(OnEndEdit);
+			m_parser = parser;
+			Render();
 		}
 
 		public override void SetBoxedValue(object value)
@@ -188,49 +208,38 @@ public class INSettingsInterface : MonoBehaviour
 				SetValue(value2);
 				return;
 			}
-			if (value is string input && Converter(input, out var output))
+			if (value is string s && m_parser(s, CultureInfo.CurrentCulture, out var result))
 			{
-				SetValue(output);
+				SetValue(result);
 				return;
 			}
 			throw new InvalidCastException();
 		}
 
-		public override void UpdateValue()
-		{
-			InputField.text = base.Getter().ToString();
-		}
-
-		public override T GetValue()
-		{
-			return base.Getter();
-		}
-
 		public override void SetValue(T value)
 		{
-			T val = base.Getter();
-			base.Setter(value);
-			if (!val.Equals(base.Getter()))
+			if (!EqualityComparer<T>.Default.Equals(m_property.RawValue, value))
 			{
-				Instance.IsChanged = true;
-				base.Group.Source.Apply();
+				base.SetValue(value);
+				m_group.Source.Apply();
+				Render();
 			}
-			UpdateValue();
 		}
 
 		private void OnEndEdit(string text)
 		{
-			if (Converter(text, out var output))
+			if (m_parser(text, CultureInfo.CurrentCulture, out var result))
 			{
-				try
-				{
-					SetValue(output);
-				}
-				catch
-				{
-				}
+				SetValue(result);
 			}
-			UpdateValue();
+			Render();
+		}
+
+		public override void Render()
+		{
+			InputField inputField = m_inputField;
+			T rawValue = m_property.RawValue;
+			inputField.text = ((rawValue != null) ? rawValue.ToString() : null);
 		}
 	}
 
@@ -238,10 +247,10 @@ public class INSettingsInterface : MonoBehaviour
 	private GameObject m_content;
 
 	[SerializeField]
-	private GameObject m_settingsElementTemplate;
+	private GameObject m_itemTemplate;
 
 	[SerializeField]
-	private GameObject m_settingsGroupTemplate;
+	private GameObject m_groupTemplate;
 
 	[SerializeField]
 	private UnityEngine.UI.Button m_saveButton;
@@ -249,23 +258,11 @@ public class INSettingsInterface : MonoBehaviour
 	[SerializeField]
 	private UnityEngine.UI.Button m_resetButton;
 
-	private bool m_changed;
+	private bool m_dirty;
 
 	private List<SettingsGroup> m_settingsGroups;
 
-	private Dictionary<string, SettingsElement> m_settingsMap;
-
-	public bool IsChanged
-	{
-		get
-		{
-			return m_changed;
-		}
-		private set
-		{
-			m_changed = value;
-		}
-	}
+	private Dictionary<string, SettingsItem> m_settingsMap;
 
 	public static INSettingsInterface Instance { get; private set; }
 
@@ -279,18 +276,25 @@ public class INSettingsInterface : MonoBehaviour
 		m_settingsMap[name].SetBoxedValue(value);
 	}
 
+	public void SetDirty()
+	{
+		m_dirty = true;
+	}
+
 	public void Save()
 	{
 		INUserSettings.Save();
-		m_changed = false;
-		UpdateValues();
+		m_dirty = false;
 	}
 
 	public void Reset()
 	{
 		INUserSettings.Reset();
-		m_changed = true;
-		UpdateValues();
+		m_dirty = true;
+		foreach (SettingsGroup settingsGroup in m_settingsGroups)
+		{
+			settingsGroup.Render();
+		}
 	}
 
 	private void Awake()
@@ -298,163 +302,109 @@ public class INSettingsInterface : MonoBehaviour
 		Instance = this;
 		m_saveButton.onClick.AddListener(Save);
 		m_resetButton.onClick.AddListener(Reset);
+	}
+
+	private void Start()
+	{
 		m_settingsGroups = GenerateGroupList(INUserSettings.Instance);
-		m_settingsMap = new Dictionary<string, SettingsElement>(StringComparer.OrdinalIgnoreCase);
+		m_settingsMap = new Dictionary<string, SettingsItem>(StringComparer.OrdinalIgnoreCase);
 		foreach (SettingsGroup settingsGroup in m_settingsGroups)
 		{
-			foreach (SettingsElement element in settingsGroup.Elements)
+			foreach (SettingsItem item in settingsGroup.Items)
 			{
-				m_settingsMap.Add(element.NameLocale.ID, element);
+				m_settingsMap.Add(item.NameLocale.ID, item);
 			}
 		}
-		SetLayout();
 	}
 
 	private List<SettingsGroup> GenerateGroupList(INUserSettings userSettings)
 	{
-		int num = 0;
 		List<SettingsGroup> list = new List<SettingsGroup>();
 		foreach (SettingsBase settings in userSettings.SettingsList)
 		{
-			SettingsGroup item = GenerateGroup(num, settings.GetType().Name + "_Name", settings);
+			SettingsGroup item = GenerateGroup(settings.GetType().Name, settings.GetType().Name + "_Name", settings);
 			list.Add(item);
-			num++;
 		}
 		return list;
 	}
 
-	private SettingsGroup GenerateGroup(int index, string groupName, SettingsBase source)
+	private SettingsGroup GenerateGroup(string name, string groupLocaleName, SettingsBase source)
 	{
-		GameObject gameObject = UnityEngine.Object.Instantiate(m_settingsGroupTemplate);
+		GameObject gameObject = UnityEngine.Object.Instantiate(m_groupTemplate);
 		gameObject.SetActive(value: true);
-		gameObject.name = "SettingsGroup_" + index;
+		gameObject.name = "SettingsGroup_" + name;
 		gameObject.transform.SetParent(m_content.transform, worldPositionStays: false);
 		SettingsGroup settingsGroup = new SettingsGroup(source, gameObject);
-		settingsGroup.GroupNameLocale.ID = groupName;
+		settingsGroup.GroupNameLocale.ID = groupLocaleName;
 		settingsGroup.GroupNameLocale.UpdateText();
 		Type type = source.GetType();
 		PropertyInfo[] properties = type.GetProperties();
-		for (int i = 0; i < properties.Length; i++)
+		foreach (PropertyInfo propertyInfo in properties)
 		{
-			PropertyInfo propertyInfo = properties[i];
 			Type propertyType = propertyInfo.PropertyType;
 			string text = propertyInfo.Name;
 			string text2 = type.Name + "_" + text;
-			Type type2 = typeof(Func<>).MakeGenericType(propertyType);
-			Type type3 = typeof(Action<>).MakeGenericType(propertyType);
-			Delegate obj = Delegate.CreateDelegate(type2, source, propertyInfo.GetGetMethod());
-			Delegate obj2 = Delegate.CreateDelegate(type3, source, propertyInfo.GetSetMethod());
 			if (propertyType == typeof(bool))
 			{
-				GenerateElementToggle(settingsGroup, i, text2, (Func<bool>)obj, (Action<bool>)obj2);
+				GenerateItemWithToggle(settingsGroup, text, text2, propertyInfo);
+				continue;
 			}
-			else if (propertyType == typeof(int))
+			if (propertyType == typeof(HexColor))
 			{
-				TryConverter<string, int> converter = int.TryParse;
-				GenerateElementInputField(settingsGroup, i, text2, (Func<int>)obj, (Action<int>)obj2, converter);
+				GenerateItemWithInputField(settingsGroup, text, text2, propertyInfo, delegate(string s, IFormatProvider provider, out HexColor result)
+				{
+					return HexColor.TryParse(s, out result);
+				});
+				continue;
 			}
-			else if (propertyType == typeof(float))
-			{
-				TryConverter<string, float> converter2 = float.TryParse;
-				GenerateElementInputField(settingsGroup, i, text2, (Func<float>)obj, (Action<float>)obj2, converter2);
-			}
-			else if (propertyType == typeof(string))
-			{
-				TryConverter<string, string> converter3 = TryParseString;
-				GenerateElementInputField(settingsGroup, i, text2, (Func<string>)obj, (Action<string>)obj2, converter3);
-			}
-			else if (propertyType == typeof(HexColor))
-			{
-				TryConverter<string, HexColor> converter4 = HexColor.TryParse;
-				GenerateElementInputField(settingsGroup, i, text2, (Func<HexColor>)obj, (Action<HexColor>)obj2, converter4);
-			}
-			else if (propertyType == typeof(ContraptionDataSettings.SerializationFormat))
-			{
-				TryConverter<string, ContraptionDataSettings.SerializationFormat> converter5 = TryParseEnum<ContraptionDataSettings.SerializationFormat>;
-				GenerateElementInputField(settingsGroup, i, text2, (Func<ContraptionDataSettings.SerializationFormat>)obj, (Action<ContraptionDataSettings.SerializationFormat>)obj2, converter5);
-			}
+			GetType().GetMethod("GenerateItemWithInputField", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).MakeGenericMethod(propertyType).Invoke(this, new object[5] { settingsGroup, text, text2, propertyInfo, null });
 		}
 		return settingsGroup;
-		static bool TryParseEnum<T>(string input, out T output) where T : struct
-		{
-			return Enum.TryParse<T>(input, ignoreCase: true, out output);
-		}
-		static bool TryParseString(string input, out string output)
-		{
-			output = input;
-			return true;
-		}
 	}
 
-	private GameObject GenerateElementGameObject(SettingsGroup dataGroup, int index)
+	private GameObject GenerateItem(SettingsGroup group, string name)
 	{
-		GameObject obj = UnityEngine.Object.Instantiate(m_settingsElementTemplate);
+		GameObject obj = UnityEngine.Object.Instantiate(m_itemTemplate);
 		obj.SetActive(value: true);
-		obj.name = "SettingsElement_" + index;
-		obj.transform.SetParent(dataGroup.GameObject.transform, worldPositionStays: false);
+		obj.name = "SettingsItem_" + name;
+		obj.transform.SetParent(group.GameObject.transform, worldPositionStays: false);
 		return obj;
 	}
 
-	private SettingsElementToggle GenerateElementToggle(SettingsGroup group, int index, string name, Func<bool> getter, Action<bool> setter)
+	private SettingsItemWithToggle GenerateItemWithToggle(SettingsGroup group, string name, string localeName, PropertyInfo property)
 	{
-		GameObject gameObject = GenerateElementGameObject(group, index);
-		SettingsElementToggle settingsElementToggle = new SettingsElementToggle(group, gameObject, getter, setter);
-		settingsElementToggle.NameLocale.ID = name;
-		settingsElementToggle.NameLocale.UpdateText();
-		group.Elements.Add(settingsElementToggle);
-		return settingsElementToggle;
+		GameObject gameObject = GenerateItem(group, name);
+		SettingsItemWithToggle settingsItemWithToggle = new SettingsItemWithToggle(group, gameObject);
+		settingsItemWithToggle.NameLocale.ID = localeName;
+		settingsItemWithToggle.NameLocale.UpdateText();
+		settingsItemWithToggle.Bind(property);
+		group.Items.Add(settingsItemWithToggle);
+		return settingsItemWithToggle;
 	}
 
-	private SettingsElementInputField<T> GenerateElementInputField<T>(SettingsGroup group, int index, string name, Func<T> getter, Action<T> setter, TryConverter<string, T> converter)
+	private SettingsItemWithInputField<T> GenerateItemWithInputField<T>(SettingsGroup group, string name, string localeName, PropertyInfo property, Parsable.TryParser<T> converter = null)
 	{
-		GameObject gameObject = GenerateElementGameObject(group, index);
-		SettingsElementInputField<T> settingsElementInputField = new SettingsElementInputField<T>(group, gameObject, getter, setter, converter);
-		settingsElementInputField.NameLocale.ID = name;
-		settingsElementInputField.NameLocale.UpdateText();
-		group.Elements.Add(settingsElementInputField);
-		return settingsElementInputField;
-	}
-
-	private void SetLayout()
-	{
-		float num = 100f;
-		foreach (SettingsGroup settingsGroup in m_settingsGroups)
+		if (converter == null)
 		{
-			float num2 = 0f;
-			RectTransform obj = (RectTransform)settingsGroup.GameObject.transform;
-			obj.anchoredPosition = new Vector2(obj.anchoredPosition.x, 0f - num);
-			num += 100f;
-			num2 += 100f;
-			foreach (SettingsElement element in settingsGroup.Elements)
-			{
-				RectTransform obj2 = (RectTransform)element.GameObject.transform;
-				obj2.anchoredPosition = new Vector2(obj2.anchoredPosition.x, 0f - num2);
-				num += 100f;
-				num2 += 100f;
-			}
+			converter = Parsable.GetTryParser<T>();
 		}
-		RectTransform obj3 = (RectTransform)m_saveButton.transform;
-		obj3.anchoredPosition = new Vector2(obj3.anchoredPosition.x, 0f - num);
-		RectTransform obj4 = (RectTransform)m_resetButton.transform;
-		obj4.anchoredPosition = new Vector2(obj4.anchoredPosition.x, 0f - num);
-		num += 100f;
-		RectTransform rectTransform = (RectTransform)m_content.transform;
-		Vector2 sizeDelta = new Vector2(rectTransform.sizeDelta.x, num);
-		rectTransform.sizeDelta = sizeDelta;
+		if (converter == null)
+		{
+			return null;
+		}
+		GameObject gameObject = GenerateItem(group, name);
+		SettingsItemWithInputField<T> settingsItemWithInputField = new SettingsItemWithInputField<T>(group, gameObject, converter);
+		settingsItemWithInputField.NameLocale.ID = localeName;
+		settingsItemWithInputField.NameLocale.UpdateText();
+		settingsItemWithInputField.Bind(property);
+		group.Items.Add(settingsItemWithInputField);
+		return settingsItemWithInputField;
 	}
 
 	private void Update()
 	{
 		Text component = m_saveButton.transform.Find("Text").GetComponent<Text>();
 		string text = component.GetComponent<UITextLocale>().Text;
-		component.text = (m_changed ? (text + "*") : text);
-	}
-
-	private void UpdateValues()
-	{
-		foreach (SettingsGroup settingsGroup in m_settingsGroups)
-		{
-			settingsGroup.UpdateValues();
-		}
+		component.text = (m_dirty ? (text + "*") : text);
 	}
 }

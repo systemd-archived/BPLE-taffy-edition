@@ -6,11 +6,11 @@ public class SnoutCoinAdRewardDialog : TextDialog
 {
 	private enum State
 	{
-		Loading,
-		Failed,
-		Ready,
-		Finished,
-		Stalled
+		Loading = 0,
+		Failed = 1,
+		Ready = 2,
+		Finished = 3,
+		Stalled = 4
 	}
 
 	private const float TIMEOUT_LENGTH = 10f;

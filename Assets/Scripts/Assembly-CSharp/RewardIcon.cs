@@ -4,9 +4,9 @@ public class RewardIcon : MonoBehaviour
 {
 	public enum State
 	{
-		NotAvailable,
-		ClaimNow,
-		Claimed
+		NotAvailable = 0,
+		ClaimNow = 1,
+		Claimed = 2
 	}
 
 	[SerializeField]

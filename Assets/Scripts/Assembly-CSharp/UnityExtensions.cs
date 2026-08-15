@@ -1,8 +1,6 @@
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using UnityEngine;
 
-public static class UnityExtensions
+internal static class UnityExtensions
 {
 	public static Vector2 WithX(this Vector2 vector, float x)
 	{
@@ -59,6 +57,15 @@ public static class UnityExtensions
 		return val;
 	}
 
+	public static void SetChildrenActive(this GameObject gameObject, bool active)
+	{
+		Transform transform = gameObject.transform;
+		for (int i = 0; i < transform.childCount; i++)
+		{
+			transform.GetChild(i).gameObject.SetActive(active);
+		}
+	}
+
 	public static bool IsFixed(this Rigidbody rigidbody)
 	{
 		if (!rigidbody.isKinematic)
@@ -79,22 +86,5 @@ public static class UnityExtensions
 			}
 		}
 		return null;
-	}
-
-	public static TaskAwaiter GetAwaiter(this AsyncOperation operation)
-	{
-		TaskCompletionSource<object> source = new TaskCompletionSource<object>();
-		if (operation.isDone)
-		{
-			source.SetResult(null);
-		}
-		else
-		{
-			operation.completed += delegate
-			{
-				source.SetResult(null);
-			};
-		}
-		return ((Task)source.Task).GetAwaiter();
 	}
 }

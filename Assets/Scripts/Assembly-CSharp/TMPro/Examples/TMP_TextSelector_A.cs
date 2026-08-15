@@ -88,17 +88,13 @@ namespace TMPro.Examples
 
 		public void OnPointerEnter(PointerEventData eventData)
 		{
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 			Debug.Log("OnPointerEnter()");
-#endif
 			m_isHoveringObject = true;
 		}
 
 		public void OnPointerExit(PointerEventData eventData)
 		{
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 			Debug.Log("OnPointerExit()");
-#endif
 			m_isHoveringObject = false;
 		}
 	}

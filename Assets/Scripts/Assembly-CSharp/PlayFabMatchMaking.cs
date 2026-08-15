@@ -45,9 +45,7 @@ public class PlayFabMatchMaking : MonoBehaviour
 			}
 			string key = "replay";
 			string obj = string.Empty;
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 			Debug.Log("[PlayFabManager] result.FunctionResult: " + JsonWrapper.SerializeObject(result.FunctionResult));
-#endif
 			JsonObject jsonObject = (JsonObject)result.FunctionResult;
 			if (jsonObject != null)
 			{

@@ -4,12 +4,12 @@ public struct InputEvent
 {
 	public enum EventType
 	{
-		Press,
-		Release,
-		MouseEnter,
-		MouseLeave,
-		MouseReturn,
-		Drag
+		Press = 0,
+		Release = 1,
+		MouseEnter = 2,
+		MouseLeave = 3,
+		MouseReturn = 4,
+		Drag = 5
 	}
 
 	public EventType type;

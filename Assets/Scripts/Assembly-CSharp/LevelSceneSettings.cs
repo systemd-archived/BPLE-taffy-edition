@@ -30,9 +30,10 @@ public class LevelSceneSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f)
+			if (m_terrainScale != value && float.IsFinite(value) && value >= 0f)
 			{
 				m_terrainScale = value;
+				OnPropertyChanged("TerrainScale");
 			}
 		}
 	}
@@ -45,9 +46,10 @@ public class LevelSceneSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f)
+			if (m_minCameraScale != value && float.IsFinite(value) && value >= 0f)
 			{
 				m_minCameraScale = value;
+				OnPropertyChanged("MinCameraScale");
 			}
 		}
 	}
@@ -60,9 +62,10 @@ public class LevelSceneSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f)
+			if (m_maxCameraScale != value && float.IsFinite(value) && value >= 0f)
 			{
 				m_maxCameraScale = value;
+				OnPropertyChanged("MaxCameraScale");
 			}
 		}
 	}
@@ -75,7 +78,11 @@ public class LevelSceneSettings : SettingsBase
 		}
 		set
 		{
-			m_hideRuntimeButtons = value;
+			if (m_hideRuntimeButtons != value)
+			{
+				m_hideRuntimeButtons = value;
+				OnPropertyChanged("HideRuntimeButtons");
+			}
 		}
 	}
 
@@ -87,7 +94,11 @@ public class LevelSceneSettings : SettingsBase
 		}
 		set
 		{
-			m_hideStarAndDessertCounter = value;
+			if (m_hideStarAndDessertCounter != value)
+			{
+				m_hideStarAndDessertCounter = value;
+				OnPropertyChanged("HideStarAndDessertCounter");
+			}
 		}
 	}
 
@@ -99,7 +110,11 @@ public class LevelSceneSettings : SettingsBase
 		}
 		set
 		{
-			m_enablePropertyPanel = value;
+			if (m_enablePropertyPanel != value)
+			{
+				m_enablePropertyPanel = value;
+				OnPropertyChanged("EnablePropertyPanel");
+			}
 		}
 	}
 
@@ -111,7 +126,11 @@ public class LevelSceneSettings : SettingsBase
 		}
 		set
 		{
-			m_enableEnhancedPropertyPanel = value;
+			if (m_enableEnhancedPropertyPanel != value)
+			{
+				m_enableEnhancedPropertyPanel = value;
+				OnPropertyChanged("EnableEnhancedPropertyPanel");
+			}
 		}
 	}
 
@@ -123,7 +142,11 @@ public class LevelSceneSettings : SettingsBase
 		}
 		set
 		{
-			m_enableCustomBackgroundColor = value;
+			if (m_enableCustomBackgroundColor != value)
+			{
+				m_enableCustomBackgroundColor = value;
+				OnPropertyChanged("EnableCustomBackgroundColor");
+			}
 		}
 	}
 
@@ -135,7 +158,11 @@ public class LevelSceneSettings : SettingsBase
 		}
 		set
 		{
-			m_customBackgroundColor = value;
+			if (m_customBackgroundColor != value)
+			{
+				m_customBackgroundColor = value;
+				OnPropertyChanged("CustomBackgroundColor");
+			}
 		}
 	}
 

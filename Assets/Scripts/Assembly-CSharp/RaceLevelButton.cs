@@ -38,7 +38,7 @@ public class RaceLevelButton : MonoBehaviour
 				flag2 = true;
 			}
 		}
-		if ((!Singleton<BuildCustomizationLoader>.Instance.IsOdyssey & flag2) && !flag3)
+		if (!Singleton<BuildCustomizationLoader>.Instance.IsOdyssey && flag2 && !flag3)
 		{
 			int cost = Singleton<VirtualCatalogManager>.Instance.GetProductPrice("road_hogs_level_unlock");
 			AddRoadHogsUnlockDialog(GetComponent<Button>(), m_raceLevelIdentifier, cost, () => GameProgress.SnoutCoinCount() >= cost);
@@ -51,11 +51,11 @@ public class RaceLevelButton : MonoBehaviour
 			buttonAnimation.ActivateAnimationName = shake.name;
 			base.gameObject.AddComponent<InactiveButton>();
 		}
-		if ((!flag4 & flag) && !flag3)
+		if (!flag4 && flag && !flag3)
 		{
 			GameProgress.SetRaceLevelUnlocked(m_raceLevelIdentifier, unlocked: true);
 		}
-		if (flag4 && (flag | flag2 | flag5))
+		if (flag4 && (flag || flag2 || flag5))
 		{
 			flag4 = false;
 		}
@@ -100,7 +100,7 @@ public class RaceLevelButton : MonoBehaviour
 				bool flag9 = num4 + 1 <= num2;
 				bool flag10 = num4 + 1 <= num3 || Singleton<BuildCustomizationLoader>.Instance.IsOdyssey;
 				array[num4].SetActive(flag9 && !flag10);
-				array[num4 + 3].SetActive(flag9 & flag10);
+				array[num4 + 3].SetActive(flag9 && flag10);
 			}
 			string sceneName2 = m_raceLevelSelector.m_raceLevels.GetLevelData(m_raceLevelIdentifier).SceneName;
 			if (GameProgress.HasBestTime(sceneName2))

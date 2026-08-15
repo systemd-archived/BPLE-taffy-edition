@@ -5,11 +5,11 @@ public class MenuContraptionManager : MonoBehaviour
 {
 	private enum State
 	{
-		Default,
-		Zooming,
-		Following,
-		Returning,
-		ReturnToZoom
+		Default = 0,
+		Zooming = 1,
+		Following = 2,
+		Returning = 3,
+		ReturnToZoom = 4
 	}
 
 	public GameData m_gameData;

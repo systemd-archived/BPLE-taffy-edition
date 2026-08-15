@@ -8,10 +8,10 @@ public class Shop : WPFMonoBehaviour
 {
 	public enum PriceIndicator
 	{
-		Price,
-		Loading,
-		NotConnected,
-		Purchased
+		Price = 0,
+		Loading = 1,
+		NotConnected = 2,
+		Purchased = 3
 	}
 
 	private class SaleEvent
@@ -154,7 +154,7 @@ public class Shop : WPFMonoBehaviour
 		bool flag = IsSaleOn("GoldenLootCratePack");
 		bool isSnoutCoinPackMediumSale = IsSaleOn("SnoutCoinPackMediumSale");
 		bool flag2 = IsSaleOn("SnoutCoinPackHugeSale");
-		if (isSnoutCoinPackMediumSale | flag2)
+		if (isSnoutCoinPackMediumSale || flag2)
 		{
 			if (!DateTime.TryParse(GameProgress.GetString("CoinCrazeSale_lastShown", DateTime.MinValue.ToShortDateString()), out var result))
 			{
@@ -178,7 +178,7 @@ public class Shop : WPFMonoBehaviour
 				GameProgress.SetString("CoinCrazeSale_lastShown", DateTime.Today.ToShortDateString());
 			}
 		}
-		if (!(isGoldenLootCrateSale | flag))
+		if (!(isGoldenLootCrateSale || flag))
 		{
 			return;
 		}
@@ -253,7 +253,7 @@ public class Shop : WPFMonoBehaviour
 				{
 					return false;
 				}
-				string[] array = text.Split('-');
+				string[] array = text.Split(new char[1] { '-' });
 				if (array != null && array.Length != 0 && GetSaleTimeLeft(array[0], (array.Length <= 1) ? string.Empty : array[1]) > 0 && !GameProgress.GetBool(config.Keys[i] + "_used"))
 				{
 					return true;
@@ -462,7 +462,7 @@ public class Shop : WPFMonoBehaviour
 		}
 		foreach (DictionaryEntry item in values)
 		{
-			string[] array = item.Key.ToString().Split('/');
+			string[] array = item.Key.ToString().Split(new char[1] { '/' });
 			if (array.Length < 2)
 			{
 				continue;
@@ -608,7 +608,7 @@ public class Shop : WPFMonoBehaviour
 		Renderer[] componentsInChildren2 = transform.GetComponentsInChildren<Renderer>();
 		for (int l = 0; l < 2; l++)
 		{
-			if ((infoData.doUpdatePrice | flag) && l < componentsInChildren2.Length && componentsInChildren2[l] != null)
+			if ((infoData.doUpdatePrice || flag) && l < componentsInChildren2.Length && componentsInChildren2[l] != null)
 			{
 				componentsInChildren2[l].enabled = false;
 			}
@@ -739,7 +739,7 @@ public class Shop : WPFMonoBehaviour
 		bool flag = pageName.Equals("PowerUps");
 		bool num = IsPowerUpPage(pageName);
 		bool flag2 = IsPowerUpPage(m_pages[m_currentPage].name);
-		if (((num | flag) & flag) && !flag2)
+		if ((num || flag) && flag && !flag2)
 		{
 			pageName = "SuperGlue";
 		}

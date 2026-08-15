@@ -4,8 +4,8 @@ public class Slingshot : WPFMonoBehaviour
 {
 	private enum State
 	{
-		Free,
-		InUse
+		Free = 0,
+		InUse = 1
 	}
 
 	public Material m_rubberBandMaterial;

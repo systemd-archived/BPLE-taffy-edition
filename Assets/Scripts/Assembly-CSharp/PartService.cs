@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Innovation;
 
-public class PartService : IPartService
+internal class PartService : IPartService
 {
 	public IReadOnlyList<IBasePart> GetAllParts()
 	{
@@ -65,14 +65,16 @@ public class PartService : IPartService
 
 	public IReadOnlyList<IBasePart> CopyParts(IReadOnlyList<IBasePart> parts, int x, int y)
 	{
-		List<BasePart> result = INContraption.CopyParts((IReadOnlyList<BasePart>)parts, x, y, out var count);
+		int count;
+		List<BasePart> result = INContraption.CopyParts((IReadOnlyList<BasePart>)parts, x, y, out count);
 		BP.Feedback("BP> Copied " + count + " parts");
 		return result;
 	}
 
 	public IReadOnlyList<IBasePart> ReplaceParts(IReadOnlyList<IBasePart> parts, PartTypeCode partType, int partIndex)
 	{
-		List<BasePart> result = INContraption.ReplaceParts((IReadOnlyList<BasePart>)parts, (SortedPartType)partType, partIndex, out var count);
+		int count;
+		List<BasePart> result = INContraption.ReplaceParts((IReadOnlyList<BasePart>)parts, (SortedPartType)partType, partIndex, out count);
 		BP.Feedback("BP> Replaced " + count + " parts");
 		return result;
 	}

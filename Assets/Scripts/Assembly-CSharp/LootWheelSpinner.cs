@@ -158,7 +158,7 @@ public class LootWheelSpinner
 			if (InRange(previousRotation, z, nextTick))
 			{
 				nextTick = NextSlotBegin(eulerAngles.z);
-				rising = (t < 0.85f) | rising;
+				rising = t < 0.85f || rising;
 			}
 			float num = m_needleMovement.Evaluate(t);
 			needleRotation.z = initialRotation + num * range;

@@ -94,10 +94,10 @@ public class SpotLight : BasePart
 		m_rightAttachment.SetActive(flag4 && !flag9);
 		m_topAttachment.SetActive(flag && !flag9);
 		m_bottomAttachment.SetActive((flag2 && !flag9) || (!flag && !flag3 && !flag4 && !flag9));
-		m_bottomLeftAttachment.SetActive(flag6 & flag9);
-		m_bottomRightAttachment.SetActive(flag8 & flag9);
-		m_topLeftAttachment.SetActive(flag5 & flag9);
-		m_topRightAttachment.SetActive(flag7 & flag9);
+		m_bottomLeftAttachment.SetActive(flag6 && flag9);
+		m_bottomRightAttachment.SetActive(flag8 && flag9);
+		m_topLeftAttachment.SetActive(flag5 && flag9);
+		m_topRightAttachment.SetActive(flag7 && flag9);
 		if (!flag && !flag6 && !flag3 && !flag4 && !flag5 && !flag6 && !flag7 && !flag8)
 		{
 			m_bottomAttachment.SetActive(value: true);

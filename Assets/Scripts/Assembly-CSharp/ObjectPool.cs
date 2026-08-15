@@ -17,12 +17,12 @@ internal class ObjectPool<T> where T : class
 
 	private Entry[] m_items;
 
-	internal ObjectPool(Func<T> factory, Action<T> clear)
+	public ObjectPool(Func<T> factory, Action<T> clear)
 		: this(factory, clear, 4)
 	{
 	}
 
-	internal ObjectPool(Func<T> factory, Action<T> clear, int size)
+	public ObjectPool(Func<T> factory, Action<T> clear, int size)
 	{
 		m_size = size;
 		m_factory = factory;
@@ -30,7 +30,7 @@ internal class ObjectPool<T> where T : class
 		m_items = new Entry[size];
 	}
 
-	internal T Rent()
+	public T Rent()
 	{
 		for (int i = 0; i < m_size; i++)
 		{
@@ -54,7 +54,7 @@ internal class ObjectPool<T> where T : class
 		return m_factory();
 	}
 
-	internal void Return(T value)
+	public void Return(T value)
 	{
 		m_clear(value);
 		for (int i = 0; i < m_size; i++)

@@ -14,9 +14,10 @@ public class AppInterfaceSettings : SettingsBase
 		}
 		set
 		{
-			if (value >= -1920 && value <= 0)
+			if (m_enterButtonPositionX != value && value >= -1920 && value <= 0)
 			{
 				m_enterButtonPositionX = value;
+				OnPropertyChanged("EnterButtonPositionX");
 			}
 		}
 	}
@@ -29,9 +30,10 @@ public class AppInterfaceSettings : SettingsBase
 		}
 		set
 		{
-			if (value >= -1080 && value <= 0)
+			if (m_enterButtonPositionY != value && value >= -1080 && value <= 0)
 			{
 				m_enterButtonPositionY = value;
+				OnPropertyChanged("EnterButtonPositionY");
 			}
 		}
 	}
@@ -44,9 +46,10 @@ public class AppInterfaceSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f && value <= 1f)
+			if (m_enterButtonAlpha != value && float.IsFinite(value) && value >= 0f && value <= 1f)
 			{
 				m_enterButtonAlpha = value;
+				OnPropertyChanged("EnterButtonAlpha");
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class PurchaseInfo : MonoBehaviour
@@ -162,7 +163,7 @@ public class PurchaseInfo : MonoBehaviour
 				{
 					if (Enum.IsDefined(typeof(IapManager.BundleItem.BundleItemType), (string)item.Key))
 					{
-						currentCount = int.Parse((string)item.Value);
+						currentCount = int.Parse((string)item.Value, CultureInfo.InvariantCulture);
 						SetCount(currentCount, countTf);
 						break;
 					}
@@ -268,7 +269,7 @@ public class PurchaseInfo : MonoBehaviour
 			{
 				if (config.Keys[i].StartsWith(saleItemKey))
 				{
-					string[] array = config[config.Keys[i]].Split('-');
+					string[] array = config[config.Keys[i]].Split(new char[1] { '-' });
 					int saleTimeLeft = Shop.GetSaleTimeLeft(array[0], (array.Length <= 1) ? string.Empty : array[1]);
 					if (saleTimeLeft > 0 && !GameProgress.GetBool(config.Keys[i] + "_used"))
 					{

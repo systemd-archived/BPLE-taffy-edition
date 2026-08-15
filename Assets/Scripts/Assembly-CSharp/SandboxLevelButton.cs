@@ -121,7 +121,7 @@ public class SandboxLevelButton : MonoBehaviour
 			int cost2 = GetUnlockPrice(m_sandboxIdentifier);
 			AddSandboxUnlockDialog(GetComponent<Button>(), sandboxUnlockDialog, m_sandboxIdentifier, cost2, () => GameProgress.SnoutCoinCount() >= cost2);
 		}
-		else if (!flag & isOdyssey)
+		else if (!flag && isOdyssey)
 		{
 			TooltipInfo component2 = GetComponent<TooltipInfo>();
 			if (component2 != null)

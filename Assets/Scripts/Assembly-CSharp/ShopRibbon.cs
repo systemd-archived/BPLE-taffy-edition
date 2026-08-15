@@ -6,8 +6,8 @@ public class ShopRibbon
 {
 	public enum Ribbon
 	{
-		BestValue,
-		MostPopular
+		BestValue = 0,
+		MostPopular = 1
 	}
 
 	public Ribbon ribbonType;

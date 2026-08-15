@@ -20,9 +20,10 @@ public class GeneralSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value))
+			if (m_gravityX != value && float.IsFinite(value))
 			{
 				m_gravityX = value;
+				OnPropertyChanged("GravityX");
 			}
 		}
 	}
@@ -35,9 +36,10 @@ public class GeneralSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value))
+			if (m_gravityY != value && float.IsFinite(value))
 			{
 				m_gravityY = value;
+				OnPropertyChanged("GravityY");
 			}
 		}
 	}
@@ -50,9 +52,10 @@ public class GeneralSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f && value <= 10f)
+			if (m_timeScale != value && float.IsFinite(value) && value >= 0f && value <= 10f)
 			{
 				m_timeScale = value;
+				OnPropertyChanged("TimeScale");
 			}
 		}
 	}
@@ -65,7 +68,11 @@ public class GeneralSettings : SettingsBase
 		}
 		set
 		{
-			m_fullScreen = value;
+			if (m_fullScreen != value)
+			{
+				m_fullScreen = value;
+				OnPropertyChanged("FullScreen");
+			}
 		}
 	}
 
@@ -90,7 +97,7 @@ public class GeneralSettings : SettingsBase
 		{
 			Time.timeScale = TimeScale;
 		}
-		INGameManager.Instance.SetFullScreen(FullScreen);
+		INGameManager.Instance?.SetFullScreen(FullScreen);
 	}
 
 	public void Update(GeneralSettings settings)

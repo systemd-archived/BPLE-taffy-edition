@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -9,9 +8,9 @@ public class LevelLoader : MonoBehaviour
 {
 	public enum DataType
 	{
-		None,
-		Terrain,
-		PrefabOverrides
+		None = 0,
+		Terrain = 1,
+		PrefabOverrides = 2
 	}
 
 	[SerializeField]
@@ -83,29 +82,14 @@ public class LevelLoader : MonoBehaviour
 		}
 		RenderSettings.ambientLight = Color.white;
 		TextAsset textAsset = m_data.LoadValue<TextAsset>();
-		byte[] levelData = new byte[textAsset.bytes.Length];
-		Array.Copy(textAsset.bytes, levelData, levelData.Length);
-		Resources.UnloadAsset(textAsset);
-		StartCoroutine(LoadLevelCoroutine(levelData));
-	}
-
-	private IEnumerator LoadLevelCoroutine(byte[] levelData)
-	{
-		using (MemoryStream input = new MemoryStream(levelData, writable: false))
+		using (MemoryStream input = new MemoryStream(textAsset.bytes, writable: false))
 		{
 			BinaryReader reader = new BinaryReader(input);
 			m_isLoadingLevel = true;
-			int num = reader.ReadInt32();
-			for (int i = 0; i < num; i++)
-			{
-				ReadObject(null, reader);
-				if (i % 3 == 0)
-				{
-					yield return null;
-				}
-			}
+			ReadLevel(reader);
 			m_isLoadingLevel = false;
 		}
+		Resources.UnloadAsset(textAsset);
 		base.gameObject.SetActive(value: false);
 	}
 

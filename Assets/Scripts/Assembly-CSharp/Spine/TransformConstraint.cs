@@ -132,14 +132,14 @@ namespace Spine
 					float b2 = bone2.b;
 					float c2 = bone2.c;
 					float d2 = bone2.d;
-					float num5 = (float)Math.Atan2(c, a) - (float)Math.Atan2(c2, a2) + data.offsetRotation * ((float)Math.PI / 180f);
-					if (num5 > (float)Math.PI)
+					float num5 = (float)Math.Atan2(c, a) - (float)Math.Atan2(c2, a2) + data.offsetRotation * (MathF.PI / 180f);
+					if (num5 > MathF.PI)
 					{
-						num5 -= (float)Math.PI * 2f;
+						num5 -= MathF.PI * 2f;
 					}
-					else if (num5 < -(float)Math.PI)
+					else if (num5 < -MathF.PI)
 					{
-						num5 += (float)Math.PI * 2f;
+						num5 += MathF.PI * 2f;
 					}
 					num5 *= num;
 					float num6 = MathUtils.Cos(num5);
@@ -174,15 +174,15 @@ namespace Spine
 					float d3 = bone2.d;
 					float num11 = MathUtils.Atan2(d3, b3);
 					float num12 = MathUtils.Atan2(d, b) - MathUtils.Atan2(c, a) - (num11 - MathUtils.Atan2(bone2.c, bone2.a));
-					if (num12 > (float)Math.PI)
+					if (num12 > MathF.PI)
 					{
-						num12 -= (float)Math.PI * 2f;
+						num12 -= MathF.PI * 2f;
 					}
-					else if (num12 < -(float)Math.PI)
+					else if (num12 < -MathF.PI)
 					{
-						num12 += (float)Math.PI * 2f;
+						num12 += MathF.PI * 2f;
 					}
-					num12 = num11 + (num12 + data.offsetShearY * ((float)Math.PI / 180f)) * num4;
+					num12 = num11 + (num12 + data.offsetShearY * (MathF.PI / 180f)) * num4;
 					float num13 = (float)Math.Sqrt(b3 * b3 + d3 * d3);
 					bone2.b = MathUtils.Cos(num12) * num13;
 					bone2.d = MathUtils.Sin(num12) * num13;

@@ -77,7 +77,7 @@ public class SnoutButton : SoftCurrencyButton
 
 	public override void ShowButton(bool show = true)
 	{
-		ResourceBar.Instance.ShowItem(ResourceBar.Item.SnoutCoin, !Singleton<BuildCustomizationLoader>.Instance.IsOdyssey & show);
+		ResourceBar.Instance.ShowItem(ResourceBar.Item.SnoutCoin, !Singleton<BuildCustomizationLoader>.Instance.IsOdyssey && show);
 	}
 
 	private void OnShowButton()

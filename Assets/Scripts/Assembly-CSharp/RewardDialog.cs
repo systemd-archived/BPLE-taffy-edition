@@ -271,7 +271,7 @@ public class RewardDialog : MonoBehaviour
 		PopulateDailyRewards();
 		UpdateScales();
 		SetDayActive(RewardSystem.CurrentLevel, instant: true);
-		if (!isShowingCloseButton & canShowCloseButton)
+		if (!isShowingCloseButton && canShowCloseButton)
 		{
 			while (timeLeftToShowCloseButton > 0f)
 			{

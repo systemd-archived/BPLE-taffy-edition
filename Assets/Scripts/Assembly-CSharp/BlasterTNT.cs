@@ -43,7 +43,7 @@ public class BlasterTNT : TNT
 				}
 				if (x >= self.Cycle)
 				{
-					return self.Amplitude * self.Cycle / (float)Math.E;
+					return self.Amplitude * self.Cycle / MathF.E;
 				}
 				return self.Amplitude * x * MathF.Exp((0f - x) / self.Cycle);
 			}
@@ -219,22 +219,12 @@ public class BlasterTNT : TNT
 		}
 	}
 
-	private MeshRenderer m_blasterRenderer;
-	private Material m_blasterMaterial;
-
 	private void UpdateBlasterSprite()
 	{
 		float radius = m_blaster.Radius;
 		m_blasterSprite.transform.position = m_blaster.Center;
 		m_blasterSprite.transform.localScale = new Vector3(2f * radius, 2f * radius, 1f);
-		if (m_blasterRenderer == null)
-		{
-			m_blasterRenderer = m_blasterSprite.GetComponent<MeshRenderer>();
-			if (m_blasterRenderer != null)
-				m_blasterMaterial = m_blasterRenderer.material;
-		}
-		if (m_blasterMaterial != null)
-			m_blasterMaterial.color = new Color(1f, 1f, 1f, Math.Min(64f / (radius * radius), 0.25f));
+		m_blasterSprite.GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 1f, Math.Min(64f / (radius * radius), 0.25f));
 	}
 
 	private void ToGray(GameObject gameObject, bool gray)

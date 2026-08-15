@@ -1,9 +1,9 @@
 public enum e2dGeneratorCurveMethod
 {
-	PERLIN,
-	MIDPOINT,
-	VORONOI,
-	WALK,
-	PEAKS,
-	NUM_METHODS
+	PERLIN = 0,
+	MIDPOINT = 1,
+	VORONOI = 2,
+	WALK = 3,
+	PEAKS = 4,
+	NUM_METHODS = 5
 }

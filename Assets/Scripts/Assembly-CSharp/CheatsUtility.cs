@@ -82,7 +82,6 @@ public class CheatsUtility : WPFMonoBehaviour
 		GUILayout.EndHorizontal();
 	}
 
-#if UNITY_EDITOR
 	private void OnGUI()
 	{
 		if (!skinInitialized)
@@ -705,7 +704,6 @@ public class CheatsUtility : WPFMonoBehaviour
 		}
 		GUI.skin = null;
 	}
-#endif
 
 	private void UnlockParts(BasePart.PartTier tier)
 	{

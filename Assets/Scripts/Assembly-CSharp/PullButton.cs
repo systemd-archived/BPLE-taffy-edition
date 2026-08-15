@@ -5,8 +5,8 @@ public class PullButton : Widget
 {
 	public enum PullType
 	{
-		Position,
-		Rotation
+		Position = 0,
+		Rotation = 1
 	}
 
 	[SerializeField]

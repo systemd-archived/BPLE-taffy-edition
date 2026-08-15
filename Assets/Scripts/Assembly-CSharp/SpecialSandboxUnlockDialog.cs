@@ -4,8 +4,8 @@ public class SpecialSandboxUnlockDialog : TextDialog
 {
 	public enum UnlockType
 	{
-		Statue,
-		Skull
+		Statue = 0,
+		Skull = 1
 	}
 
 	[SerializeField]

@@ -498,7 +498,7 @@ public class e2dTerrainGenerator : MonoBehaviour
 			float num9 = num8 * Walk.angleChangePerUnit * num2 * (2f * UnityEngine.Random.value - 1f);
 			num4 = Mathf.Repeat(num4 + num9 + 180f, 360f) - 180f;
 			num4 = Mathf.Clamp(num4, -80f, 80f);
-			float num10 = Mathf.Tan(num4 * ((float)Math.PI / 180f)) * num;
+			float num10 = Mathf.Tan(num4 * (MathF.PI / 180f)) * num;
 			num3 += num10;
 			float num11 = (e2dConstants.WALK_COHESION_MAX - Walk.cohesionPerUnit) * (float)i * num * 0.5f;
 			float num12 = Mathf.Clamp(num3, num6 - num11, num5 + num11);

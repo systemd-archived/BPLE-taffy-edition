@@ -2,7 +2,7 @@ namespace PlayFab.PlayStreamModels
 {
 	public enum PushNotificationPlatform
 	{
-		ApplePushNotificationService,
-		GoogleCloudMessaging
+		ApplePushNotificationService = 0,
+		GoogleCloudMessaging = 1
 	}
 }

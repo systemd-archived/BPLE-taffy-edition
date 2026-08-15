@@ -5,12 +5,12 @@ public class FlowLayout : MonoBehaviour
 {
 	public enum Direction
 	{
-		LeftToRight,
-		RightToLeft,
-		TopToBottom,
-		BottomToTop,
-		CenterHorizontal,
-		CenterVertical
+		LeftToRight = 0,
+		RightToLeft = 1,
+		TopToBottom = 2,
+		BottomToTop = 3,
+		CenterHorizontal = 4,
+		CenterVertical = 5
 	}
 
 	[SerializeField]

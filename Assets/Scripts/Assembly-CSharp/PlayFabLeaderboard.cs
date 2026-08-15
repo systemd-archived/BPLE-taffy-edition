@@ -8,13 +8,13 @@ public class PlayFabLeaderboard : MonoBehaviour
 {
 	public enum Leaderboard
 	{
-		CakeRaceWins,
-		CakeRaceCupF,
-		CakeRaceCupE,
-		CakeRaceCupD,
-		CakeRaceCupC,
-		CakeRaceCupB,
-		CakeRaceCupA
+		CakeRaceWins = 0,
+		CakeRaceCupF = 1,
+		CakeRaceCupE = 2,
+		CakeRaceCupD = 3,
+		CakeRaceCupC = 4,
+		CakeRaceCupB = 5,
+		CakeRaceCupA = 6
 	}
 
 	public static Leaderboard LowestCup()

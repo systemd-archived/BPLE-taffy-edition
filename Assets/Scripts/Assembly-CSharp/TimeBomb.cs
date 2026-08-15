@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeBomb : BasePart
@@ -26,8 +27,6 @@ public class TimeBomb : BasePart
 	private bool m_checkRotation;
 
 	private bool m_triggered;
-
-	private float lastExplodeTime;
 
 	public override bool CanBeEnclosed()
 	{
@@ -78,35 +77,13 @@ public class TimeBomb : BasePart
 
 	public void Explode()
 	{
-		if (Time.time - lastExplodeTime < 2f)
+		if (m_triggered)
 		{
 			return;
 		}
-		lastExplodeTime = Time.time;
-		Vector3 center = Vector3.zero;
-		Vector3 halfExtents = Vector3.zero;
-		if (m_gridRotation == GridRotation.Deg_0)
-		{
-			center = base.transform.position + -base.transform.up * 3f;
-			halfExtents = new Vector3(1.5f, 3f, 1.5f);
-		}
-		else if (m_gridRotation == GridRotation.Deg_90)
-		{
-			center = base.transform.position + base.transform.right * 3f;
-			halfExtents = new Vector3(3f, 1.5f, 1.5f);
-		}
-		else if (m_gridRotation == GridRotation.Deg_180)
-		{
-			center = base.transform.position + base.transform.up * 3f;
-			halfExtents = new Vector3(1.5f, 3f, 1.5f);
-		}
-		else if (m_gridRotation == GridRotation.Deg_270)
-		{
-			center = base.transform.position + -base.transform.right * 3f;
-			halfExtents = new Vector3(3f, 1.5f, 1.5f);
-		}
-		Quaternion rotation = base.transform.rotation;
-		Collider[] array = Physics.OverlapBox(center, halfExtents, rotation);
+		m_triggered = true;
+		base.contraption.ChangeOneShotPartAmount(m_partType, EffectDirection(), -1);
+		Collider[] array = Physics.OverlapSphere(base.transform.position, m_explosionRadius);
 		foreach (Collider collider in array)
 		{
 			GameObject gameObject = FindParentWithRigidBody(collider.gameObject);
@@ -115,10 +92,36 @@ public class TimeBomb : BasePart
 				int num = CountChildColliders(gameObject, 0);
 				AddExplosionForce(gameObject, 1f / (float)num);
 			}
+			TNT component = collider.GetComponent<TNT>();
+			if ((bool)component && !component.HasGeneratorRef)
+			{
+				component.Explode();
+			}
 		}
 		Singleton<AudioManager>.Instance.SpawnOneShotEffect(WPFMonoBehaviour.gameData.commonAudioCollection.tntExplosion, base.transform.position);
 		WPFMonoBehaviour.effectManager.CreateParticles(smokeCloudPrefab, base.transform.position - Vector3.forward * 12f, force: true);
 		CheckForAchievements();
+		base.contraption.RemovePart(this);
+		List<Joint> list = base.contraption.FindPartJoints(this);
+		if (list.Count > 0)
+		{
+			for (int j = 0; j < list.Count; j++)
+			{
+				bool flag = list[j].gameObject == this || list[j].connectedBody == this;
+				if (!float.IsInfinity(list[j].breakForce) || flag)
+				{
+					UnityEngine.Object.Destroy(list[j]);
+				}
+			}
+			HandleJointBreak();
+		}
+		else
+		{
+			HandleJointBreak(playEffects: false);
+		}
+		StartCoroutine(ShineLight());
+		EventManager.Disconnect<GameStateChanged>(OnGameStateChanged);
+		EventManager.Send(default(TimeBombExplodeEvent));
 	}
 
 	private int CountChildColliders(GameObject obj, int count)
@@ -149,33 +152,25 @@ public class TimeBomb : BasePart
 
 	private void AddExplosionForce(GameObject target, float forceFactor)
 	{
-		Vector3 vector = Vector3.zero;
-		if (m_gridRotation == GridRotation.Deg_0)
-		{
-			vector = -base.transform.up;
-		}
-		else if (m_gridRotation == GridRotation.Deg_90)
-		{
-			vector = base.transform.right;
-		}
-		else if (m_gridRotation == GridRotation.Deg_180)
-		{
-			vector = base.transform.up;
-		}
-		else if (m_gridRotation == GridRotation.Deg_270)
-		{
-			vector = -base.transform.right;
-		}
+		Vector3 vector = target.transform.position - base.transform.position;
+		float f = Mathf.Max(vector.magnitude, 1f);
+		float num = forceFactor * m_explosionImpulse / Mathf.Pow(f, 1.5f);
 		Rigidbody component = target.GetComponent<Rigidbody>();
-		float f = Mathf.Max((target.transform.position - base.transform.position).magnitude, 1f);
-		float force = forceFactor * m_explosionImpulse / Mathf.Pow(f, 16f);
+		if (component.mass < 0.1f)
+		{
+			num *= component.mass;
+		}
+		else if (component.mass < 0.4f)
+		{
+			num *= component.mass / 0.4f;
+		}
 		Pig component2 = target.GetComponent<Pig>();
 		if ((bool)component2)
 		{
-			component2.PrepareForTNT(base.transform.position, force);
+			component2.PrepareForTNT(base.transform.position, num);
+			num *= 1.15f;
 		}
-		float num = 2000f;
-		component.velocity = vector * 2000f;
+		component.AddForce(num * vector.normalized, ForceMode.Impulse);
 	}
 
 	public void CheckForAchievements()

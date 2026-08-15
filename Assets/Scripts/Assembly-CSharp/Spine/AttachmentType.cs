@@ -2,10 +2,10 @@ namespace Spine
 {
 	public enum AttachmentType
 	{
-		Region,
-		Boundingbox,
-		Mesh,
-		Linkedmesh,
-		Path
+		Region = 0,
+		Boundingbox = 1,
+		Mesh = 2,
+		Linkedmesh = 3,
+		Path = 4
 	}
 }

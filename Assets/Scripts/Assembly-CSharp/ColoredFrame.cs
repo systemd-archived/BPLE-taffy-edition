@@ -99,7 +99,7 @@ public class ColoredFrame : Frame
 
 	public static Color GetColor(int partIndex)
 	{
-		if (new PartTypeInfo(PartType.MetalFrame, partIndex).IsTransparentFrame())
+		if (new PartTypeInfo(PartType.MetalFrame, partIndex).BelongsTo(BasePart.TransparentFrames))
 		{
 			return Color.white;
 		}
@@ -139,7 +139,7 @@ public class ColoredFrame : Frame
 		{
 			bool num = basePart.IsWoodenBox();
 			bool flag2 = basePart.IsMetalBox();
-			flag = !(num | flag2);
+			flag = !(num || flag2);
 			if (m_coloredPart == null)
 			{
 				if (INSettings.GetBool(INFeature.CanColorEnclosedPart))

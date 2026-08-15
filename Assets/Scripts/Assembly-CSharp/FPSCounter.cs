@@ -22,7 +22,7 @@ public class FPSCounter : MonoBehaviour
 	private void Update()
 	{
 		timeleft -= Time.unscaledDeltaTime;
-		frames++;
+		frames += 1f;
 		if (timeleft <= 0f)
 		{
 			float num = (float)m_stopwatch.ElapsedMilliseconds / 1000f;

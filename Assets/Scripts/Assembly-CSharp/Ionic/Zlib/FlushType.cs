@@ -2,10 +2,10 @@ namespace Ionic.Zlib
 {
 	public enum FlushType
 	{
-		None,
-		Partial,
-		Sync,
-		Full,
-		Finish
+		None = 0,
+		Partial = 1,
+		Sync = 2,
+		Full = 3,
+		Finish = 4
 	}
 }

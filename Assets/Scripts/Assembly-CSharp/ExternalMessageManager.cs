@@ -6,9 +6,9 @@ public class ExternalMessageManager : Singleton<ExternalMessageManager>
 
 	public void OnMessageReceived(string message)
 	{
-		if (onExternalAppMessageReceived != null)
+		if (ExternalMessageManager.onExternalAppMessageReceived != null)
 		{
-			onExternalAppMessageReceived(message);
+			ExternalMessageManager.onExternalAppMessageReceived(message);
 		}
 	}
 

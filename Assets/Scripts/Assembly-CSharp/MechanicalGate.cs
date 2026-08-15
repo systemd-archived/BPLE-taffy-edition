@@ -44,7 +44,7 @@ public class MechanicalGate : MechanicalPart
 			float num = Math.Clamp(m_progress + m_delta, 0f, 1f);
 			if (m_progress != num)
 			{
-				float num2 = 0.5f * (1f - MathF.Cos((float)Math.PI * num));
+				float num2 = 0.5f * (1f - MathF.Cos(MathF.PI * num));
 				m_progress = num;
 				m_value = (1f - num2) * m_start + num2 * m_end;
 			}

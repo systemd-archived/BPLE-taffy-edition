@@ -4,14 +4,11 @@ public class CakeRaceUnlockedDialog : TextDialog
 {
 	private bool m_try;
 
-	private MainMenu m_mainMenu;
-
 	protected override void Awake()
 	{
 		base.Awake();
 		base.onClose += HandleClosed;
 		m_try = false;
-		m_mainMenu = WPFMonoBehaviour.FindSceneObjectOfType<MainMenu>();
 		ResourceBar.Instance.ShowItem(ResourceBar.Item.PlayerProgress, showItem: true, enableItem: false);
 	}
 
@@ -53,11 +50,10 @@ public class CakeRaceUnlockedDialog : TextDialog
 
 	private void ForceCakeRace()
 	{
-		if (m_mainMenu == null)
-			m_mainMenu = WPFMonoBehaviour.FindSceneObjectOfType<MainMenu>();
-		if (Singleton<GameManager>.Instance.GetGameState() == GameManager.GameState.MainMenu && m_mainMenu != null)
+		MainMenu mainMenu = Object.FindObjectOfType<MainMenu>();
+		if (Singleton<GameManager>.Instance.GetGameState() == GameManager.GameState.MainMenu && mainMenu != null)
 		{
-			m_mainMenu.ForceCakeRaceButton();
+			mainMenu.ForceCakeRaceButton();
 		}
 		else
 		{
@@ -67,11 +63,10 @@ public class CakeRaceUnlockedDialog : TextDialog
 
 	private void UnlockCakeRace()
 	{
-		if (m_mainMenu == null)
-			m_mainMenu = WPFMonoBehaviour.FindSceneObjectOfType<MainMenu>();
-		if (Singleton<GameManager>.Instance.GetGameState() == GameManager.GameState.MainMenu && m_mainMenu != null)
+		MainMenu mainMenu = Object.FindObjectOfType<MainMenu>();
+		if (Singleton<GameManager>.Instance.GetGameState() == GameManager.GameState.MainMenu && mainMenu != null)
 		{
-			m_mainMenu.UnlockCakeRaceButton();
+			mainMenu.UnlockCakeRaceButton();
 		}
 	}
 

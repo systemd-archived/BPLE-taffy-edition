@@ -194,11 +194,11 @@ namespace PlayFab.Json
 			{
 				return value;
 			}
-			if ((flag | flag2 | flag3) & isEnum)
+			if ((flag || flag2 || flag3) && isEnum)
 			{
 				return Enum.ToObject(type, Convert.ChangeType(value, Enum.GetUnderlyingType(type), CultureInfo.InvariantCulture));
 			}
-			if ((flag | flag2 | flag3) & flag4)
+			if ((flag || flag2 || flag3) && flag4)
 			{
 				return Convert.ChangeType(value, type, CultureInfo.InvariantCulture);
 			}

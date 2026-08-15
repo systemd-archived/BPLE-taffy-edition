@@ -684,7 +684,7 @@ public class PartListing : Widget
 	private void ReadPartOrder()
 	{
 		partOrder = new List<BasePart.PartType>();
-		for (int i = 0; i < 49; i++)
+		for (int i = 0; i < (int)SortedPartType.MAX; i++)
 		{
 			SortedPartType sortedPartType = (SortedPartType)i;
 			if (sortedPartType.IsValid())
@@ -962,7 +962,7 @@ public class PartListing : Widget
 				{
 					continue;
 				}
-				string[] array = data.partInstances[tier][index].name.Split('_', StringSplitOptions.None);
+				string[] array = data.partInstances[tier][index].name.Split('_');
 				if (array.Length <= 2 || !int.TryParse(array[2], out var _) || data.parts[tier][index].IsColoredrame())
 				{
 					continue;
@@ -1002,7 +1002,7 @@ public class PartListing : Widget
 			{
 				for (int num3 = 0; num3 < data.partInstances[key].Count; num3++)
 				{
-					string[] array2 = data.partInstances[key][num3].name.Split('_', StringSplitOptions.None);
+					string[] array2 = data.partInstances[key][num3].name.Split('_');
 					data.partInstances[key][num3].SetActive(array2.Length > 2 && int.TryParse(array2[2], out var _) && !data.parts[key][num3].IsColoredrame());
 				}
 			}

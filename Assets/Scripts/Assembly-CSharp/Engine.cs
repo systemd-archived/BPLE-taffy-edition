@@ -67,10 +67,6 @@ public class Engine : BasePart
 	{
 		m_power = 10000f;
 		base.contraption.m_enginesAmount++;
-		if (HasTag("Alien"))
-		{
-			base.contraption.m_enginesAmount += 4;
-		}
 		m_visualizationPart = base.transform.GetChild(0);
 		m_visualizationPartPosition = m_visualizationPart.localPosition;
 	}
@@ -170,11 +166,5 @@ public class Engine : BasePart
 				flameEmitter.Stop();
 			}
 		}
-	}
-
-	private new void Awake()
-	{
-		base.Awake();
-		m_autoAlign = AutoAlignType.Rotate;
 	}
 }

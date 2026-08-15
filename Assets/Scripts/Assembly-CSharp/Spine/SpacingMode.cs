@@ -2,8 +2,8 @@ namespace Spine
 {
 	public enum SpacingMode
 	{
-		Length,
-		Fixed,
-		Percent
+		Length = 0,
+		Fixed = 1,
+		Percent = 2
 	}
 }

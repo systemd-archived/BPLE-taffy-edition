@@ -117,36 +117,6 @@ public class ConstructionUI : WPFMonoBehaviour
 
 	private GameObject moveDownButton;
 
-	private Camera m_mainCamera;
-
-	private Camera m_hudCamera;
-
-	private Renderer m_moveLeftRenderer;
-
-	private Renderer m_moveRightRenderer;
-
-	private Renderer m_moveUpRenderer;
-
-	private Renderer m_moveDownRenderer;
-
-	private Collider m_moveLeftCollider;
-
-	private Collider m_moveRightCollider;
-
-	private Collider m_moveUpCollider;
-
-	private Collider m_moveDownCollider;
-
-	private List<MeshRenderer> m_gridCellRenderers = new List<MeshRenderer>();
-
-	private Vector3 m_lastGridCenter;
-
-	private float m_lastGridHalfWidth;
-
-	private float m_lastGridHalfHeight;
-
-	private const float GridViewChangeThreshold = 0.5f;
-
 	private List<Transform> m_parts = new List<Transform>();
 
 	private PartSelector partSelector;
@@ -308,16 +278,14 @@ public class ConstructionUI : WPFMonoBehaviour
 
 	private void Awake()
 	{
-		m_mainCamera = Camera.main;
-		m_hudCamera = WPFMonoBehaviour.hudCamera.GetComponent<Camera>();
 		EventManager.Connect<UIEvent>(ReceiveUIEvent);
 		EventManager.Connect<CustomizePartUI.PartCustomizationEvent>(OnPartCustomization);
 		int num = 0;
 		int num2 = 0;
 		int num3 = 0;
-		m_useDragOffset = DeviceInfo.UsesTouchInput && !Singleton<BuildCustomizationLoader>.Instance.IsHDVersion;
-		m_allowDragPlacement = !DeviceInfo.UsesTouchInput;
-		foreach (GameObject part in WPFMonoBehaviour.gameData.m_parts)
+		m_useDragOffset = false;
+		m_allowDragPlacement = true;
+		foreach (GameObject part in WPFMonoBehaviour.gameData.Parts)
 		{
 			Transform transform = part.transform;
 			m_parts.Add(transform);
@@ -440,14 +408,6 @@ public class ConstructionUI : WPFMonoBehaviour
 			moveRightButton = moveButtons.transform.Find("MoveRightButton").gameObject;
 			moveUpButton = moveButtons.transform.Find("MoveUpButton").gameObject;
 			moveDownButton = moveButtons.transform.Find("MoveDownButton").gameObject;
-			m_moveLeftRenderer = moveLeftButton.GetComponent<Renderer>();
-			m_moveRightRenderer = moveRightButton.GetComponent<Renderer>();
-			m_moveUpRenderer = moveUpButton.GetComponent<Renderer>();
-			m_moveDownRenderer = moveDownButton.GetComponent<Renderer>();
-			m_moveLeftCollider = moveLeftButton.GetComponent<Collider>();
-			m_moveRightCollider = moveRightButton.GetComponent<Collider>();
-			m_moveUpCollider = moveUpButton.GetComponent<Collider>();
-			m_moveDownCollider = moveDownButton.GetComponent<Collider>();
 			partSelector = gameObject2.transform.Find("InGameBuildMenu").Find("PartSelector").GetComponent<PartSelector>();
 			partSelector.SetParts(m_partDescs);
 		}
@@ -469,7 +429,7 @@ public class ConstructionUI : WPFMonoBehaviour
 			m_lastMoveTime = Time.time;
 			if ((bool)m_dragIcon)
 			{
-				Vector3 position = m_hudCamera.ScreenToWorldPoint(GuiManager.GetPointer().position);
+				Vector3 position = WPFMonoBehaviour.hudCamera.GetComponent<Camera>().ScreenToWorldPoint(GuiManager.GetPointer().position);
 				position.z = WPFMonoBehaviour.hudCamera.transform.position.z + 2f;
 				position += m_dragOffset;
 				position += m_dragIconOffset;
@@ -494,38 +454,21 @@ public class ConstructionUI : WPFMonoBehaviour
 		float orthographicSize = WPFMonoBehaviour.ingameCamera.GetComponent<Camera>().orthographicSize;
 		orthographicSize = ((orthographicSize > 20f) ? 20f : orthographicSize);
 		float num = orthographicSize * (float)Screen.width / (float)Screen.height;
-		if (m_gridCellRenderers.Count > 0 && Vector3.Distance(m_lastGridCenter, vector) < GridViewChangeThreshold && Mathf.Abs(m_lastGridHalfWidth - num) < GridViewChangeThreshold && Mathf.Abs(m_lastGridHalfHeight - orthographicSize) < GridViewChangeThreshold)
-		{
-			return;
-		}
-		m_lastGridCenter = vector;
-		m_lastGridHalfWidth = num;
-		m_lastGridHalfHeight = orthographicSize;
 		bool flag = true;
 		bool flag2 = true;
 		int i = 0;
 		int childCount = m_grid.childCount;
-		if (m_gridCellRenderers.Count < childCount)
-		{
-			for (int l = 0; l < childCount; l++)
-			{
-				if (l >= m_gridCellRenderers.Count)
-				{
-					m_gridCellRenderers.Add(m_grid.GetChild(l).GetComponent<MeshRenderer>());
-				}
-			}
-		}
 		if (WPFMonoBehaviour.levelManager.gameState == LevelManager.GameState.Building)
 		{
-			for (int j = (int)(vector.x - num) - 1; (j <= (int)(vector.x + num) + 1) & flag2; j++)
+			for (int j = (int)(vector.x - num) - 1; j <= (int)(vector.x + num) + 1 && flag2; j++)
 			{
-				for (int k = (int)(vector.y - orthographicSize) - 1; (k <= (int)(vector.y + orthographicSize) + 1) & flag2; k++)
+				for (int k = (int)(vector.y - orthographicSize) - 1; k <= (int)(vector.y + orthographicSize) + 1 && flag2; k++)
 				{
 					Transform transform;
 					if (i < childCount)
 					{
 						transform = m_grid.GetChild(i);
-						MeshRenderer component = m_gridCellRenderers[i];
+						MeshRenderer component = transform.GetComponent<MeshRenderer>();
 						if (!component.enabled)
 						{
 							flag = false;
@@ -538,10 +481,8 @@ public class ConstructionUI : WPFMonoBehaviour
 					else
 					{
 						transform = UnityEngine.Object.Instantiate(m_cellPrefab);
-						MeshRenderer component = transform.GetComponent<MeshRenderer>();
-						component.material = m_cellMaterial;
+						transform.GetComponent<MeshRenderer>().material = m_cellMaterial;
 						transform.parent = m_grid;
-						m_gridCellRenderers.Add(component);
 					}
 					i++;
 					transform.localPosition = new Vector3(j, k, 1f);
@@ -549,9 +490,9 @@ public class ConstructionUI : WPFMonoBehaviour
 				}
 			}
 		}
-		for (; (i < childCount) & flag; i++)
+		for (; i < childCount && flag; i++)
 		{
-			MeshRenderer component2 = m_gridCellRenderers[i];
+			MeshRenderer component2 = m_grid.GetChild(i).GetComponent<MeshRenderer>();
 			if (component2.enabled)
 			{
 				component2.enabled = false;
@@ -740,8 +681,8 @@ public class ConstructionUI : WPFMonoBehaviour
 	public Vector3 RelativeLevelPositionToHudPosition(Vector3 levelOffset)
 	{
 		Vector3 position = base.transform.position + levelOffset;
-		Vector3 position2 = m_mainCamera.WorldToScreenPoint(position);
-		return m_hudCamera.ScreenToWorldPoint(position2);
+		Vector3 position2 = Camera.main.WorldToScreenPoint(position);
+		return WPFMonoBehaviour.hudCamera.GetComponent<Camera>().ScreenToWorldPoint(position2);
 	}
 
 	private void SetHudPositionFromRelativeLevelPosition(GameObject obj, Vector3 levelOffset, Vector3 hudOffset)
@@ -749,8 +690,8 @@ public class ConstructionUI : WPFMonoBehaviour
 		Vector3 position = obj.transform.position;
 		float z = position.z;
 		Vector3 position2 = base.transform.position + levelOffset;
-		Vector3 position3 = m_mainCamera.WorldToScreenPoint(position2);
-		Vector3 vector = m_hudCamera.ScreenToWorldPoint(position3);
+		Vector3 position3 = Camera.main.WorldToScreenPoint(position2);
+		Vector3 vector = WPFMonoBehaviour.hudCamera.GetComponent<Camera>().ScreenToWorldPoint(position3);
 		vector += hudOffset;
 		vector.z = z;
 		if (Vector3.SqrMagnitude(position - vector) > 1E-06f)
@@ -822,23 +763,23 @@ public class ConstructionUI : WPFMonoBehaviour
 		switch (dx)
 		{
 		case -1:
-			m_moveLeftRenderer.enabled = flag;
-			m_moveLeftCollider.enabled = flag;
+			moveLeftButton.GetComponent<Renderer>().enabled = flag;
+			moveLeftButton.GetComponent<Collider>().enabled = flag;
 			return;
 		case 1:
-			m_moveRightRenderer.enabled = flag;
-			m_moveRightCollider.enabled = flag;
+			moveRightButton.GetComponent<Renderer>().enabled = flag;
+			moveRightButton.GetComponent<Collider>().enabled = flag;
 			return;
 		}
 		switch (dy)
 		{
 		case 1:
-			m_moveUpRenderer.enabled = flag;
-			m_moveUpCollider.enabled = flag;
+			moveUpButton.GetComponent<Renderer>().enabled = flag;
+			moveUpButton.GetComponent<Collider>().enabled = flag;
 			break;
 		case -1:
-			m_moveDownRenderer.enabled = flag;
-			m_moveDownCollider.enabled = flag;
+			moveDownButton.GetComponent<Renderer>().enabled = flag;
+			moveDownButton.GetComponent<Collider>().enabled = flag;
 			break;
 		}
 	}
@@ -1035,8 +976,6 @@ public class ConstructionUI : WPFMonoBehaviour
 			return;
 		}
 		GuiManager.Pointer pointer = GuiManager.GetPointer();
-		if (DeviceInfo.UsesTouchInput)
-		{
 			if (Input.touchCount != 0)
 			{
 				TouchPhase phase = Input.GetTouch(0).phase;
@@ -1087,7 +1026,6 @@ public class ConstructionUI : WPFMonoBehaviour
 					}
 				}
 			}
-		}
 		else
 		{
 			if (INSettings.GetBool(INFeature.PartPlacementOperation))
@@ -1139,11 +1077,17 @@ public class ConstructionUI : WPFMonoBehaviour
 				BasePart basePart2 = m_contraption.FindPartAt(x, y);
 				if ((bool)basePart2)
 				{
+					bool suppressRotation = false;
+					if (m_selectedElement != -1 && basePart2.CanEncloseParts())
+					{
+						PartDesc partDesc = m_partDescs[m_selectedElement];
+						suppressRotation = partDesc.part.CanBeEnclosed() && (!basePart2.enclosedPart || partDesc.part.m_partType != basePart2.enclosedPart.m_partType) && partDesc.useCount < partDesc.maxCount;
+					}
 					if ((bool)basePart2.enclosedPart)
 					{
 						basePart2 = basePart2.enclosedPart;
 					}
-					if (m_contraption.Flip(basePart2))
+					if (!suppressRotation && m_contraption.Flip(basePart2))
 					{
 						AddMove();
 						m_rotationCounter++;
@@ -1153,11 +1097,7 @@ public class ConstructionUI : WPFMonoBehaviour
 			}
 			m_dragStarted = false;
 		}
-		float num = 1f;
-		if (DeviceInfo.UsesTouchInput)
-		{
-			num = ((!m_useDragOffset) ? 10f : 20f);
-		}
+		float num = ((!m_useDragOffset) ? 10f : 20f);
 		if (m_dragStarted && m_draggedElement == -1 && Vector3.Distance(pointer.position, m_dragStartPosition) >= num)
 		{
 			Vector3 vector3 = WPFMonoBehaviour.ScreenToZ0(m_dragStartPosition) - base.transform.position;
@@ -1204,9 +1144,9 @@ public class ConstructionUI : WPFMonoBehaviour
 		if (m_draggedElement != -1)
 		{
 			PartDesc partDesc = m_partDescs[m_draggedElement];
-			Vector3 position = m_hudCamera.ScreenToWorldPoint(pointer.position) + m_dragOffset;
-			Vector3 position2 = m_hudCamera.WorldToScreenPoint(position);
-			Vector3 vector4 = m_mainCamera.ScreenToWorldPoint(position2);
+			Vector3 position = WPFMonoBehaviour.hudCamera.GetComponent<Camera>().ScreenToWorldPoint(pointer.position) + m_dragOffset;
+			Vector3 position2 = WPFMonoBehaviour.hudCamera.GetComponent<Camera>().WorldToScreenPoint(position);
+			Vector3 vector4 = Camera.main.ScreenToWorldPoint(position2);
 			EventManager.Send(new DraggingPartEvent(partDesc.part.m_partType, vector4));
 			Vector3 vector5 = vector4 - base.transform.position;
 			int num2 = Mathf.RoundToInt(vector5.x);
@@ -1387,8 +1327,8 @@ public class ConstructionUI : WPFMonoBehaviour
 	public Vector3 GridPositionToGuiPosition(int x, int y)
 	{
 		Vector3 position = m_contraption.transform.position + Vector3.right * x + Vector3.up * y;
-		Vector3 position2 = m_mainCamera.WorldToScreenPoint(position);
-		return m_hudCamera.ScreenToWorldPoint(position2);
+		Vector3 position2 = Camera.main.WorldToScreenPoint(position);
+		return WPFMonoBehaviour.hudCamera.GetComponent<Camera>().ScreenToWorldPoint(position2);
 	}
 
 	public Vector3 GridPositionToWorldPosition(int x, int y)
@@ -1513,7 +1453,7 @@ public class ConstructionUI : WPFMonoBehaviour
 		{
 			m_contraption.RefreshConnections();
 		}
-		base.gameObject.SetActive(enableUI | enableGrid);
+		base.gameObject.SetActive(enableUI || enableGrid);
 		base.enabled = enableUI;
 	}
 

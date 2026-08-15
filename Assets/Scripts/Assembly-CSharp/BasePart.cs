@@ -7,140 +7,140 @@ public class BasePart : WPFMonoBehaviour, IBasePart
 {
 	public enum JointType
 	{
-		FixedJoint,
-		HingeJoint
+		FixedJoint = 0,
+		HingeJoint = 1
 	}
 
 	public enum PartTier
 	{
-		Regular,
-		Common,
-		Rare,
-		Epic,
-		Legendary
+		Regular = 0,
+		Common = 1,
+		Rare = 2,
+		Epic = 3,
+		Legendary = 4
 	}
 
 	public enum PartType
 	{
-		Unknown,
-		Balloon,
-		Balloons2,
-		Balloons3,
-		Fan,
-		WoodenFrame,
-		Bellows,
-		CartWheel,
-		Basket,
-		Sandbag,
-		Pig,
-		Sandbag2,
-		Sandbag3,
-		Propeller,
-		Wings,
-		Tailplane,
-		Engine,
-		Rocket,
-		MetalFrame,
-		SmallWheel,
-		MetalWing,
-		MetalTail,
-		Rotor,
-		MotorWheel,
-		TNT,
-		EngineSmall,
-		EngineBig,
-		NormalWheel,
-		Spring,
-		Umbrella,
-		Rope,
-		CokeBottle,
-		KingPig,
-		RedRocket,
-		SodaBottle,
-		PoweredUmbrella,
-		Egg,
-		JetEngine,
-		ObsoleteWheel,
-		SpringBoxingGlove,
-		StickyWheel,
-		GrapplingHook,
-		Pumpkin,
-		Kicker,
-		Gearbox,
-		GoldenPig,
-		PointLight,
-		SpotLight,
-		TimeBomb,
-		ElectricalPart,
-		MechanicalPart,
-		MAX
+		Unknown = 0,
+		Balloon = 1,
+		Balloons2 = 2,
+		Balloons3 = 3,
+		Fan = 4,
+		WoodenFrame = 5,
+		Bellows = 6,
+		CartWheel = 7,
+		Basket = 8,
+		Sandbag = 9,
+		Pig = 10,
+		Sandbag2 = 11,
+		Sandbag3 = 12,
+		Propeller = 13,
+		Wings = 14,
+		Tailplane = 15,
+		Engine = 16,
+		Rocket = 17,
+		MetalFrame = 18,
+		SmallWheel = 19,
+		MetalWing = 20,
+		MetalTail = 21,
+		Rotor = 22,
+		MotorWheel = 23,
+		TNT = 24,
+		EngineSmall = 25,
+		EngineBig = 26,
+		NormalWheel = 27,
+		Spring = 28,
+		Umbrella = 29,
+		Rope = 30,
+		CokeBottle = 31,
+		KingPig = 32,
+		RedRocket = 33,
+		SodaBottle = 34,
+		PoweredUmbrella = 35,
+		Egg = 36,
+		JetEngine = 37,
+		ObsoleteWheel = 38,
+		SpringBoxingGlove = 39,
+		StickyWheel = 40,
+		GrapplingHook = 41,
+		Pumpkin = 42,
+		Kicker = 43,
+		Gearbox = 44,
+		GoldenPig = 45,
+		PointLight = 46,
+		SpotLight = 47,
+		TimeBomb = 48,
+		ElectricalPart = 49,
+		MechanicalPart = 50,
+		MAX = 51
 	}
 
 	public enum AutoAlignType
 	{
-		None,
-		Rotate,
-		FlipVertically
+		None = 0,
+		Rotate = 1,
+		FlipVertically = 2
 	}
 
 	public enum Direction
 	{
-		Right,
-		Up,
-		Left,
-		Down,
-		UpRight,
-		UpLeft,
-		DownLeft,
-		DownRight
+		Right = 0,
+		Up = 1,
+		Left = 2,
+		Down = 3,
+		UpRight = 4,
+		UpLeft = 5,
+		DownLeft = 6,
+		DownRight = 7
 	}
 
 	public enum GridRotation
 	{
-		Deg_0,
-		Deg_90,
-		Deg_180,
-		Deg_270,
-		Deg_45,
-		Deg_135,
-		Deg_225,
-		Deg_315,
-		Deg_Max
+		Deg_0 = 0,
+		Deg_90 = 1,
+		Deg_180 = 2,
+		Deg_270 = 3,
+		Deg_45 = 4,
+		Deg_135 = 5,
+		Deg_225 = 6,
+		Deg_315 = 7,
+		Deg_Max = 8
 	}
 
 	public enum JointConnectionType
 	{
-		None,
-		Source,
-		Target
+		None = 0,
+		Source = 1,
+		Target = 2
 	}
 
 	public enum JointConnectionDirection
 	{
-		Any,
-		Right,
-		Up,
-		Left,
-		Down,
-		LeftAndRight,
-		UpAndDown,
-		None
+		Any = 0,
+		Right = 1,
+		Up = 2,
+		Left = 3,
+		Down = 4,
+		LeftAndRight = 5,
+		UpAndDown = 6,
+		None = 7
 	}
 
 	public enum JointConnectionStrength
 	{
-		Weak,
-		Normal,
-		High,
-		Extreme,
-		HighlyExtreme
+		Weak = 0,
+		Normal = 1,
+		High = 2,
+		Extreme = 3,
+		HighlyExtreme = 4
 	}
 
 	private static float m_lastTimeUsedCollisionParticles;
 
-	protected static int m_groundLayer;
+	protected static int m_groundLayer = -1;
 
-	protected static int m_iceGroundLayer;
+	protected static int m_iceGroundLayer = -1;
 
 	protected bool m_isOnGround;
 
@@ -373,7 +373,7 @@ public class BasePart : WPFMonoBehaviour, IBasePart
 		set
 		{
 			PartTypeInfo partTypeInfo = value;
-			(m_partType, customPartIndex) = partTypeInfo;
+			(m_partType, customPartIndex) = (PartTypeInfo)(partTypeInfo);
 		}
 	}
 
@@ -491,6 +491,56 @@ public class BasePart : WPFMonoBehaviour, IBasePart
 		}
 	}
 
+	public static PartTypeInfo WoodenBox => new PartTypeInfo(PartType.WoodenFrame, 10);
+
+	public static PartTypeInfo SeparatedFrame => new PartTypeInfo(PartType.MetalFrame, 8);
+
+	public static PartTypeInfo LightFrame => new PartTypeInfo(PartType.MetalFrame, 10);
+
+	public static PartTypeInfo AlienMetalFrame => new PartTypeInfo(PartType.MetalFrame, 11);
+
+	public static PartRangeInfo ColoredFrames => new PartRangeInfo(PartType.MetalFrame, 12, 129);
+
+	public static PartTypeInfo MetalBox => new PartTypeInfo(PartType.MetalFrame, 130);
+
+	public static PartTypeInfo BracketFrame => new PartTypeInfo(PartType.MetalFrame, 131);
+
+	public static PartRangeInfo TransparentFrames => new PartRangeInfo(PartType.MetalFrame, 132, 133);
+
+	public static PartTypeInfo OffRoadWheel => new PartTypeInfo(PartType.MotorWheel, 7);
+
+	public static PartTypeInfo AvoidanceRocketA => new PartTypeInfo(PartType.Rocket, 1);
+
+	public static PartTypeInfo AvoidanceRocketB => new PartTypeInfo(PartType.Rocket, 3);
+
+	public static PartTypeInfo TrackingRocketA => new PartTypeInfo(PartType.RedRocket, 1);
+
+	public static PartTypeInfo TrackingRocketB => new PartTypeInfo(PartType.RedRocket, 3);
+
+	public static PartTypeInfo BlasterTNT => new PartTypeInfo(PartType.TNT, 6);
+
+	public static PartRangeInfo HingePlates => new PartRangeInfo(PartType.Rope, 4, 7);
+
+	public static PartTypeInfo AutoGun => new PartTypeInfo(PartType.GrapplingHook, 6);
+
+	public static PartRangeInfo MultipartGenerators => new PartRangeInfo(PartType.GrapplingHook, 8, 10);
+
+	public static PartTypeInfo AutoConnector => new PartTypeInfo(PartType.Kicker, 1);
+
+	public static PartTypeInfo ElasticConnectorA => new PartTypeInfo(PartType.Kicker, 2);
+
+	public static PartTypeInfo Marker => new PartTypeInfo(PartType.Kicker, 3);
+
+	public static PartTypeInfo ElasticConnectorB => new PartTypeInfo(PartType.Kicker, 4);
+
+	public static PartRangeInfo EntityLightsA => new PartRangeInfo(PartType.PointLight, 0, 4);
+
+	public static PartTypeInfo DecelerationLight => new PartTypeInfo(PartType.PointLight, 5);
+
+	public static PartTypeInfo AutoControlLight => new PartTypeInfo(PartType.PointLight, 6);
+
+	public static PartRangeInfo EntityLightsB => new PartRangeInfo(PartType.SpotLight, 0, 3);
+
 	public virtual JointConnectionStrength GetJointConnectionStrength()
 	{
 		return m_jointConnectionStrength;
@@ -520,7 +570,6 @@ public class BasePart : WPFMonoBehaviour, IBasePart
 		m_spriteManager = GetComponent<SpriteManager>();
 		m_groundLayer = LayerMask.NameToLayer("Ground");
 		m_iceGroundLayer = LayerMask.NameToLayer("IceGround");
-		m_eightWay = true;
 	}
 
 	public virtual void Initialize()
@@ -812,30 +861,74 @@ public class BasePart : WPFMonoBehaviour, IBasePart
 		switch (m_gridRotation)
 		{
 		case GridRotation.Deg_0:
-			SetRotation(GridRotation.Deg_315);
-			break;
-		case GridRotation.Deg_315:
-			SetRotation(GridRotation.Deg_270);
-			break;
-		case GridRotation.Deg_270:
-			SetRotation(GridRotation.Deg_225);
-			break;
-		case GridRotation.Deg_225:
-			SetRotation(GridRotation.Deg_180);
-			break;
-		case GridRotation.Deg_180:
-			SetRotation(GridRotation.Deg_135);
-			break;
-		case GridRotation.Deg_135:
-			SetRotation(GridRotation.Deg_90);
+			if (!m_eightWay)
+			{
+				SetRotation(GridRotation.Deg_270);
+			}
+			else
+			{
+				SetRotation(GridRotation.Deg_315);
+			}
 			break;
 		case GridRotation.Deg_90:
-			SetRotation(GridRotation.Deg_45);
+			if (!m_eightWay)
+			{
+				SetRotation(GridRotation.Deg_0);
+			}
+			else
+			{
+				SetRotation(GridRotation.Deg_45);
+			}
+			break;
+		case GridRotation.Deg_180:
+			if (!m_eightWay)
+			{
+				SetRotation(GridRotation.Deg_90);
+			}
+			else
+			{
+				SetRotation(GridRotation.Deg_135);
+			}
+			break;
+		case GridRotation.Deg_270:
+			if (!m_eightWay)
+			{
+				SetRotation(GridRotation.Deg_180);
+			}
+			else
+			{
+				SetRotation(GridRotation.Deg_225);
+			}
 			break;
 		case GridRotation.Deg_45:
 			SetRotation(GridRotation.Deg_0);
 			break;
+		case GridRotation.Deg_135:
+			SetRotation(GridRotation.Deg_90);
+			break;
+		case GridRotation.Deg_225:
+			SetRotation(GridRotation.Deg_180);
+			break;
+		case GridRotation.Deg_315:
+			SetRotation(GridRotation.Deg_270);
+			break;
 		}
+	}
+
+	public void Rotate45Clockwise()
+	{
+		SetRotation(m_gridRotation switch
+		{
+			GridRotation.Deg_0 => GridRotation.Deg_315, 
+			GridRotation.Deg_45 => GridRotation.Deg_0, 
+			GridRotation.Deg_90 => GridRotation.Deg_45, 
+			GridRotation.Deg_135 => GridRotation.Deg_90, 
+			GridRotation.Deg_180 => GridRotation.Deg_135, 
+			GridRotation.Deg_225 => GridRotation.Deg_180, 
+			GridRotation.Deg_270 => GridRotation.Deg_225, 
+			GridRotation.Deg_315 => GridRotation.Deg_270, 
+			_ => GridRotation.Deg_0, 
+		});
 	}
 
 	public virtual bool IsInInteractiveRadius(Vector3 position)
@@ -922,6 +1015,20 @@ public class BasePart : WPFMonoBehaviour, IBasePart
 		{
 			m_lastTimeTouchedGround = Time.time;
 			m_contraption.SetGroundTouchTime(this);
+		}
+	}
+
+	public virtual void HandleHighSpeedImpact(float approachSpeed, Vector3 contactPoint)
+	{
+		if (Time.time - m_lastTimeUsedCollisionParticles > 0.25f)
+		{
+			m_lastTimeUsedCollisionParticles = Time.time;
+			WPFMonoBehaviour.effectManager.CreateParticles(WPFMonoBehaviour.gameData.m_dustParticles, contactPoint);
+		}
+		if (m_breakVelocity > 0f && approachSpeed > m_breakVelocity && !m_broken)
+		{
+			OnBreak();
+			m_broken = true;
 		}
 	}
 
@@ -1263,6 +1370,34 @@ public class BasePart : WPFMonoBehaviour, IBasePart
 		return base.name;
 	}
 
+	public bool BelongsTo(PartTypeInfo info)
+	{
+		return TypeInfo.BelongsTo(info);
+	}
+
+	public bool BelongsTo(PartTypeInfo infoA, PartTypeInfo infoB)
+	{
+		if (!TypeInfo.BelongsTo(infoA))
+		{
+			return TypeInfo.BelongsTo(infoB);
+		}
+		return true;
+	}
+
+	public bool BelongsTo(PartRangeInfo info)
+	{
+		return TypeInfo.BelongsTo(info);
+	}
+
+	public bool BelongsTo(PartRangeInfo infoA, PartRangeInfo infoB)
+	{
+		if (!TypeInfo.BelongsTo(infoA))
+		{
+			return TypeInfo.BelongsTo(infoB);
+		}
+		return true;
+	}
+
 	public void MoveTo(int x, int y)
 	{
 		CoordX = x;
@@ -1428,11 +1563,5 @@ public class BasePart : WPFMonoBehaviour, IBasePart
 	public static void GetDirection(GridRotation rotation, out int x, out int y)
 	{
 		(x, y) = GetDirection(rotation);
-	}
-
-	static BasePart()
-	{
-		m_groundLayer = -1;
-		m_iceGroundLayer = -1;
 	}
 }

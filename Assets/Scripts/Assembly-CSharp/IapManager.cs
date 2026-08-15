@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Pathfinding.Serialization.JsonFx;
 using UnityEngine;
 
@@ -28,12 +29,12 @@ public class IapManager : Singleton<IapManager>
 	{
 		public enum BundleItemType
 		{
-			Undefined,
-			Blueprint,
-			SuperGlue,
-			SuperMagnet,
-			TurboCharge,
-			NightVision
+			Undefined = 0,
+			Blueprint = 1,
+			SuperGlue = 2,
+			SuperMagnet = 3,
+			TurboCharge = 4,
+			NightVision = 5
 		}
 
 		public readonly BundleItemType type;
@@ -49,88 +50,88 @@ public class IapManager : Singleton<IapManager>
 
 	public enum InAppPurchaseStatus
 	{
-		Init,
-		Idle,
-		FetchingItems,
-		PurchasingItem
+		Init = 0,
+		Idle = 1,
+		FetchingItems = 2,
+		PurchasingItem = 3
 	}
 
 	public enum CurrencyType
 	{
-		RealMoney,
-		SnoutCoin,
-		Scrap
+		RealMoney = 0,
+		SnoutCoin = 1,
+		Scrap = 2
 	}
 
 	public enum InAppPurchaseItemType
 	{
-		Undefined,
-		UnlockFullVersion,
-		UnlockSpecialSandbox,
-		BlueprintSmall,
-		BlueprintMedium,
-		BlueprintLarge,
-		BlueprintHuge,
-		BlueprintUltimate,
-		SuperGlueSmall,
-		SuperGlueMedium,
-		SuperGlueLarge,
-		SuperGlueHuge,
-		SuperGlueUltimate,
-		SuperMagnetSmall,
-		SuperMagnetMedium,
-		SuperMagnetLarge,
-		SuperMagnetHuge,
-		SuperMagnetUltimate,
-		TurboChargeSmall,
-		TurboChargeMedium,
-		TurboChargeLarge,
-		TurboChargeHuge,
-		TurboChargeUltimate,
-		PermanentBlueprint,
-		BundleStarterPack,
-		BundleMediumPack,
-		BundleBigPack,
-		UnlockTenLevels,
-		UnlockEpisode,
-		AddTenDesserts,
-		UnlockNineLevels,
-		NightVisionSmall,
-		NightVisionMedium,
-		NightVisionLarge,
-		NightVisionHuge,
-		NightVisionUltimate,
-		SnoutCoinPackSmall,
-		SnoutCoinPackMedium,
-		SnoutCoinPackLarge,
-		SnoutCoinPackHuge,
-		SnoutCoinPackUltimate,
-		BundleHugePack,
-		StarterPack,
-		BlueprintSingle,
-		SuperGlueSingle,
-		SuperMagnetSingle,
-		TurboChargeSingle,
-		NightVisionSingle,
-		WoodenLootCrate,
-		MetalLootCrate,
-		GoldenLootCrate,
-		WoodenLootCrateSale,
-		MetalLootCrateSale,
-		GoldenLootCrateSale,
-		GoldenLootCratePack,
-		SnoutCoinPackSmallSale,
-		SnoutCoinPackMediumSale,
-		SnoutCoinPackLargeSale,
-		SnoutCoinPackHugeSale,
-		SnoutCoinPackUltimateSale
+		Undefined = 0,
+		UnlockFullVersion = 1,
+		UnlockSpecialSandbox = 2,
+		BlueprintSmall = 3,
+		BlueprintMedium = 4,
+		BlueprintLarge = 5,
+		BlueprintHuge = 6,
+		BlueprintUltimate = 7,
+		SuperGlueSmall = 8,
+		SuperGlueMedium = 9,
+		SuperGlueLarge = 10,
+		SuperGlueHuge = 11,
+		SuperGlueUltimate = 12,
+		SuperMagnetSmall = 13,
+		SuperMagnetMedium = 14,
+		SuperMagnetLarge = 15,
+		SuperMagnetHuge = 16,
+		SuperMagnetUltimate = 17,
+		TurboChargeSmall = 18,
+		TurboChargeMedium = 19,
+		TurboChargeLarge = 20,
+		TurboChargeHuge = 21,
+		TurboChargeUltimate = 22,
+		PermanentBlueprint = 23,
+		BundleStarterPack = 24,
+		BundleMediumPack = 25,
+		BundleBigPack = 26,
+		UnlockTenLevels = 27,
+		UnlockEpisode = 28,
+		AddTenDesserts = 29,
+		UnlockNineLevels = 30,
+		NightVisionSmall = 31,
+		NightVisionMedium = 32,
+		NightVisionLarge = 33,
+		NightVisionHuge = 34,
+		NightVisionUltimate = 35,
+		SnoutCoinPackSmall = 36,
+		SnoutCoinPackMedium = 37,
+		SnoutCoinPackLarge = 38,
+		SnoutCoinPackHuge = 39,
+		SnoutCoinPackUltimate = 40,
+		BundleHugePack = 41,
+		StarterPack = 42,
+		BlueprintSingle = 43,
+		SuperGlueSingle = 44,
+		SuperMagnetSingle = 45,
+		TurboChargeSingle = 46,
+		NightVisionSingle = 47,
+		WoodenLootCrate = 48,
+		MetalLootCrate = 49,
+		GoldenLootCrate = 50,
+		WoodenLootCrateSale = 51,
+		MetalLootCrateSale = 52,
+		GoldenLootCrateSale = 53,
+		GoldenLootCratePack = 54,
+		SnoutCoinPackSmallSale = 55,
+		SnoutCoinPackMediumSale = 56,
+		SnoutCoinPackLargeSale = 57,
+		SnoutCoinPackHugeSale = 58,
+		SnoutCoinPackUltimateSale = 59
 	}
 
 	public enum CodeRedeemError
 	{
-		AlreadyUsed,
-		AlreadyOwned,
-		Invalid
+		AlreadyUsed = 0,
+		AlreadyOwned = 1,
+		Invalid = 2
 	}
 
 	[SerializeField]
@@ -463,13 +464,13 @@ public class IapManager : Singleton<IapManager>
 			m_state = InAppPurchaseStatus.Idle;
 			ShowErrorPopup("IN_APP_PURCHASE_NOT_READY");
 		}
-		onPurchaseFailed(m_activePurchase);
+		IapManager.onPurchaseFailed(m_activePurchase);
 	}
 
 	private void HandlePurchaseCancelledEvent(string obj)
 	{
 		m_state = InAppPurchaseStatus.Idle;
-		onPurchaseFailed(m_activePurchase);
+		IapManager.onPurchaseFailed(m_activePurchase);
 	}
 
 	private bool HandleDeliverItem(string productId)
@@ -483,14 +484,14 @@ public class IapManager : Singleton<IapManager>
 		InAppPurchaseItemType itemByProductId = GetItemByProductId(productId);
 		if (itemByProductId != InAppPurchaseItemType.Undefined)
 		{
-			if (onPurchaseSucceeded != null)
+			if (IapManager.onPurchaseSucceeded != null)
 			{
-				onPurchaseSucceeded(itemByProductId);
+				IapManager.onPurchaseSucceeded(itemByProductId);
 			}
 		}
-		else if (onPurchaseFailed != null)
+		else if (IapManager.onPurchaseFailed != null)
 		{
-			onPurchaseFailed(itemByProductId);
+			IapManager.onPurchaseFailed(itemByProductId);
 		}
 		if (m_Shop != null)
 		{
@@ -501,12 +502,12 @@ public class IapManager : Singleton<IapManager>
 	private void HandleTransactionsRestoredEvent()
 	{
 		GameProgress.SetBool("IAPRestored", value: true);
-		onRestorePurchaseComplete(isSucceeded: true);
+		IapManager.onRestorePurchaseComplete(isSucceeded: true);
 	}
 
 	private void HandleTransactionsRestoreFailedEvent(string error)
 	{
-		onRestorePurchaseComplete(isSucceeded: false);
+		IapManager.onRestorePurchaseComplete(isSucceeded: false);
 	}
 
 	private void HandleProductListReceivedEvent(List<IAPProductInfo> products)
@@ -524,12 +525,12 @@ public class IapManager : Singleton<IapManager>
 			{
 				ParseProductInfo(product);
 			}
-			if (onProductListParsed != null)
+			if (IapManager.onProductListParsed != null)
 			{
-				onProductListParsed();
+				IapManager.onProductListParsed();
 			}
 		}
-		onProductListReceived(productList, null);
+		IapManager.onProductListReceived(productList, null);
 	}
 
 	private void ParseProductInfo(IAPProductInfo product)
@@ -577,23 +578,23 @@ public class IapManager : Singleton<IapManager>
 	private void HandleProductListRequestFailedEvent(string error)
 	{
 		m_state = InAppPurchaseStatus.Idle;
-		onProductListReceived(null, error);
+		IapManager.onProductListReceived(null, error);
 	}
 
 	private void HandleCodeRedeemFailedEvent(CodeRedeemError error)
 	{
 		ShowErrorPopup("REDEEM_CODE_FAILURE_MESSAGE");
-		if (onCodeRedeemFailed != null)
+		if (IapManager.onCodeRedeemFailed != null)
 		{
-			onCodeRedeemFailed(this, error);
+			IapManager.onCodeRedeemFailed(this, error);
 		}
 	}
 
 	private void HandleCodeVerificationEvent(bool succeeded)
 	{
-		if (onCodeVerificationCompleted != null)
+		if (IapManager.onCodeVerificationCompleted != null)
 		{
-			onCodeVerificationCompleted(this, succeeded);
+			IapManager.onCodeVerificationCompleted(this, succeeded);
 		}
 	}
 
@@ -606,7 +607,7 @@ public class IapManager : Singleton<IapManager>
 		}
 		if (!ReadyForTransaction)
 		{
-			onPurchaseFailed(m_activePurchase);
+			IapManager.onPurchaseFailed(m_activePurchase);
 			ShowErrorPopup("IN_APP_PURCHASE_NOT_READY");
 			return;
 		}
@@ -653,7 +654,7 @@ public class IapManager : Singleton<IapManager>
 		if (m_state == InAppPurchaseStatus.PurchasingItem)
 		{
 			m_state = InAppPurchaseStatus.Idle;
-			onPurchaseFailed(m_activePurchase);
+			IapManager.onPurchaseFailed(m_activePurchase);
 			ShowErrorPopup("IN_APP_PURCHASE_TIMEOUT");
 		}
 	}
@@ -664,7 +665,7 @@ public class IapManager : Singleton<IapManager>
 		{
 			if (!ReadyForTransaction)
 			{
-				onProductListReceived(null, "IN_APP_PURCHASE_NOT_READY");
+				IapManager.onProductListReceived(null, "IN_APP_PURCHASE_NOT_READY");
 				return;
 			}
 			productList = null;
@@ -677,7 +678,7 @@ public class IapManager : Singleton<IapManager>
 	{
 		if (!m_iap.readyForTransactions())
 		{
-			onRestorePurchaseComplete(isSucceeded: false);
+			IapManager.onRestorePurchaseComplete(isSucceeded: false);
 		}
 		else
 		{
@@ -1207,7 +1208,7 @@ public class IapManager : Singleton<IapManager>
 				{
 					if (Enum.IsDefined(typeof(BundleItem.BundleItemType), (string)item.Key))
 					{
-						return int.Parse((string)item.Value);
+						return int.Parse((string)item.Value, CultureInfo.InvariantCulture);
 					}
 				}
 				return 0;
@@ -1316,16 +1317,16 @@ public class IapManager : Singleton<IapManager>
 
 	static IapManager()
 	{
-		onPurchaseSucceeded = delegate
+		IapManager.onPurchaseSucceeded = delegate
 		{
 		};
-		onPurchaseFailed = delegate
+		IapManager.onPurchaseFailed = delegate
 		{
 		};
-		onProductListReceived = delegate
+		IapManager.onProductListReceived = delegate
 		{
 		};
-		onRestorePurchaseComplete = delegate
+		IapManager.onRestorePurchaseComplete = delegate
 		{
 		};
 	}

@@ -5,8 +5,8 @@ public class Frame : BasePart, IFramePart, IBasePart
 {
 	public enum FrameMaterial
 	{
-		Wood,
-		Metal
+		Wood = 0,
+		Metal = 1
 	}
 
 	public FrameMaterial m_material;
@@ -78,10 +78,6 @@ public class Frame : BasePart, IFramePart, IBasePart
 	{
 		base.Awake();
 		m_renderers = GetComponentsInChildren<MeshRenderer>();
-		if (base.contraption != null && base.contraption.HasSuperMagnet)
-		{
-			m_autoAlign = AutoAlignType.Rotate;
-		}
 	}
 
 	private void FixedUpdate()

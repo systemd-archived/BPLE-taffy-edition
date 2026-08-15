@@ -6,13 +6,13 @@ public class AtlasMaterials : MonoBehaviour
 {
 	public enum MaterialType
 	{
-		Normal,
-		Dimmed,
-		PartRender,
-		PartZ,
-		Gray,
-		Shiny,
-		Alpha
+		Normal = 0,
+		Dimmed = 1,
+		PartRender = 2,
+		PartZ = 3,
+		Gray = 4,
+		Shiny = 5,
+		Alpha = 6
 	}
 
 	private static AtlasMaterials _instance;
@@ -43,12 +43,6 @@ public class AtlasMaterials : MonoBehaviour
 
 	[SerializeField]
 	private List<Material> alphaMaterials;
-
-	// 预计算 MaterialType 名称，避免每次 GetMaterialKey 的 enum.ToString() GC 分配
-	private static readonly string[] s_materialTypeNames = new string[]
-	{
-		"Normal", "Dimmed", "PartRender", "PartZ", "Gray", "Shiny", "Alpha"
-	};
 
 	private Dictionary<string, Material> cachedMaterialInstances;
 
@@ -192,14 +186,11 @@ public class AtlasMaterials : MonoBehaviour
 
 	private string GetMaterialKey(Material source, MaterialType materialType)
 	{
-		// 使用预计算名称数组替代 enum.ToString()，消除 GC 分配
-		string typeName = s_materialTypeNames[(int)materialType];
 		if (source.name.Contains("_"))
 		{
-			int underscoreIndex = source.name.IndexOf('_');
-			return source.name.Substring(0, underscoreIndex) + "_" + typeName;
+			return $"{source.name.Split(new char[1] { '_' })[0]}_{materialType.ToString()}";
 		}
-		return source.name + "_" + typeName;
+		return $"{source.name}_{materialType.ToString()}";
 	}
 
 	public void AddMaterialInstance(Material materialInstance)

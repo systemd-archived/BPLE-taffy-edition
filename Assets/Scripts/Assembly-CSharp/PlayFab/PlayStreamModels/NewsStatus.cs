@@ -2,9 +2,9 @@ namespace PlayFab.PlayStreamModels
 {
 	public enum NewsStatus
 	{
-		None,
-		Unpublished,
-		Published,
-		Archived
+		None = 0,
+		Unpublished = 1,
+		Published = 2,
+		Archived = 3
 	}
 }

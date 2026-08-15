@@ -39,7 +39,7 @@ public class AppInterfaceSidebar : MonoBehaviour
 			obj.SetActive(value: true);
 			obj.name = "SidebarElement_" + (num + 1);
 			obj.transform.SetParent(base.transform, worldPositionStays: false);
-			obj.GetComponent<AppInterfaceSidebarElement>().Initialize(sidebarElement.Name, sidebarElement.RelatedObject);
+			obj.GetComponent<AppInterfaceSidebarItem>().Initialize(sidebarElement.Name, sidebarElement.RelatedObject);
 			num++;
 		}
 	}
@@ -55,7 +55,7 @@ public class AppInterfaceSidebar : MonoBehaviour
 		}
 	}
 
-	public void SetElementEnabled(AppInterfaceSidebarElement element, bool enabled)
+	public void SetElementEnabled(AppInterfaceSidebarItem element, bool enabled)
 	{
 		if (!GetComponent<ToggleGroup>().AnyTogglesOn())
 		{

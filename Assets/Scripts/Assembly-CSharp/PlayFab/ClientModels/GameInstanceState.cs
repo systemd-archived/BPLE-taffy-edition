@@ -2,7 +2,7 @@ namespace PlayFab.ClientModels
 {
 	public enum GameInstanceState
 	{
-		Open,
-		Closed
+		Open = 0,
+		Closed = 1
 	}
 }

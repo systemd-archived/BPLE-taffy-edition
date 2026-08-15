@@ -53,15 +53,18 @@ public class UIPartButtonList : MonoBehaviour
 			{
 				return 1;
 			}
-			Vector2 averagePosition = x.AveragePosition;
-			Vector2 averagePosition2 = y.AveragePosition;
-			if (averagePosition.x < averagePosition2.x)
+			if (!Settings.HighPartTypePriority)
 			{
-				return -1;
-			}
-			if (averagePosition.x > averagePosition2.x)
-			{
-				return 1;
+				Vector2 averagePosition = x.AveragePosition;
+				Vector2 averagePosition2 = y.AveragePosition;
+				if (averagePosition.x < averagePosition2.x)
+				{
+					return -1;
+				}
+				if (averagePosition.x > averagePosition2.x)
+				{
+					return 1;
+				}
 			}
 			SortedPartType sortedPartType = x.SortedPartType;
 			SortedPartType sortedPartType2 = y.SortedPartType;
@@ -489,7 +492,7 @@ public class UIPartButtonList : MonoBehaviour
 		m_componentHeap.Clear();
 		m_componentHeap.PushRange(GetComponentInfo());
 		int[] array = new int[connectedComponentCount];
-		Array.Fill<int>(array, num);
+		Array.Fill(array, num);
 		for (int i = 0; i < num; i++)
 		{
 			array[m_componentHeap.Pop().Item2] = i;
@@ -652,38 +655,42 @@ public class UIPartButtonList : MonoBehaviour
 		for (j = 1; num > j * (int)(num2 / GetPadding(j + 1)); j++)
 		{
 		}
-		int num3 = num / j + ((num % j != 0) ? 1 : 0);
-		float num4 = GetPadding(j);
-		float num5 = GetPadding(j + 1);
-		float num6 = Math.Clamp(num2 / (float)num3, num5, num4);
-		float num7 = num6 / 240f;
-		Vector3 localScale = new Vector3(num7, num7, 1f);
-		int num8 = 0;
-		float num9 = 10f;
+		float num3 = GetPadding(j);
+		float min = GetPadding(j + 1);
+		int num4 = num / j + ((num % j != 0) ? 1 : 0);
+		if (Settings.LayoutMode == 1 && j > 1)
+		{
+			num4 = Math.Max(num4, (int)(num2 / num3));
+		}
+		float num5 = Math.Clamp(num2 / (float)num4, min, num3);
+		float num6 = num5 / 240f;
+		Vector3 localScale = new Vector3(num6, num6, 1f);
+		int num7 = 0;
+		float num8 = 10f;
 		RectTransform content = m_scrollView.content;
 		RectTransform rectTransform = (RectTransform)m_scrollView.transform;
-		content.sizeDelta = new Vector2(content.sizeDelta.x, (float)j * num6 + num9);
-		rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, Math.Min((float)j * num6 + num9, 360f * Settings.ScrollViewHeightScale));
+		content.sizeDelta = new Vector2(content.sizeDelta.x, (float)j * num5 + num8);
+		rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, Math.Min((float)j * num5 + num8, 360f * Settings.ScrollViewHeightScale));
 		foreach (UIPartButton currentButton3 in m_currentButtons)
 		{
-			float num10 = (float)(-(num3 - 1)) / 2f + (float)(num8 % num3);
-			float num11 = (float)(-(j - 1)) / 2f + (float)(num8 / num3);
-			Vector2 vector = new Vector2(num6 * num10, (0f - num6) * num11 + num9);
+			float num9 = (float)(-(num4 - 1)) / 2f + (float)(num7 % num4);
+			float num10 = (float)(-(j - 1)) / 2f + (float)(num7 / num4);
+			Vector2 vector = new Vector2(num5 * num9, (0f - num5) * num10 + num8);
 			RectTransform obj = (RectTransform)currentButton3.transform;
 			obj.localScale = localScale;
 			obj.anchoredPosition = vector;
-			num8++;
+			num7++;
 			if (currentButton3.SubButtonCount == 0)
 			{
 				continue;
 			}
 			foreach (UIPartButton subButton in currentButton3.SubButtons)
 			{
-				num10 = (float)(-(num3 - 1)) / 2f + (float)(num8 % num3);
-				num11 = (float)(-(j - 1)) / 2f + (float)(num8 / num3);
-				Vector2 vector2 = new Vector2(num6 * num10, (0f - num6) * num11 + num9);
-				((RectTransform)subButton.transform).anchoredPosition = (vector2 - vector) / num7;
-				num8++;
+				num9 = (float)(-(num4 - 1)) / 2f + (float)(num7 % num4);
+				num10 = (float)(-(j - 1)) / 2f + (float)(num7 / num4);
+				Vector2 vector2 = new Vector2(num5 * num9, (0f - num5) * num10 + num8);
+				((RectTransform)subButton.transform).anchoredPosition = (vector2 - vector) / num6;
+				num7++;
 			}
 		}
 		static float GetPadding(int n)

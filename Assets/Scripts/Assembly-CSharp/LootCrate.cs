@@ -6,9 +6,9 @@ public class LootCrate : Collectable
 {
 	public enum AdWatched
 	{
-		Yes,
-		No,
-		NotApplicaple
+		Yes = 0,
+		No = 1,
+		NotApplicaple = 2
 	}
 
 	public struct AnalyticData

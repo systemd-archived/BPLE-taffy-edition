@@ -6,8 +6,8 @@ public class MusicManager : MonoBehaviour
 {
 	public enum MusicStartOption
 	{
-		StartFromBeginning,
-		StartFromPreviousPosition
+		StartFromBeginning = 0,
+		StartFromPreviousPosition = 1
 	}
 
 	private class MusicChange
@@ -56,10 +56,19 @@ public class MusicManager : MonoBehaviour
 
 	public GameObject Music => m_music;
 
+	public bool IsOverridden()
+	{
+		return INUnity.Enabled;
+	}
+
 	private void AwakeOverride()
 	{
 		Instance = this;
 		m_audioPackMap = new Dictionary<string, AudioSource>(StringComparer.OrdinalIgnoreCase);
+		UnityEngine.Object.DontDestroyOnLoad(this);
+		EventManager.Connect<LoadLevelEvent>(ReceiveLoadingLevelEvent);
+		EventManager.Connect<GameStateChanged>(ReceiveGameStateChanged);
+		m_globalMusicVolume = UserSettings.GetFloat("MusicVolume", 1f);
 	}
 
 	private void ReceiveLoadingLevelEventOverride(LoadLevelEvent data)
@@ -138,7 +147,11 @@ public class MusicManager : MonoBehaviour
 
 	private void Awake()
 	{
-		AwakeOverride();
+		if (IsOverridden())
+		{
+			AwakeOverride();
+			return;
+		}
 		UnityEngine.Object.DontDestroyOnLoad(this);
 		EventManager.Connect<LoadLevelEvent>(ReceiveLoadingLevelEvent);
 		EventManager.Connect<GameStateChanged>(ReceiveGameStateChanged);
@@ -235,7 +248,66 @@ public class MusicManager : MonoBehaviour
 
 	private void ReceiveLoadingLevelEvent(LoadLevelEvent data)
 	{
-		ReceiveLoadingLevelEventOverride(data);
+		if (IsOverridden())
+		{
+			ReceiveLoadingLevelEventOverride(data);
+			return;
+		}
+		if (data.currentGameState == GameManager.GameState.Level && data.nextGameState != GameManager.GameState.Level)
+		{
+			StopMusic();
+		}
+		switch (data.nextGameState)
+		{
+		case GameManager.GameState.MainMenu:
+		{
+			GameObject musicTheme = commonAudio.MusicTheme;
+			StartMusic(musicTheme.GetComponent<AudioSource>(), 0f, 2.2f);
+			break;
+		}
+		case GameManager.GameState.EpisodeSelection:
+		case GameManager.GameState.LevelSelection:
+		case GameManager.GameState.SandboxLevelSelection:
+		{
+			GameObject levelSelectionMusic = commonAudio.LevelSelectionMusic;
+			StartMusic(levelSelectionMusic.GetComponent<AudioSource>(), 0f, 2.2f);
+			break;
+		}
+		case GameManager.GameState.Level:
+		{
+			FadeOutMusic(0.4f);
+			GameObject gameObject2 = ((!Singleton<GameManager>.Instance.OverrideBuildMusic) ? commonAudio.BuildMusic : Singleton<GameManager>.Instance.OverriddenBuildMusic);
+			StartMusic(gameObject2.GetComponent<AudioSource>(), 0.6f, 2.2f);
+			break;
+		}
+		case GameManager.GameState.Cutscene:
+			FadeOutMusic(0.4f);
+			break;
+		case GameManager.GameState.StarLevelCutscene:
+			FadeOutMusic(0.4f);
+			break;
+		case GameManager.GameState.KingPigFeeding:
+		{
+			FadeOutMusic(0.4f);
+			GameObject gameObject = ((!Singleton<TimeManager>.IsInstantiated() || !Singleton<TimeManager>.Instance.Initialized || Singleton<TimeManager>.Instance.CurrentTime.Month != 12) ? commonAudio.FeedingMusic : commonAudio.XmasThemeSong);
+			StartMusic(gameObject.GetComponent<AudioSource>(), 0.6f, 2.2f);
+			break;
+		}
+		case GameManager.GameState.WorkShop:
+			FadeOutMusic(0.4f);
+			StartMusic(commonAudio.craftAmbience, 0.6f, 2.2f);
+			break;
+		case GameManager.GameState.CakeRaceMenu:
+		{
+			FadeOutMusic(0.4f);
+			GameObject cakeRaceTheme = commonAudio.CakeRaceTheme;
+			StartMusic(cakeRaceTheme.GetComponent<AudioSource>(), 0.6f, 2.2f);
+			break;
+		}
+		case GameManager.GameState.CheatsPanel:
+		case GameManager.GameState.RaceLevelSelection:
+			break;
+		}
 	}
 
 	private void ReceiveGameStateChanged(GameStateChanged data)

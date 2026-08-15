@@ -127,7 +127,7 @@ public class e2dVoronoi
 		case e2dVoronoiPeakType.SINE:
 		{
 			num = 1f - Mathf.Pow(1f - num, Mathf.Lerp(e2dConstants.VORONOI_SIN_POWER_MIN, e2dConstants.VORONOI_SIN_POWER_MAX, mPeakWidth));
-			float f = -(float)Math.PI / 2f + num * (float)Math.PI;
+			float f = -MathF.PI / 2f + num * MathF.PI;
 			float num2 = 0.5f * (mPeaks[index].y - mValleys[index2].y);
 			float num3 = 1f;
 			result = mValleys[index2].y + (Mathf.Sin(f) + num3) * num2;

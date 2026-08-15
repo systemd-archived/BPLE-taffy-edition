@@ -7,20 +7,20 @@ public class Bird : WPFMonoBehaviour
 {
 	public enum BirdType
 	{
-		Red,
-		Yellow,
-		Blue
+		Red = 0,
+		Yellow = 1,
+		Blue = 2
 	}
 
 	private enum State
 	{
-		Sleeping,
-		Ready,
-		JumpToSlingshot,
-		Aim,
-		Shoot,
-		Fly,
-		KnockedOut
+		Sleeping = 0,
+		Ready = 1,
+		JumpToSlingshot = 2,
+		Aim = 3,
+		Shoot = 4,
+		Fly = 5,
+		KnockedOut = 6
 	}
 
 	[SerializeField]
@@ -492,7 +492,7 @@ public class Bird : WPFMonoBehaviour
 			num7 *= 0.5f;
 			if (i < 5)
 			{
-				vector4 = 3.2f * new Vector3(Mathf.Cos(num + 0.1f * num7 * num6 * ((float)Math.PI / 180f)), Mathf.Sin(num + num6 * num7 * ((float)Math.PI / 180f)), 0f);
+				vector4 = 3.2f * new Vector3(Mathf.Cos(num + 0.1f * num7 * num6 * (MathF.PI / 180f)), Mathf.Sin(num + num6 * num7 * (MathF.PI / 180f)), 0f);
 				if (SimulateShot(vector4, relativeTargetPosition, targetVelocity, targetAcceleration) > num5)
 				{
 					num6 = 0f - num6;

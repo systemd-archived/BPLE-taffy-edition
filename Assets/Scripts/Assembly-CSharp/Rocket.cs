@@ -349,11 +349,12 @@ public class Rocket : BasePropulsion
 				float num10 = -0.5f * num2;
 				for (int i = 0; i < num9; i++)
 				{
-					float f = num10 * ((float)Math.PI / 180f);
+					float f = num10 * (MathF.PI / 180f);
 					float num11 = Mathf.Cos(f);
 					float num12 = Mathf.Sin(f);
 					Vector2 vector = new Vector2(direction.x * num11 - direction.y * num12, direction.x * num12 + direction.y * num11);
-					bool flag2 = (array[i] = RaycastWithParts(base.transform.position, vector, out var hitInfo2, maxDistance));
+					RaycastHit hitInfo2;
+					bool flag2 = (array[i] = RaycastWithParts(base.transform.position, vector, out hitInfo2, maxDistance));
 					array3[i] = vector;
 					array2[i] = (flag2 ? hitInfo2.distance : float.PositiveInfinity);
 					num10 += num2 / (float)(num9 - 1);
@@ -392,7 +393,7 @@ public class Rocket : BasePropulsion
 		{
 			return;
 		}
-		float f2 = INSettings.GetFloat(INFeature.TrackingRocketAngle) * 0.5f * ((float)Math.PI / 180f);
+		float f2 = INSettings.GetFloat(INFeature.TrackingRocketAngle) * 0.5f * (MathF.PI / 180f);
 		float num19 = INSettings.GetFloat(INFeature.TrackingRocketMaxForce);
 		float num20 = INSettings.GetFloat(INFeature.TrackingRocketMaxDistance);
 		Vector3 position = base.transform.position;
@@ -457,7 +458,7 @@ public class Rocket : BasePropulsion
 			base.rigidbody.AddForce(force, ForceMode.Force);
 			return;
 		}
-		float num26 = (float)Math.PI;
+		float num26 = MathF.PI;
 		Vector3 vector7 = m_targetPart.rigidbody.velocity - velocity3;
 		vector7.z = 0f;
 		Vector3 vector8 = m_targetPart.transform.position - position;

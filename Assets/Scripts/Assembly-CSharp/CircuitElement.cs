@@ -87,6 +87,6 @@ public abstract class CircuitElement
 
 	public virtual void UpdateElectrode(CircuitSimulator simulator, SimulationResult result)
 	{
-		ElementUpdated?.Invoke(simulator, result);
+		this.ElementUpdated?.Invoke(simulator, result);
 	}
 }

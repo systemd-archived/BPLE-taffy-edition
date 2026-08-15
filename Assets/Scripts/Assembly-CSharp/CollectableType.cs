@@ -1,5 +1,5 @@
 internal enum CollectableType
 {
-	Skull,
-	Statue
+	Skull = 0,
+	Statue = 1
 }

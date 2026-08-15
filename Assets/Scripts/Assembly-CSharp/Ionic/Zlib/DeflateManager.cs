@@ -1245,7 +1245,7 @@ namespace Ionic.Zlib
 			if (status == INIT_STATE)
 			{
 				int num2 = Z_DEFLATED + (w_bits - 8 << 4) << 8;
-				int num3 = (int)((compressionLevel - 1) & (CompressionLevel)0xFF) >> 1;
+				int num3 = (int)((compressionLevel - 1) & (CompressionLevel)255) >> 1;
 				if (num3 > 3)
 				{
 					num3 = 3;

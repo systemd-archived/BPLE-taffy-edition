@@ -5,9 +5,9 @@ public class DoubleRewardManager : Singleton<DoubleRewardManager>
 {
 	public enum Status
 	{
-		Uninitialized,
-		Initialized,
-		Error
+		Uninitialized = 0,
+		Initialized = 1,
+		Error = 2
 	}
 
 	public Action OnInitialize;

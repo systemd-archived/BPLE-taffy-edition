@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using UnityEngine;
 
 public static class ConvertExtensions
@@ -11,9 +12,9 @@ public static class ConvertExtensions
 
 		public PartTypeConverter()
 		{
-			m_partTypeTable = new BasePart.PartType[49];
-			m_sortedPartTypeTable = new SortedPartType[51];
-			for (int i = 0; i < 49; i++)
+			m_partTypeTable = new BasePart.PartType[(int)SortedPartType.MAX];
+			m_sortedPartTypeTable = new SortedPartType[(int)BasePart.PartType.MAX];
+			for (int i = 0; i < (int)SortedPartType.MAX; i++)
 			{
 				SortedPartType sortedPartType = (SortedPartType)i;
 				if (!Enum.TryParse<BasePart.PartType>(sortedPartType.ToString(), out var result))
@@ -22,7 +23,7 @@ public static class ConvertExtensions
 				}
 				m_partTypeTable[i] = result;
 			}
-			for (int j = 0; j < 51; j++)
+			for (int j = 0; j < (int)BasePart.PartType.MAX; j++)
 			{
 				BasePart.PartType partType = (BasePart.PartType)j;
 				if (!Enum.TryParse<SortedPartType>(partType.ToString(), out var result2))
@@ -150,43 +151,43 @@ public static class ConvertExtensions
 		}
 		if (typeFromHandle == typeof(sbyte))
 		{
-			return (T)(object)sbyte.Parse(str);
+			return (T)(object)sbyte.Parse(str, CultureInfo.InvariantCulture);
 		}
 		if (typeFromHandle == typeof(byte))
 		{
-			return (T)(object)byte.Parse(str);
+			return (T)(object)byte.Parse(str, CultureInfo.InvariantCulture);
 		}
 		if (typeFromHandle == typeof(short))
 		{
-			return (T)(object)short.Parse(str);
+			return (T)(object)short.Parse(str, CultureInfo.InvariantCulture);
 		}
 		if (typeFromHandle == typeof(ushort))
 		{
-			return (T)(object)ushort.Parse(str);
+			return (T)(object)ushort.Parse(str, CultureInfo.InvariantCulture);
 		}
 		if (typeFromHandle == typeof(int))
 		{
-			return (T)(object)int.Parse(str);
+			return (T)(object)int.Parse(str, CultureInfo.InvariantCulture);
 		}
 		if (typeFromHandle == typeof(uint))
 		{
-			return (T)(object)uint.Parse(str);
+			return (T)(object)uint.Parse(str, CultureInfo.InvariantCulture);
 		}
 		if (typeFromHandle == typeof(long))
 		{
-			return (T)(object)long.Parse(str);
+			return (T)(object)long.Parse(str, CultureInfo.InvariantCulture);
 		}
 		if (typeFromHandle == typeof(ulong))
 		{
-			return (T)(object)ulong.Parse(str);
+			return (T)(object)ulong.Parse(str, CultureInfo.InvariantCulture);
 		}
 		if (typeFromHandle == typeof(float))
 		{
-			return (T)(object)float.Parse(str);
+			return (T)(object)float.Parse(str, CultureInfo.InvariantCulture);
 		}
 		if (typeFromHandle == typeof(double))
 		{
-			return (T)(object)double.Parse(str);
+			return (T)(object)double.Parse(str, CultureInfo.InvariantCulture);
 		}
 		throw new FormatException();
 	}
@@ -196,73 +197,85 @@ public static class ConvertExtensions
 		Type typeFromHandle = typeof(T);
 		if (typeFromHandle == typeof(bool))
 		{
-			bool result = bool.TryParse(str, out var result2);
+			bool result2;
+			bool result = bool.TryParse(str, out result2);
 			value = (T)(object)result2;
 			return result;
 		}
 		if (typeFromHandle == typeof(char))
 		{
-			bool result3 = char.TryParse(str, out var result4);
+			char result4;
+			bool result3 = char.TryParse(str, out result4);
 			value = (T)(object)result4;
 			return result3;
 		}
 		if (typeFromHandle == typeof(sbyte))
 		{
-			bool result5 = sbyte.TryParse(str, out var result6);
+			sbyte result6;
+			bool result5 = sbyte.TryParse(str, out result6);
 			value = (T)(object)result6;
 			return result5;
 		}
 		if (typeFromHandle == typeof(byte))
 		{
-			bool result7 = byte.TryParse(str, out var result8);
+			byte result8;
+			bool result7 = byte.TryParse(str, out result8);
 			value = (T)(object)result8;
 			return result7;
 		}
 		if (typeFromHandle == typeof(short))
 		{
-			bool result9 = short.TryParse(str, out var result10);
+			short result10;
+			bool result9 = short.TryParse(str, out result10);
 			value = (T)(object)result10;
 			return result9;
 		}
 		if (typeFromHandle == typeof(ushort))
 		{
-			bool result11 = ushort.TryParse(str, out var result12);
+			ushort result12;
+			bool result11 = ushort.TryParse(str, out result12);
 			value = (T)(object)result12;
 			return result11;
 		}
 		if (typeFromHandle == typeof(int))
 		{
-			bool result13 = int.TryParse(str, out var result14);
+			int result14;
+			bool result13 = int.TryParse(str, out result14);
 			value = (T)(object)result14;
 			return result13;
 		}
 		if (typeFromHandle == typeof(uint))
 		{
-			bool result15 = uint.TryParse(str, out var result16);
+			uint result16;
+			bool result15 = uint.TryParse(str, out result16);
 			value = (T)(object)result16;
 			return result15;
 		}
 		if (typeFromHandle == typeof(long))
 		{
-			bool result17 = long.TryParse(str, out var result18);
+			long result18;
+			bool result17 = long.TryParse(str, out result18);
 			value = (T)(object)result18;
 			return result17;
 		}
 		if (typeFromHandle == typeof(ulong))
 		{
-			bool result19 = ulong.TryParse(str, out var result20);
+			ulong result20;
+			bool result19 = ulong.TryParse(str, out result20);
 			value = (T)(object)result20;
 			return result19;
 		}
 		if (typeFromHandle == typeof(float))
 		{
-			bool result21 = float.TryParse(str, out var result22);
+			float result22;
+			bool result21 = float.TryParse(str, out result22);
 			value = (T)(object)result22;
 			return result21;
 		}
 		if (typeFromHandle == typeof(double))
 		{
-			bool result23 = double.TryParse(str, out var result24);
+			double result24;
+			bool result23 = double.TryParse(str, out result24);
 			value = (T)(object)result24;
 			return result23;
 		}
@@ -277,7 +290,8 @@ public static class ConvertExtensions
 
 	public static bool TryToEnum<T>(this string str, out T value) where T : struct
 	{
-		bool result = Enum.TryParse<T>(str, out var result2);
+		T result2;
+		bool result = Enum.TryParse<T>(str, out result2);
 		value = result2;
 		return result;
 	}
@@ -289,16 +303,17 @@ public static class ConvertExtensions
 
 	public static bool TryToEnum<T>(this string str, bool ignoreCase, out T value) where T : struct
 	{
-		bool result = Enum.TryParse<T>(str, ignoreCase, out var result2);
+		T result2;
+		bool result = Enum.TryParse<T>(str, ignoreCase, out result2);
 		value = result2;
 		return result;
 	}
 
 	public static Vector2 ToVector2(this string str)
 	{
-		string[] array = str.Substring(1, str.Length - 2).Split(',', StringSplitOptions.None);
-		float x = float.Parse(array[0]);
-		float y = float.Parse(array[1]);
+		string[] array = str.Substring(1, str.Length - 2).Split(',');
+		float x = float.Parse(array[0], CultureInfo.InvariantCulture);
+		float y = float.Parse(array[1], CultureInfo.InvariantCulture);
 		return new Vector2(x, y);
 	}
 
@@ -306,7 +321,7 @@ public static class ConvertExtensions
 	{
 		if (str.Length >= 2)
 		{
-			string[] array = str.Substring(1, str.Length - 2).Split(',', StringSplitOptions.None);
+			string[] array = str.Substring(1, str.Length - 2).Split(',');
 			if (array.Length >= 2 && float.TryParse(array[0], out var result) && float.TryParse(array[1], out var result2))
 			{
 				vector = new Vector2(result, result2);
@@ -319,10 +334,10 @@ public static class ConvertExtensions
 
 	public static Vector3 ToVector3(this string str)
 	{
-		string[] array = str.Substring(1, str.Length - 2).Split(',', StringSplitOptions.None);
-		float x = float.Parse(array[0]);
-		float y = float.Parse(array[1]);
-		float z = float.Parse(array[2]);
+		string[] array = str.Substring(1, str.Length - 2).Split(',');
+		float x = float.Parse(array[0], CultureInfo.InvariantCulture);
+		float y = float.Parse(array[1], CultureInfo.InvariantCulture);
+		float z = float.Parse(array[2], CultureInfo.InvariantCulture);
 		return new Vector3(x, y, z);
 	}
 

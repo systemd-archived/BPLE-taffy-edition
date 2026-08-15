@@ -57,7 +57,7 @@ public class FreeLootCrate : MonoBehaviour
 
 	private void Initialize(bool enable)
 	{
-		isEnabled = (GameProgress.GetInt(crateID + crateType) == 0) & enable;
+		isEnabled = GameProgress.GetInt(crateID + crateType) == 0 && enable;
 		base.gameObject.SetActive(isEnabled);
 	}
 

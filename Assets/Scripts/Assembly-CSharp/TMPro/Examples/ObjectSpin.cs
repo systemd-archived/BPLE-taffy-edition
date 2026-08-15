@@ -6,9 +6,9 @@ namespace TMPro.Examples
 	{
 		public enum MotionType
 		{
-			Rotation,
-			BackAndForth,
-			Translation
+			Rotation = 0,
+			BackAndForth = 1,
+			Translation = 2
 		}
 
 		public float SpinSpeed = 5f;

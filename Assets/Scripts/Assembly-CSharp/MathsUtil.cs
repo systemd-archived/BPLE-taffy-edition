@@ -31,7 +31,7 @@ public static class MathsUtil
 		{
 			return c / 2f * t * t + b;
 		}
-		t--;
+		t -= 1f;
 		return (0f - c) / 2f * (t * (t - 2f) - 1f) + b;
 	}
 }

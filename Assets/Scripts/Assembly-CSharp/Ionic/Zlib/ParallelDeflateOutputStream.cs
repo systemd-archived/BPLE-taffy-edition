@@ -19,7 +19,7 @@ namespace Ionic.Zlib
 			EmitBegin = 8u,
 			EmitDone = 0x10u,
 			EmitSkip = 0x20u,
-			EmitAll = EmitLock | EmitBegin | EmitDone | EmitSkip,
+			EmitAll = 0x3Au,
 			Flush = 0x40u,
 			Lifecycle = 0x80u,
 			Session = 0x100u,
@@ -401,7 +401,7 @@ namespace Ionic.Zlib
 				return;
 			}
 			emitting = true;
-			if (doAll | mustWait)
+			if (doAll || mustWait)
 			{
 				_newlyCompressedBlob.WaitOne();
 			}

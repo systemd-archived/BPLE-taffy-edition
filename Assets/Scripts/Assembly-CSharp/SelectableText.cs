@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SelectableText : Selectable, ICanvasElement, IInitializePotentialDragHandler, IEventSystemHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IUpdateSelectedHandler
@@ -90,6 +90,8 @@ public class SelectableText : Selectable, ICanvasElement, IInitializePotentialDr
 	public SelectionChangedEvent SelectionChanged => m_selectionChanged;
 
 	public List<(int, int)> UnselectableTextRanges => m_unselectableTextRanges;
+
+	Transform ICanvasElement.transform => base.transform;
 
 	public void AddUnselectableTextRange(int start, int end)
 	{

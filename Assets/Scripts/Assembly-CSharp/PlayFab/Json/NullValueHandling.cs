@@ -2,7 +2,7 @@ namespace PlayFab.Json
 {
 	public enum NullValueHandling
 	{
-		Include,
-		Ignore
+		Include = 0,
+		Ignore = 1
 	}
 }

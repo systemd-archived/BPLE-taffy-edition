@@ -4,7 +4,7 @@ public class ContentLock : MonoBehaviour
 {
 	public void Activate(bool forceLimit = false)
 	{
-		if (LevelInfo.IsContentLimited(base.transform.parent.GetComponent<EpisodeButton>().Index) | forceLimit)
+		if (LevelInfo.IsContentLimited(base.transform.parent.GetComponent<EpisodeButton>().Index) || forceLimit)
 		{
 			OverrideButtonAction();
 		}

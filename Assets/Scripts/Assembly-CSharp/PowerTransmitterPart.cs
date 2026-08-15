@@ -5,8 +5,8 @@ public class PowerTransmitterPart : ElectricalPart
 {
 	public enum PowerTransmitterType
 	{
-		Sender,
-		Receiver
+		Sender = 0,
+		Receiver = 1
 	}
 
 	private CircuitElement m_element;

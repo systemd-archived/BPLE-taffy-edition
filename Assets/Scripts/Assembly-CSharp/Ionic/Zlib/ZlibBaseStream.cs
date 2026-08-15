@@ -10,9 +10,9 @@ namespace Ionic.Zlib
 	{
 		internal enum StreamMode
 		{
-			Writer,
-			Reader,
-			Undefined
+			Writer = 0,
+			Reader = 1,
+			Undefined = 2
 		}
 
 		protected internal ZlibCodec _z;

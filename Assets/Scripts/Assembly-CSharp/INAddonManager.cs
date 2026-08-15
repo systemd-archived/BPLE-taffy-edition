@@ -4,7 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Innovation;
 using NLayer;
 using UnityEngine;
@@ -17,21 +17,20 @@ public class INAddonManager : MonoBehaviour
 	{
 		private bool m_needsUpdate;
 
+		private AddonPackage m_currentPackage;
+
 		private AddonPackageList m_packageInfo;
 
 		private Dictionary<string, AddonPackageInfo> m_packageMap;
 
-		public IReadOnlyCollection<AddonPackageInfo> Packages => m_packageMap.Values;
+		public AddonPackage CurrentPackage => m_currentPackage;
 
-		public AddonPackageManager()
-		{
-			m_packageMap = new Dictionary<string, AddonPackageInfo>();
-		}
+		public IReadOnlyCollection<AddonPackageInfo> Packages => m_packageMap.Values;
 
 		public void Initialize()
 		{
 			LoadPackageInfo(ResolvePath("package-list.json"));
-			LoadPackages();
+			LoadPackages().Forget();
 		}
 
 		public AddonPackage FindPackage(string name)
@@ -70,66 +69,63 @@ public class INAddonManager : MonoBehaviour
 			}
 		}
 
-		public void LoadPackages()
+		public UniTask LoadPackages()
 		{
 			if (m_packageInfo == null || m_packageInfo.Packages == null)
 			{
-				return;
+				m_packageMap = new Dictionary<string, AddonPackageInfo>();
+				return UniTask.CompletedTask;
 			}
-			foreach (AddonPackageInfo package in m_packageInfo.Packages)
-			{
-				m_packageMap.Add(package.ID, package);
-				LoadPackage(package.ID);
-			}
+			m_packageMap = m_packageInfo.Packages.ToDictionary((AddonPackageInfo info) => info.ID);
+			return UniTask.WhenAll(m_packageInfo.Packages.Select((AddonPackageInfo info) => LoadPackage(info.ID)));
 		}
 
-		public void LoadPackage(string id)
+		public async UniTask LoadPackage(string id)
 		{
-			AddonPackageInfo addonPackageInfo = m_packageMap[id];
-			string path = ResolvePath(addonPackageInfo.Path);
+			AddonPackageInfo info = m_packageMap[id];
+			info.State = AddonPackageState.Loading;
+			string path = ResolvePath(info.Path);
 			try
 			{
-				if (addonPackageInfo.Kind == AddonPackageKind.ZipArchive)
+				if (info.Kind == AddonPackageKind.ZipArchive)
 				{
-					AddonPackage package = LoadPackageFromZipArchive(id, path);
+					AddonPackage package = await LoadPackageFromZipArchive(id, path);
 					using (FileStream stream = File.OpenRead(path))
 					{
-						addonPackageInfo.MD5 = ComputeMD5(stream);
+						info.MD5 = ComputeMD5(stream);
 					}
-					if (addonPackageInfo.State == AddonPackageState.Failed)
+					info.State = (info.AutoStart ? AddonPackageState.Enabled : AddonPackageState.Disabled);
+					info.Package = package;
+					await UniTask.NextFrame();
+					OnPackageLoaded(info.ID);
+					if (info.AutoStart)
 					{
-						addonPackageInfo.State = AddonPackageState.Enabled;
+						SetPackageEnabled(info.ID, enabled: true, force: true);
 					}
-					addonPackageInfo.Package = package;
-					OnPackageLoaded(addonPackageInfo.ID);
-					if (addonPackageInfo.State == AddonPackageState.Enabled)
-					{
-						SetPackageEnabled(addonPackageInfo.ID, enabled: true, force: true);
-					}
-					INAddonInterface.Instance.ApplyPackage(addonPackageInfo, null);
+					INAddonInterface.Instance.ApplyPackage(info, null);
 					return;
 				}
 				throw new AddonException("Unsupported addon package kind.");
 			}
 			catch (Exception exception)
 			{
-				addonPackageInfo.State = AddonPackageState.Failed;
-				addonPackageInfo.Package = null;
-				INAddonInterface.Instance.ApplyPackage(addonPackageInfo, exception);
+				info.State = AddonPackageState.Failed;
+				info.Package = null;
+				INAddonInterface.Instance.ApplyPackage(info, exception);
 			}
 		}
 
-		private AddonPackage LoadPackageFromZipArchive(string id, string path)
+		private async UniTask<AddonPackage> LoadPackageFromZipArchive(string id, string path)
 		{
-			using FileStream stream = File.OpenRead(path);
-			return LoadPackageFromZipArchive(id, stream);
+			using FileStream fileStream = File.OpenRead(path);
+			return await LoadPackageFromZipArchive(id, fileStream);
 		}
 
-		private AddonPackage LoadPackageFromZipArchive(string id, Stream stream)
+		private async UniTask<AddonPackage> LoadPackageFromZipArchive(string id, Stream stream)
 		{
-			using ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Read);
+			using ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read);
 			SerializedAddonPackage serializedAddonPackage;
-			using (StreamReader reader = new StreamReader(zipArchive.GetEntry("package.json").Open()))
+			using (StreamReader reader = new StreamReader(archive.GetEntry("package.json").Open()))
 			{
 				serializedAddonPackage = Json.Deserialize<SerializedAddonPackage>(reader);
 			}
@@ -141,53 +137,54 @@ public class INAddonManager : MonoBehaviour
 			{
 				throw new AddonException("Invalid addon package name.");
 			}
-			AddonPackage addonPackage = new AddonPackage(serializedAddonPackage.ID, serializedAddonPackage.Name, serializedAddonPackage.Developer, serializedAddonPackage.Version, serializedAddonPackage.Kind, serializedAddonPackage.EntryPoint);
-			foreach (SerializedAddonPackage.ResourceData resource in serializedAddonPackage.Resources)
+			AddonPackage package = new AddonPackage(serializedAddonPackage.ID, serializedAddonPackage.Name, serializedAddonPackage.Developer, serializedAddonPackage.Version, serializedAddonPackage.Kind, serializedAddonPackage.EntryPoint);
+			foreach (SerializedAddonPackage.ResourceData data in serializedAddonPackage.Resources)
 			{
-				using Stream stream2 = zipArchive.GetEntry(resource.Path).Open();
-				using StreamReader streamReader = new StreamReader(stream2);
-				switch (resource.Kind)
+				ZipArchiveEntry entry = archive.GetEntry(data.Path);
+				using Stream resourceStream = entry.Open();
+				using StreamReader resourceReader = new StreamReader(resourceStream);
+				switch (data.Kind)
 				{
 				case SerializedAddonPackage.ResourceKind.Script:
 				{
-					string value4 = streamReader.ReadToEnd();
-					addonPackage.Scripts[resource.Name] = value4;
+					string value4 = await resourceReader.ReadToEndAsync();
+					package.Scripts[data.Name] = value4;
 					break;
 				}
 				case SerializedAddonPackage.ResourceKind.BinaryAsset:
 				{
 					MemoryStream memoryStream = new MemoryStream();
-					stream2.CopyTo(memoryStream);
-					addonPackage.BinaryAssets[resource.Name] = memoryStream.ToArray();
+					await resourceStream.CopyToAsync(memoryStream);
+					package.BinaryAssets[data.Name] = memoryStream.ToArray();
 					memoryStream.Dispose();
 					break;
 				}
 				case SerializedAddonPackage.ResourceKind.TextAsset:
 				{
-					string value3 = streamReader.ReadToEnd();
-					addonPackage.TextAssets[resource.Name] = value3;
+					string value3 = await resourceReader.ReadToEndAsync();
+					package.TextAssets[data.Name] = value3;
 					break;
 				}
 				case SerializedAddonPackage.ResourceKind.Texture:
 				{
-					Texture2D value2 = LoadTexture(stream2, resource.Name);
-					addonPackage.Textures[resource.Name] = value2;
+					Texture2D value2 = await LoadTextureAsync(resourceStream, data.Name);
+					package.Textures[data.Name] = value2;
 					break;
 				}
 				case SerializedAddonPackage.ResourceKind.AudioClip:
 				{
 					MemoryStream memoryStream = new MemoryStream();
-					stream2.CopyTo(memoryStream);
-					AudioClip value = LoadAudioWithNLayer(memoryStream, resource.Name);
-					addonPackage.AudioClips[resource.Name] = value;
+					await resourceStream.CopyToAsync(memoryStream);
+					AudioClip value = LoadAudioWithNLayer(memoryStream, data.Name);
+					package.AudioClips[data.Name] = value;
 					break;
 				}
 				}
 			}
-			return addonPackage;
+			return package;
 		}
 
-		public void ImportExternalPackage(string path)
+		public async UniTask ImportExternalPackage(string path)
 		{
 			if (!File.Exists(path))
 			{
@@ -198,39 +195,42 @@ public class INAddonManager : MonoBehaviour
 				throw new FileLoadException("Could not load file '" + path + "'", path);
 			}
 			using FileStream stream = File.OpenRead(path);
-			ImportExternalPackage(stream);
+			await ImportExternalPackage(stream);
 		}
 
-		public void ImportExternalPackage(Stream stream)
+		public async UniTask ImportExternalPackage(Stream stream)
 		{
-			using ZipArchive zipArchive = new ZipArchive(stream, ZipArchiveMode.Read);
-			SerializedAddonPackage serializedAddonPackage;
-			using (StreamReader reader = new StreamReader(zipArchive.GetEntry("package.json").Open()))
+			using ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read);
+			SerializedAddonPackage serializedPackage;
+			using (StreamReader reader = new StreamReader(archive.GetEntry("package.json").Open()))
 			{
-				serializedAddonPackage = Json.Deserialize<SerializedAddonPackage>(reader);
+				serializedPackage = Json.Deserialize<SerializedAddonPackage>(reader);
 			}
-			if (string.IsNullOrEmpty(serializedAddonPackage.ID))
+			if (string.IsNullOrEmpty(serializedPackage.ID))
 			{
 				throw new AddonException("Invalid addon package ID.");
 			}
-			if (string.IsNullOrEmpty(serializedAddonPackage.Name))
+			if (string.IsNullOrEmpty(serializedPackage.Name))
 			{
 				throw new AddonException("Invalid addon package name.");
 			}
-			if (serializedAddonPackage.Kind == AddonPackageKind.ZipArchive)
+			if (serializedPackage.Kind == AddonPackageKind.ZipArchive)
 			{
-				string path = serializedAddonPackage.ID + ".zip";
-				using (FileStream destination = File.Open(ResolvePath(path), FileMode.Create))
+				string fileName = serializedPackage.ID + ".zip";
+				string path = ResolvePath(fileName);
+				using (FileStream destStream = File.Open(path, FileMode.Create))
 				{
 					stream.Seek(0L, SeekOrigin.Begin);
-					stream.CopyTo(destination);
+					await stream.CopyToAsync(destStream);
 				}
 				stream.Seek(0L, SeekOrigin.Begin);
 				string md = ComputeMD5(stream);
-				AddonPackageInfo addonPackageInfo = new AddonPackageInfo(serializedAddonPackage.ID, path, serializedAddonPackage.Kind, AddonPackageState.Enabled, md);
+				AddonPackageInfo addonPackageInfo = new AddonPackageInfo(serializedPackage.ID, fileName, serializedPackage.Kind, AddonPackageState.Loading, autoStart: true, md);
 				m_needsUpdate = true;
 				m_packageMap[addonPackageInfo.ID] = addonPackageInfo;
-				LoadPackage(serializedAddonPackage.ID);
+				INAddonInterface.Instance.ApplyPackage(addonPackageInfo, null);
+				await UniTask.NextFrame();
+				await LoadPackage(serializedPackage.ID);
 				return;
 			}
 			throw new AddonException("Unsupported addon package kind.");
@@ -238,16 +238,12 @@ public class INAddonManager : MonoBehaviour
 
 		public void OnPackageLoaded(string id)
 		{
-			SetPackageEnabled(id, m_packageMap[id].State == AddonPackageState.Enabled, force: true);
-			AddonPackage package = m_packageMap[id].Package;
-			Singleton<INCommandManager>.Instance?.Execute(package.LoadScript(package.EntryPoint), printCode: false, Singleton<INCommandManager>.Instance.CreateEngine());
-			try
+			AddonPackage addonPackage = (m_currentPackage = m_packageMap[id].Package);
+			Singleton<INCommandManager>.Instance?.Execute(addonPackage.LoadScript(addonPackage.EntryPoint), printCode: false, Singleton<INCommandManager>.Instance.CreateEngine());
+			TryInvokeRunner(addonPackage, delegate(IAddonPackageRunner runner)
 			{
-				package.Runner?.OnLoaded();
-			}
-			catch
-			{
-			}
+				runner.OnLoaded();
+			});
 		}
 
 		private string ComputeMD5(Stream stream)
@@ -270,31 +266,25 @@ public class INAddonManager : MonoBehaviour
 
 		public void OnPackageUnloaded(string id)
 		{
-			AddonPackageInfo addonPackageInfo = m_packageMap[id];
-			try
+			TryInvokeRunner(m_packageMap[id].Package, delegate(IAddonPackageRunner runner)
 			{
-				addonPackageInfo.Package.Runner?.OnUnloaded();
-			}
-			catch
-			{
-			}
+				runner.OnUnloaded();
+			});
 		}
 
 		public void ReloadPackage(string id)
 		{
+			AddonPackageInfo addonPackageInfo = m_packageMap[id];
 			m_needsUpdate = true;
-			if (m_packageMap[id].State != AddonPackageState.Failed)
+			if (addonPackageInfo.State != AddonPackageState.Failed)
 			{
-				try
+				TryInvokeRunner(addonPackageInfo.Package, delegate(IAddonPackageRunner runner)
 				{
-					m_packageMap[id].Package.Runner?.OnDisabled();
-				}
-				catch
-				{
-				}
+					runner.OnDisabled();
+				});
 				OnPackageUnloaded(id);
 			}
-			LoadPackage(id);
+			LoadPackage(id).Forget();
 		}
 
 		public void SetPackageEnabled(string id, bool enabled)
@@ -305,7 +295,7 @@ public class INAddonManager : MonoBehaviour
 		public void SetPackageEnabled(string id, bool enabled, bool force)
 		{
 			AddonPackageInfo addonPackageInfo = m_packageMap[id];
-			AddonPackageState addonPackageState = ((!enabled) ? AddonPackageState.Disabled : AddonPackageState.Enabled);
+			AddonPackageState addonPackageState = (enabled ? AddonPackageState.Enabled : AddonPackageState.Disabled);
 			if (!force && addonPackageInfo.State == addonPackageState)
 			{
 				return;
@@ -313,25 +303,25 @@ public class INAddonManager : MonoBehaviour
 			if (enabled)
 			{
 				addonPackageInfo.State = AddonPackageState.Enabled;
-				try
+				TryInvokeRunner(addonPackageInfo.Package, delegate(IAddonPackageRunner runner)
 				{
-					m_packageMap[id].Package.Runner?.OnEnabled();
-				}
-				catch
-				{
-				}
+					runner.OnEnabled();
+				});
 			}
 			else
 			{
 				addonPackageInfo.State = AddonPackageState.Disabled;
-				try
+				TryInvokeRunner(addonPackageInfo.Package, delegate(IAddonPackageRunner runner)
 				{
-					m_packageMap[id].Package.Runner?.OnDisabled();
-				}
-				catch
-				{
-				}
+					runner.OnDisabled();
+				});
 			}
+			m_needsUpdate = true;
+		}
+
+		public void SetPackageAutoStart(string id, bool autoStart)
+		{
+			m_packageMap[id].AutoStart = autoStart;
 			m_needsUpdate = true;
 		}
 
@@ -341,6 +331,22 @@ public class INAddonManager : MonoBehaviour
 			{
 				m_needsUpdate = false;
 				SavePackageInfo(ResolvePath("package-list.json"));
+			}
+		}
+
+		private void TryInvokeRunner(AddonPackage package, Action<IAddonPackageRunner> action)
+		{
+			if (package.Runner != null)
+			{
+				m_currentPackage = package;
+				try
+				{
+					action(package.Runner);
+				}
+				catch
+				{
+				}
+				m_currentPackage = null;
 			}
 		}
 	}
@@ -367,6 +373,10 @@ public class INAddonManager : MonoBehaviour
 		UnityEngine.Object.DontDestroyOnLoad(this);
 		Instance = this;
 		Directory.CreateDirectory(DataPath);
+	}
+
+	private void Start()
+	{
 		m_addonComponents = new List<AddonComponent>();
 		m_texturePackMaterials = new Dictionary<(Shader, Color), Material>();
 		m_packageManager = new AddonPackageManager();
@@ -407,7 +417,7 @@ public class INAddonManager : MonoBehaviour
 		RunScript(File.ReadAllText(ResolvePath(path)), printCode);
 	}
 
-	public static Texture2D LoadTexture(string path, string name)
+	public static Texture2D LoadTextureFromFile(string path, string name)
 	{
 		return LoadTexture(File.ReadAllBytes(ResolvePath(path)), name);
 	}
@@ -447,16 +457,38 @@ public class INAddonManager : MonoBehaviour
 		return LoadTexture(memoryStream.ToArray(), name);
 	}
 
-	public static AudioClip LoadAudioWithNLayer(string path, string name)
+	public static async UniTask<Texture2D> LoadTextureAsync(Stream stream, string name = null)
 	{
-		using FileStream stream = File.OpenRead(path);
-		return LoadAudioWithNLayer(stream, name);
+		if (stream.CanSeek)
+		{
+			int index = 0;
+			int count = (int)stream.Length;
+			byte[] array = new byte[count];
+			while (count > 0)
+			{
+				int num = await stream.ReadAsync(array, index, count);
+				if (num == 0)
+				{
+					throw new EndOfStreamException();
+				}
+				index += num;
+				count -= num;
+			}
+			return LoadTexture(array, name);
+		}
+		using MemoryStream memoryStream = new MemoryStream();
+		await stream.CopyToAsync(memoryStream);
+		return LoadTexture(memoryStream.ToArray(), name);
+	}
+
+	public static AudioClip LoadAudioFromFileWithNLayer(string path, string name)
+	{
+		return LoadAudioWithNLayer(new MemoryStream(File.ReadAllBytes(ResolvePath(path))), name);
 	}
 
 	public static AudioClip LoadAudioWithNLayer(byte[] data, string name)
 	{
-		using MemoryStream stream = new MemoryStream(data);
-		return LoadAudioWithNLayer(stream, name);
+		return LoadAudioWithNLayer(new MemoryStream(data), name);
 	}
 
 	public static AudioClip LoadAudioWithNLayer(Stream stream, string name)
@@ -465,6 +497,9 @@ public class INAddonManager : MonoBehaviour
 		return AudioClip.Create(name, (int)(mpegFile.Length / 4 / mpegFile.Channels), mpegFile.Channels, mpegFile.SampleRate, stream: true, delegate(float[] data)
 		{
 			mpegFile.ReadSamples(data, 0, data.Length);
+		}, delegate(int position)
+		{
+			mpegFile.Position = position;
 		});
 	}
 
@@ -475,7 +510,7 @@ public class INAddonManager : MonoBehaviour
 			UnityWebRequest webRequest = ((UnityWebRequestAsyncOperation)operation).webRequest;
 			if (webRequest.result != UnityWebRequest.Result.Success)
 			{
-				UnityException obj = new UnityException(webRequest.error);
+				Exception obj = new UnityException(webRequest.error);
 				reject?.Invoke(obj);
 				webRequest.Dispose();
 			}
@@ -487,23 +522,6 @@ public class INAddonManager : MonoBehaviour
 				webRequest.Dispose();
 			}
 		};
-	}
-
-	public static async Task<AudioClip> LoadAudioWithWebRequest(string path, string name)
-	{
-		Uri uri = new Uri(ResolvePath(path));
-		UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.UNKNOWN);
-		await request.SendWebRequest();
-		if (request.result != UnityWebRequest.Result.Success)
-		{
-			UnityException ex = new UnityException(request.error);
-			request.Dispose();
-			throw ex;
-		}
-		AudioClip content = DownloadHandlerAudioClip.GetContent(request);
-		content.name = name;
-		request.Dispose();
-		return content;
 	}
 
 	public static AudioSource FindAudioSource(string audioName)
@@ -545,8 +563,8 @@ public class INAddonManager : MonoBehaviour
 		}
 		Dictionary<(Shader, Color), Material> texturePackMaterials = m_texturePackMaterials;
 		texturePackMaterials.Clear();
-		Transform transform = Singleton<INRuntimeGameData>.Instance.PartContainer.transform;
-		Transform transform2 = Singleton<INRuntimeGameData>.Instance.PartIconContainer.transform;
+		Transform transform = Singleton<INPartFactoryManager>.Instance.PartContainer.transform;
+		Transform transform2 = Singleton<INPartFactoryManager>.Instance.PartIconContainer.transform;
 		int childCount = transform.childCount;
 		int childCount2 = transform2.childCount;
 		for (int i = 0; i < childCount + childCount2; i++)
@@ -618,6 +636,7 @@ public class INAddonManager : MonoBehaviour
 		GameObject prefab = INUnity.LoadGameObject("AddonMusicPlayer");
 		AddonMusicPlayer addonMusicPlayer = CreateAddonComponent<AddonMusicPlayer>(prefab);
 		addonMusicPlayer.GetComponent<AudioSource>().clip = audioClip;
+		addonMusicPlayer.LocationMode = locationMode;
 		return addonMusicPlayer;
 	}
 

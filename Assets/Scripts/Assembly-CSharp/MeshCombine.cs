@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,18 +9,6 @@ public class MeshCombine : Singleton<MeshCombine>
 	private const int VERTEX_LIMIT = 65534;
 
 	private List<int> groundDepths;
-
-	// GC优化：复用临时列表
-	private List<GameObject> m_childCache = new List<GameObject>();
-	private List<GameObject> m_groundCache = new List<GameObject>();
-	private List<List<GameObject>> m_groundGroupCache = new List<List<GameObject>>();
-	private List<int> m_depthCache = new List<int>();
-	private List<string> m_groundNameCache = new List<string>();
-	private List<List<GameObject>> m_propsGroupCache = new List<List<GameObject>>();
-	private List<bool> m_propsVisitedCache = new List<bool>();
-	private List<MeshFilter> m_meshFilterCache = new List<MeshFilter>();
-	private List<MeshFilter> m_meshFilterBatch = new List<MeshFilter>();
-	private Dictionary<string, List<GameObject>> m_materialSortCache = new Dictionary<string, List<GameObject>>();
 
 	private void Awake()
 	{
@@ -44,98 +33,96 @@ public class MeshCombine : Singleton<MeshCombine>
 
 	private void CombineScene()
 	{
-		m_childCache.Clear();
-		m_groundCache.Clear();
-		m_groundGroupCache.Clear();
-		m_depthCache.Clear();
-		m_groundNameCache.Clear();
-		m_propsGroupCache.Clear();
-		m_propsVisitedCache.Clear();
-		m_meshFilterCache.Clear();
-		m_meshFilterBatch.Clear();
-		m_materialSortCache.Clear();
-
-		FindGrounds();
-		for (int i = 0; i < m_groundGroupCache.Count; i++)
+		List<List<GameObject>> list = FindGrounds();
+		for (int i = 0; i < list.Count; i++)
 		{
-			m_childCache.Clear();
-			for (int j = 0; j < m_groundGroupCache[i].Count; j++)
+			List<GameObject> list2 = new List<GameObject>();
+			for (int j = 0; j < list[i].Count; j++)
 			{
-				FindChilds(m_groundGroupCache[i][j]);
+				list2.AddRange(FindChilds(list[i][j]));
 			}
-			SortGameObjectsByMaterial(m_childCache);
-			for (int k = 0; k < m_materialSortGroups.Count; k++)
+			List<List<GameObject>> list3 = SortGameObjectsByMaterial(list2);
+			for (int k = 0; k < list3.Count; k++)
 			{
-				CombineInternal(m_materialSortGroups[k]);
+				Combine(list3[k].ToArray());
 			}
 		}
-		FindProps();
-		for (int l = 0; l < m_propsGroupCache.Count; l++)
+		List<List<GameObject>> list4 = FindProps();
+		for (int l = 0; l < list4.Count; l++)
 		{
-			SortGameObjectsByMaterial(m_propsGroupCache[l]);
-			for (int m = 0; m < m_materialSortGroups.Count; m++)
+			List<List<GameObject>> list5 = SortGameObjectsByMaterial(list4[l]);
+			for (int m = 0; m < list5.Count; m++)
 			{
-				CombineInternal(m_materialSortGroups[m]);
+				Combine(list5[m].ToArray());
 			}
 		}
+		StartCoroutine(DelayedAction(delegate
+		{
+			Resources.UnloadUnusedAssets();
+			GC.Collect();
+		}));
 	}
 
-	private void FindChilds(GameObject parent)
+	private List<GameObject> FindChilds(GameObject parent)
 	{
+		List<GameObject> list = new List<GameObject>();
 		for (int i = 0; i < parent.transform.childCount; i++)
 		{
 			GameObject gameObject = parent.transform.GetChild(i).gameObject;
-			if (gameObject.CompareTag("Static") && gameObject.GetComponent<Renderer>() != null)
+			if (gameObject.tag == "Static" && gameObject.GetComponent<Renderer>() != null)
 			{
-				m_childCache.Add(gameObject);
+				list.Add(gameObject);
 			}
-			FindChilds(gameObject);
+			list.AddRange(FindChilds(gameObject));
 		}
+		return list;
 	}
 
-	private void CombineInternal(List<GameObject> objects)
+	private void Combine(GameObject[] objects)
 	{
-		if (objects.Count == 0) return;
-		m_meshFilterCache.Clear();
+		List<MeshFilter> list = new List<MeshFilter>();
 		float num = 0f;
-		for (int i = 0; i < objects.Count; i++)
+		for (int i = 0; i < objects.Length; i++)
 		{
 			num = ((i != 0) ? ((num + objects[i].transform.position.z) * 0.5f) : objects[i].transform.position.z);
 			MeshFilter component = objects[i].GetComponent<MeshFilter>();
 			if (component != null)
 			{
-				m_meshFilterCache.Add(component);
+				list.Add(component);
 			}
 		}
-		m_meshFilterCache.Sort((MeshFilter a, MeshFilter b) => b.sharedMesh.vertexCount.CompareTo(a.sharedMesh.vertexCount));
 		int num2 = 0;
-		m_meshFilterBatch.Clear();
-		for (int j = 0; j < m_meshFilterCache.Count; j++)
+		bool flag = true;
+		while (flag)
 		{
-			MeshFilter meshFilter = m_meshFilterCache[j];
-			int vertexCount = meshFilter.sharedMesh.vertexCount;
-			if (num2 + vertexCount > VERTEX_LIMIT)
+			List<MeshFilter> list2 = new List<MeshFilter>();
+			while (list.Count > 0 && num2 + list[0].sharedMesh.vertexCount < 65534)
 			{
-				CombineBatch(m_meshFilterBatch, num);
-				m_meshFilterBatch.Clear();
-				num2 = 0;
+				MeshFilter meshFilter = FindMeshFilter(list, 65534 - num2);
+				if (!(meshFilter != null))
+				{
+					break;
+				}
+				if (!list2.Contains(meshFilter))
+				{
+					list2.Add(meshFilter);
+					num2 += meshFilter.sharedMesh.vertexCount;
+					list.Remove(meshFilter);
+				}
 			}
-			m_meshFilterBatch.Add(meshFilter);
-			num2 += vertexCount;
-		}
-		if (m_meshFilterBatch.Count > 0)
-		{
-			CombineBatch(m_meshFilterBatch, num);
+			Combine(list2.ToArray(), num);
+			num2 = 0;
+			flag = list.Count > 0;
 		}
 	}
 
-	private void CombineBatch(List<MeshFilter> meshFilters, float depth)
+	private void Combine(MeshFilter[] meshFilters, float depth)
 	{
-		if (meshFilters.Count == 0)
+		if (meshFilters.Length == 0)
 		{
 			return;
 		}
-		CombineInstance[] array = new CombineInstance[meshFilters.Count];
+		CombineInstance[] array = new CombineInstance[meshFilters.Length];
 		for (int i = 0; i < array.Length; i++)
 		{
 			meshFilters[i].transform.position -= Vector3.forward * depth;
@@ -151,7 +138,7 @@ public class MeshCombine : Singleton<MeshCombine>
 		meshFilter.sharedMesh = new Mesh();
 		meshFilter.sharedMesh.name = "CombinedMesh";
 		meshFilter.sharedMesh.CombineMeshes(array);
-		for (int j = 0; j < meshFilters.Count; j++)
+		for (int j = 0; j < meshFilters.Length; j++)
 		{
 			if (meshFilters[j].gameObject.GetComponent<PointLightSource>() == null)
 			{
@@ -160,54 +147,68 @@ public class MeshCombine : Singleton<MeshCombine>
 		}
 	}
 
-	private List<List<GameObject>> m_materialSortGroups = new List<List<GameObject>>();
-
-	private void SortGameObjectsByMaterial(List<GameObject> gameObjects)
+	private MeshFilter FindMeshFilter(List<MeshFilter> meshFilters, int vertexLimit)
 	{
-		m_materialSortCache.Clear();
-		m_materialSortGroups.Clear();
-		for (int i = 0; i < gameObjects.Count; i++)
+		for (int i = 0; i < meshFilters.Count; i++)
 		{
-			Renderer component = gameObjects[i].GetComponent<Renderer>();
-			if (component == null)
+			if (meshFilters[i].sharedMesh.vertexCount <= vertexLimit)
 			{
-				continue;
-			}
-			string text = ((component.sharedMaterial.mainTexture != null) ? (component.sharedMaterial.name + "_" + component.sharedMaterial.mainTexture.name) : component.sharedMaterial.name);
-			if (!m_materialSortCache.TryGetValue(text, out var value))
-			{
-				value = new List<GameObject>();
-				m_materialSortCache[text] = value;
-			}
-			if (!value.Contains(gameObjects[i]))
-			{
-				value.Add(gameObjects[i]);
+				return meshFilters[i];
 			}
 		}
-		foreach (List<GameObject> value2 in m_materialSortCache.Values)
-		{
-			m_materialSortGroups.Add(value2);
-		}
+		return null;
 	}
 
-	private void FindGrounds()
+	private List<List<GameObject>> SortGameObjectsByMaterial(List<GameObject> gameObjects)
 	{
-		m_groundCache.Clear();
-		m_groundCache.AddRange(GameObject.FindGameObjectsWithTag("Ground"));
-		m_groundGroupCache.Clear();
-		m_depthCache.Clear();
+		List<string> list = new List<string>();
+		List<List<GameObject>> list2 = new List<List<GameObject>>();
+		for (int i = 0; i < gameObjects.Count; i++)
+		{
+			if (!(gameObjects[i].GetComponent<Renderer>() == null))
+			{
+				string empty = string.Empty;
+				empty = ((!(gameObjects[i].GetComponent<Renderer>().sharedMaterial.mainTexture != null)) ? gameObjects[i].GetComponent<Renderer>().sharedMaterial.name : (gameObjects[i].GetComponent<Renderer>().sharedMaterial.name + "_" + gameObjects[i].GetComponent<Renderer>().sharedMaterial.mainTexture.name));
+				if (!list.Contains(empty))
+				{
+					list.Add(empty);
+				}
+			}
+		}
+		for (int j = 0; j < list.Count; j++)
+		{
+			list2.Add(new List<GameObject>());
+		}
+		for (int k = 0; k < gameObjects.Count; k++)
+		{
+			if (!(gameObjects[k].GetComponent<Renderer>() == null))
+			{
+				string empty2 = string.Empty;
+				empty2 = ((!(gameObjects[k].GetComponent<Renderer>().sharedMaterial.mainTexture != null)) ? gameObjects[k].GetComponent<Renderer>().sharedMaterial.name : (gameObjects[k].GetComponent<Renderer>().sharedMaterial.name + "_" + gameObjects[k].GetComponent<Renderer>().sharedMaterial.mainTexture.name));
+				if (!list2[list.IndexOf(empty2)].Contains(gameObjects[k]))
+				{
+					list2[list.IndexOf(empty2)].Add(gameObjects[k]);
+				}
+			}
+		}
+		return list2;
+	}
+
+	private List<List<GameObject>> FindGrounds()
+	{
+		List<GameObject> list = new List<GameObject>(GameObject.FindGameObjectsWithTag("Ground"));
+		List<List<GameObject>> list2 = new List<List<GameObject>>();
+		List<int> list3 = new List<int>();
 		groundDepths = new List<int>();
 		groundDepths.Add(0);
-
-		if (m_groundCache.Count == 0)
+		if (list.Count == 0)
 		{
-			return;
+			return list2;
 		}
-
-		m_groundNameCache.Clear();
-		for (int i = 0; i < m_groundCache.Count; i++)
+		List<string> list4 = new List<string>();
+		for (int i = 0; i < list.Count; i++)
 		{
-			int num = (int)(m_groundCache[i].transform.position.z * 100f);
+			int num = (int)(list[i].transform.position.z * 100f);
 			bool flag = false;
 			for (int j = 0; j < groundDepths.Count; j++)
 			{
@@ -236,22 +237,21 @@ public class MeshCombine : Singleton<MeshCombine>
 					groundDepths.Add(num);
 				}
 			}
-			m_depthCache.Add(num);
-			string groundName = GenerateGroundName(m_groundCache[i], num);
-			if (!m_groundNameCache.Contains(groundName))
+			list3.Add(num);
+			if (!list4.Contains(GenerateGroundName(list[i], num)))
 			{
-				m_groundNameCache.Add(groundName);
+				list4.Add(GenerateGroundName(list[i], num));
 			}
 		}
-		for (int l = 0; l < m_groundNameCache.Count; l++)
+		for (int l = 0; l < list4.Count; l++)
 		{
-			m_groundGroupCache.Add(new List<GameObject>());
+			list2.Add(new List<GameObject>());
 		}
-		for (int m = 0; m < m_groundCache.Count; m++)
+		for (int m = 0; m < list.Count; m++)
 		{
-			int index = m_groundNameCache.IndexOf(GenerateGroundName(m_groundCache[m], m_depthCache[m]));
-			m_groundGroupCache[index].Add(m_groundCache[m]);
+			list2[list4.IndexOf(GenerateGroundName(list[m], list3[m]))].Add(list[m]);
 		}
+		return list2;
 	}
 
 	private string GenerateGroundName(GameObject go, int depth)
@@ -263,33 +263,33 @@ public class MeshCombine : Singleton<MeshCombine>
 		return go.name;
 	}
 
-	private void FindProps()
+	private List<List<GameObject>> FindProps()
 	{
-		m_propsGroupCache.Clear();
-		List<GameObject> props = new List<GameObject>(GameObject.FindGameObjectsWithTag("Prop"));
-		if (props.Count == 0)
+		List<GameObject> list = new List<GameObject>(GameObject.FindGameObjectsWithTag("Prop"));
+		List<List<GameObject>> list2 = new List<List<GameObject>>();
+		if (list.Count == 0)
 		{
-			return;
+			return list2;
 		}
-		m_propsVisitedCache.Clear();
-		for (int i = 0; i < props.Count; i++)
+		List<bool> list3 = new List<bool>();
+		for (int i = 0; i < list.Count; i++)
 		{
-			m_propsVisitedCache.Add(false);
+			list3.Add(item: false);
 		}
 		for (int j = 0; j < groundDepths.Count; j++)
 		{
-			List<GameObject> list = new List<GameObject>();
-			for (int k = 0; k < props.Count; k++)
+			List<GameObject> list4 = new List<GameObject>();
+			for (int k = 0; k < list.Count; k++)
 			{
-				int num = (int)(props[k].transform.position.z * 100f);
-				if (m_propsVisitedCache[k] || num >= groundDepths[j])
+				int num = (int)(list[k].transform.position.z * 100f);
+				if (list3[k] || num >= groundDepths[j])
 				{
 					continue;
 				}
 				int num2 = -1;
-				for (int l = 0; l < list.Count; l++)
+				for (int l = 0; l < list4.Count; l++)
 				{
-					if ((int)(list[l].transform.position.z * 100f) < num)
+					if ((int)(list4[l].transform.position.z * 100f) < num)
 					{
 						num2 = l;
 						break;
@@ -297,19 +297,25 @@ public class MeshCombine : Singleton<MeshCombine>
 				}
 				if (num2 >= 0)
 				{
-					list.Insert(num2, props[k]);
+					list4.Insert(num2, list[k]);
 				}
 				else
 				{
-					list.Add(props[k]);
+					list4.Add(list[k]);
 				}
-				m_propsVisitedCache[k] = true;
+				list3[k] = true;
 			}
-			if (list.Count > 0)
+			if (list4.Count > 0)
 			{
-				m_propsGroupCache.Add(list);
+				list2.Add(list4);
 			}
 		}
+		return list2;
 	}
 
+	private IEnumerator DelayedAction(Action action)
+	{
+		yield return null;
+		action?.Invoke();
+	}
 }

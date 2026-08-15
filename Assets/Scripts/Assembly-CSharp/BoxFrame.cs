@@ -14,7 +14,7 @@ public class BoxFrame : Frame
 		}
 		else if (m_material == FrameMaterial.Metal)
 		{
-			base.rigidbody.mass = 2f;
+			base.rigidbody.mass = INSettings.GetFloat(INFeature.MetalBoxMass);
 		}
 	}
 }

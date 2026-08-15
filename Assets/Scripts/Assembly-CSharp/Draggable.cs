@@ -6,9 +6,9 @@ public class Draggable : Widget
 {
 	public enum Direction
 	{
-		None,
-		Horizontal,
-		Vertical
+		None = 0,
+		Horizontal = 1,
+		Vertical = 2
 	}
 
 	private Vector3 _offset = Vector3.zero;

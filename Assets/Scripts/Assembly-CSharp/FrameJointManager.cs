@@ -64,11 +64,11 @@ public class FrameJointManager : PartManager
 			byte b = 0;
 			BasePart enclosedPart = part.EnclosedPart;
 			bool flag = enclosedPart != null && enclosedPart.Type == BasePart.PartType.SpringBoxingGlove && enclosedPart.Index == 4;
-			if ((part.Type == BasePart.PartType.MetalFrame) & flag)
+			if (part.Type == BasePart.PartType.MetalFrame && flag)
 			{
 				b |= 1;
 			}
-			if ((part.Type == BasePart.PartType.WoodenFrame) & flag)
+			if (part.Type == BasePart.PartType.WoodenFrame && flag)
 			{
 				b |= 2;
 			}
@@ -114,7 +114,8 @@ public class FrameJointManager : PartManager
 				}
 			}
 		}
-		int[] componentIndexes = disjointSet.GetComponentIndexes(out var _);
+		int componentCount;
+		int[] componentIndexes = disjointSet.GetComponentIndexes(out componentCount);
 		int[] array = new int[count];
 		for (int l = 0; l < count2; l++)
 		{

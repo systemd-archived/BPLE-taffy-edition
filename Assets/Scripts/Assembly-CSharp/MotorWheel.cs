@@ -77,7 +77,7 @@ public class MotorWheel : BasePart
 		m_wheelPivot = base.transform.Find("WheelPivot");
 		m_fakeWheelPivot = base.transform.Find("FakeWheelPivot");
 		m_radius = GetComponent<SphereCollider>().radius;
-		m_circumference = (float)Math.PI * 2f * m_radius;
+		m_circumference = MathF.PI * 2f * m_radius;
 		if ((bool)base.transform.Find("SupportCollider"))
 		{
 			m_supportCollider = base.transform.Find("SupportCollider").GetComponent<Collider>();
@@ -150,7 +150,7 @@ public class MotorWheel : BasePart
 		}
 		if ((bool)m_fakeWheelPivot)
 		{
-			float num = 0f - z + Mathf.Sin(2f * m_angle * ((float)Math.PI / 180f)) * 8f;
+			float num = 0f - z + Mathf.Sin(2f * m_angle * (MathF.PI / 180f)) * 8f;
 			if (m_onIceSurface)
 			{
 				num *= 2f;
@@ -279,7 +279,8 @@ public class MotorWheel : BasePart
 			m_thrust = 0f;
 		}
 		m_lastPosition = m_wheelPivot.transform.position;
-		bool num = Physics.Raycast(m_wheelPivot.transform.position, m_lastContactDirection, out var hitInfo, m_radius + 0.1f);
+		RaycastHit hitInfo;
+		bool num = Physics.Raycast(m_wheelPivot.transform.position, m_lastContactDirection, out hitInfo, m_radius + 0.1f);
 		m_onIceSurface = false;
 		if (num && hitInfo.collider != m_supportCollider)
 		{

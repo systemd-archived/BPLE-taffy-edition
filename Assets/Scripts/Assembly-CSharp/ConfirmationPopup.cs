@@ -8,9 +8,9 @@ public class ConfirmationPopup : MonoBehaviour
 	public void DismissDialog()
 	{
 		base.gameObject.SetActive(value: false);
-		if (PopupClosed != null)
+		if (this.PopupClosed != null)
 		{
-			PopupClosed();
+			this.PopupClosed();
 		}
 	}
 

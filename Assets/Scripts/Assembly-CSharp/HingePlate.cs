@@ -21,8 +21,8 @@ public class HingePlate : BasePart
 
 	public enum HingePlateType
 	{
-		Common,
-		Track
+		Common = 0,
+		Track = 1
 	}
 
 	public HingePlateType m_type;
@@ -43,7 +43,17 @@ public class HingePlate : BasePart
 
 	private List<Joint> m_joints;
 
-	private static readonly (int, int)[] s_directions;
+	private static readonly (int, int)[] s_directions = new(int, int)[8]
+	{
+		(1, 0),
+		(1, 1),
+		(0, 1),
+		(-1, 1),
+		(-1, 0),
+		(-1, -1),
+		(0, -1),
+		(1, -1)
+	};
 
 	public static (int, int)[] Directions => s_directions;
 
@@ -115,7 +125,8 @@ public class HingePlate : BasePart
 				}
 			}
 		}
-		int[] componentIndexes = disjointSet.GetComponentIndexes(out var componentCount);
+		int componentCount;
+		int[] componentIndexes = disjointSet.GetComponentIndexes(out componentCount);
 		for (int k = 0; k < count; k++)
 		{
 			int componentIndex = componentIndexes[k];
@@ -439,7 +450,7 @@ public class HingePlate : BasePart
 	private Joint CreateJoint(GameObject source, GameObject target, JointType type, int angle, Vector3 anchor)
 	{
 		Rigidbody component = target.GetComponent<Rigidbody>();
-		float breakForce = (base.contraption.HasSuperGlue ? float.PositiveInfinity : (base.contraption.GetJointConnectionStrength(m_jointConnectionStrength) * INSettings.GetFloat(INFeature.ConnectionStrength) * 5f));
+		float breakForce = (base.contraption.HasSuperGlue ? float.PositiveInfinity : (base.contraption.GetJointConnectionStrength(m_jointConnectionStrength) * INSettings.GetFloat(INFeature.ConnectionStrength) * 3f));
 		switch (type)
 		{
 		case JointType.FixedJoint:
@@ -501,20 +512,5 @@ public class HingePlate : BasePart
 				connectedBody.AddForce(new Vector3((0f - num3) * num, (0f - num3) * num2), ForceMode.Impulse);
 			}
 		}
-	}
-
-	static HingePlate()
-	{
-		s_directions = new(int, int)[8]
-		{
-			(1, 0),
-			(1, 1),
-			(0, 1),
-			(-1, 1),
-			(-1, 0),
-			(-1, -1),
-			(0, -1),
-			(1, -1)
-		};
 	}
 }

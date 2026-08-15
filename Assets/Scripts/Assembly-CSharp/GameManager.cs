@@ -8,27 +8,27 @@ public class GameManager : Singleton<GameManager>
 {
 	public enum GameState
 	{
-		Undefined,
-		MainMenu,
-		EpisodeSelection,
-		LevelSelection,
-		Level,
-		Cutscene,
-		CheatsPanel,
-		StarLevelCutscene,
-		SandboxLevelSelection,
-		RaceLevelSelection,
-		KingPigFeeding,
-		WorkShop,
-		CakeRaceMenu
+		Undefined = 0,
+		MainMenu = 1,
+		EpisodeSelection = 2,
+		LevelSelection = 3,
+		Level = 4,
+		Cutscene = 5,
+		CheatsPanel = 6,
+		StarLevelCutscene = 7,
+		SandboxLevelSelection = 8,
+		RaceLevelSelection = 9,
+		KingPigFeeding = 10,
+		WorkShop = 11,
+		CakeRaceMenu = 12
 	}
 
 	public enum EpisodeType
 	{
-		Undefined,
-		Normal,
-		Sandbox,
-		Race
+		Undefined = 0,
+		Normal = 1,
+		Sandbox = 2,
+		Race = 3
 	}
 
 	[SerializeField]
@@ -79,17 +79,7 @@ public class GameManager : Singleton<GameManager>
 
 	private const string StubLevelName = "LevelStub";
 
-	public GameData gameData
-	{
-		get
-		{
-			if (INSettings.GetBool(INFeature.RuntimeGameData) && INRuntimeGameData.IsInitialized)
-			{
-				return Singleton<INRuntimeGameData>.Instance.GameData;
-			}
-			return m_gameData;
-		}
-	}
+	public GameData gameData => m_gameData;
 
 	public static bool Initialized
 	{
@@ -420,7 +410,7 @@ public class GameManager : Singleton<GameManager>
 			GameProgress.SetBool("show_content_limit_popup", value: true);
 			EventManager.Send(new UIEvent(UIEvent.Type.LevelSelection));
 		}
-		else if ((flag3 && !flag2) & flag)
+		else if (flag3 && !flag2 && flag)
 		{
 			EventManager.Send(new UIEvent(UIEvent.Type.LevelSelection));
 		}
@@ -676,7 +666,7 @@ public class GameManager : Singleton<GameManager>
 		if (m_currentEpisodeType == EpisodeType.Normal)
 		{
 			bool flag = true;
-			for (int i = 0; (i < m_levels.Count) & flag; i++)
+			for (int i = 0; i < m_levels.Count && flag; i++)
 			{
 				flag &= GameProgress.GetInt(m_levels[i].sceneName + "_stars") == 3;
 			}
@@ -705,7 +695,7 @@ public class GameManager : Singleton<GameManager>
 			return false;
 		}
 		bool flag = true;
-		for (int i = 0; (i < m_levels.Count) & flag; i++)
+		for (int i = 0; i < m_levels.Count && flag; i++)
 		{
 			flag &= GameProgress.GetInt(m_levels[i].sceneName + "_stars") == 3;
 		}
@@ -723,7 +713,7 @@ public class GameManager : Singleton<GameManager>
 			return false;
 		}
 		bool flag = true;
-		for (int i = 4; (i < m_levels.Count) & flag; i += 5)
+		for (int i = 4; i < m_levels.Count && flag; i += 5)
 		{
 			flag &= GameProgress.GetInt(m_levels[i].sceneName + "_stars") == 3;
 		}

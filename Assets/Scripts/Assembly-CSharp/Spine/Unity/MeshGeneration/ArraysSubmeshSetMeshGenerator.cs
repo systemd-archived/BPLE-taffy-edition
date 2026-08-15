@@ -141,7 +141,7 @@ namespace Spine.Unity.MeshGeneration
 				}
 				ArraysMeshGenerator.FillVerts(skeleton, startSlot, endSlot2, zSpacing, base.PremultiplyVertexColors, meshVertices, meshUVs, meshColors32, ref vertexIndex, ref attachmentVertexBuffer, ref boundsMin, ref boundsMax);
 			}
-			bool flag3 = (flag | flag2) || next.StructureDoesntMatch(exposedList, currentInstructions);
+			bool flag3 = flag || flag2 || next.StructureDoesntMatch(exposedList, currentInstructions);
 			for (int m = 0; m < count; m++)
 			{
 				SubmeshInstruction submeshInstruction2 = items2[m];

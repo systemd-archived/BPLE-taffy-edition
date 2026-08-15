@@ -9,7 +9,7 @@ public class Egg : BasePart
 
 	private List<Collider> m_colliders;
 
-	private Dictionary<Rigidbody, float> m_rigidBodyData;
+	private Dictionary<Rigidbody, bool> m_rigidBodyData;
 
 	public override bool CanBeEnclosed()
 	{
@@ -23,16 +23,11 @@ public class Egg : BasePart
 		{
 			m_jointConnectionStrength = JointConnectionStrength.HighlyExtreme;
 		}
-		m_autoAlign = AutoAlignType.Rotate;
 	}
 
 	public override void Initialize()
 	{
 		base.Initialize();
-		if (m_partTier == PartTier.Rare)
-		{
-			m_mass = 0.001f;
-		}
 		int num = customPartIndex;
 		m_isSpecialEgg = num >= 1 && num <= 4;
 	}
@@ -57,29 +52,29 @@ public class Egg : BasePart
 		case 2:
 			if (m_enabled)
 			{
-				m_rigidBodyData = new Dictionary<Rigidbody, float>();
+				m_rigidBodyData = new Dictionary<Rigidbody, bool>();
 				{
 					foreach (BasePart part in base.contraption.Parts)
 					{
-						if (part.ConnectedComponent != base.ConnectedComponent || part is Umbrella)
+						if (part.ConnectedComponent != base.ConnectedComponent)
 						{
 							continue;
 						}
 						foreach (Rigidbody rigidbody in part.GetRigidbodies())
 						{
-							m_rigidBodyData.Add(rigidbody, rigidbody.mass);
-							rigidbody.mass = 0.01f;
+							m_rigidBodyData.Add(rigidbody, rigidbody.useGravity);
+							rigidbody.useGravity = false;
 						}
 					}
 					break;
 				}
 			}
-			foreach (KeyValuePair<Rigidbody, float> rigidBodyDatum in m_rigidBodyData)
+			foreach (KeyValuePair<Rigidbody, bool> rigidBodyDatum in m_rigidBodyData)
 			{
 				Rigidbody key = rigidBodyDatum.Key;
 				if (key != null)
 				{
-					key.mass = rigidBodyDatum.Value;
+					key.useGravity = rigidBodyDatum.Value;
 				}
 			}
 			m_rigidBodyData = null;

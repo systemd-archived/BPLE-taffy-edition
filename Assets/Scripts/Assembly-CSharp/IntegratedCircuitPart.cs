@@ -6,22 +6,22 @@ public class IntegratedCircuitPart : ElectricalPart
 {
 	public enum ICType
 	{
-		BUF,
-		NOT,
-		OR1,
-		OR2,
-		NOR1,
-		NOR2,
-		AND1,
-		AND2,
-		NAND1,
-		NAND2,
-		NMOS,
-		PMOS,
-		DIODE,
-		OPAMP,
-		DELAY1,
-		DELAY2
+		BUF = 0,
+		NOT = 1,
+		OR1 = 2,
+		OR2 = 3,
+		NOR1 = 4,
+		NOR2 = 5,
+		AND1 = 6,
+		AND2 = 7,
+		NAND1 = 8,
+		NAND2 = 9,
+		NMOS = 10,
+		PMOS = 11,
+		DIODE = 12,
+		OPAMP = 13,
+		DELAY1 = 14,
+		DELAY2 = 15
 	}
 
 	public class Diode
@@ -469,19 +469,19 @@ public class IntegratedCircuitPart : ElectricalPart
 				break;
 			case ICType.OR1:
 			case ICType.OR2:
-				output2 = flag2 | flag3;
+				output2 = flag2 || flag3;
 				break;
 			case ICType.NOR1:
 			case ICType.NOR2:
-				output2 = !(flag2 | flag3);
+				output2 = !(flag2 || flag3);
 				break;
 			case ICType.AND1:
 			case ICType.AND2:
-				output2 = flag2 & flag3;
+				output2 = flag2 && flag3;
 				break;
 			case ICType.NAND1:
 			case ICType.NAND2:
-				output2 = !(flag2 & flag3);
+				output2 = !(flag2 && flag3);
 				break;
 			}
 			SetOutput(output2);

@@ -12,10 +12,10 @@ public class PlayFabManager : Singleton<PlayFabManager>
 {
 	public enum SyncType
 	{
-		None,
-		IntArray,
-		Base64String,
-		Base64StringArray
+		None = 0,
+		IntArray = 1,
+		Base64String = 2,
+		Base64StringArray = 3
 	}
 
 	public class DeltaData
@@ -180,7 +180,7 @@ public class PlayFabManager : Singleton<PlayFabManager>
 					stringBuilder.AppendFormat("{0}: {1}\n", item.StatisticName, item.Value);
 					GameProgress.SetInt("Statistics_" + item.StatisticName, item.Value);
 					GameProgress.SetInt("Statistics_" + item.StatisticName + "_Version", (int)item.Version);
-					if (((item.StatisticName == PlayFabLeaderboard.Leaderboard.CakeRaceWins.ToString()) & flag) && item.Value <= 0)
+					if (item.StatisticName == PlayFabLeaderboard.Leaderboard.CakeRaceWins.ToString() && flag && item.Value <= 0)
 					{
 						ResetCakeRacePersonalBests();
 					}

@@ -9,8 +9,8 @@ namespace Spine.Unity
 	{
 		public enum Mode
 		{
-			Follow,
-			Override
+			Follow = 0,
+			Override = 1
 		}
 
 		[NonSerialized]

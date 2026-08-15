@@ -547,9 +547,9 @@ namespace PlayFab.Events
 		public void UnregisterInstance(object instance)
 		{
 			Delegate[] invocationList;
-			if (OnLoginResultEvent != null)
+			if (this.OnLoginResultEvent != null)
 			{
-				invocationList = OnLoginResultEvent.GetInvocationList();
+				invocationList = this.OnLoginResultEvent.GetInvocationList();
 				foreach (Delegate obj in invocationList)
 				{
 					if (obj.Target == instance)
@@ -558,9 +558,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAcceptTradeRequestEvent != null)
+			if (this.OnAcceptTradeRequestEvent != null)
 			{
-				invocationList = OnAcceptTradeRequestEvent.GetInvocationList();
+				invocationList = this.OnAcceptTradeRequestEvent.GetInvocationList();
 				foreach (Delegate obj2 in invocationList)
 				{
 					if (obj2.Target == instance)
@@ -569,9 +569,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAcceptTradeResultEvent != null)
+			if (this.OnAcceptTradeResultEvent != null)
 			{
-				invocationList = OnAcceptTradeResultEvent.GetInvocationList();
+				invocationList = this.OnAcceptTradeResultEvent.GetInvocationList();
 				foreach (Delegate obj3 in invocationList)
 				{
 					if (obj3.Target == instance)
@@ -580,9 +580,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddFriendRequestEvent != null)
+			if (this.OnAddFriendRequestEvent != null)
 			{
-				invocationList = OnAddFriendRequestEvent.GetInvocationList();
+				invocationList = this.OnAddFriendRequestEvent.GetInvocationList();
 				foreach (Delegate obj4 in invocationList)
 				{
 					if (obj4.Target == instance)
@@ -591,9 +591,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddFriendResultEvent != null)
+			if (this.OnAddFriendResultEvent != null)
 			{
-				invocationList = OnAddFriendResultEvent.GetInvocationList();
+				invocationList = this.OnAddFriendResultEvent.GetInvocationList();
 				foreach (Delegate obj5 in invocationList)
 				{
 					if (obj5.Target == instance)
@@ -602,9 +602,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddGenericIDRequestEvent != null)
+			if (this.OnAddGenericIDRequestEvent != null)
 			{
-				invocationList = OnAddGenericIDRequestEvent.GetInvocationList();
+				invocationList = this.OnAddGenericIDRequestEvent.GetInvocationList();
 				foreach (Delegate obj6 in invocationList)
 				{
 					if (obj6.Target == instance)
@@ -613,9 +613,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddGenericIDResultEvent != null)
+			if (this.OnAddGenericIDResultEvent != null)
 			{
-				invocationList = OnAddGenericIDResultEvent.GetInvocationList();
+				invocationList = this.OnAddGenericIDResultEvent.GetInvocationList();
 				foreach (Delegate obj7 in invocationList)
 				{
 					if (obj7.Target == instance)
@@ -624,9 +624,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddOrUpdateContactEmailRequestEvent != null)
+			if (this.OnAddOrUpdateContactEmailRequestEvent != null)
 			{
-				invocationList = OnAddOrUpdateContactEmailRequestEvent.GetInvocationList();
+				invocationList = this.OnAddOrUpdateContactEmailRequestEvent.GetInvocationList();
 				foreach (Delegate obj8 in invocationList)
 				{
 					if (obj8.Target == instance)
@@ -635,9 +635,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddOrUpdateContactEmailResultEvent != null)
+			if (this.OnAddOrUpdateContactEmailResultEvent != null)
 			{
-				invocationList = OnAddOrUpdateContactEmailResultEvent.GetInvocationList();
+				invocationList = this.OnAddOrUpdateContactEmailResultEvent.GetInvocationList();
 				foreach (Delegate obj9 in invocationList)
 				{
 					if (obj9.Target == instance)
@@ -646,9 +646,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddSharedGroupMembersRequestEvent != null)
+			if (this.OnAddSharedGroupMembersRequestEvent != null)
 			{
-				invocationList = OnAddSharedGroupMembersRequestEvent.GetInvocationList();
+				invocationList = this.OnAddSharedGroupMembersRequestEvent.GetInvocationList();
 				foreach (Delegate obj10 in invocationList)
 				{
 					if (obj10.Target == instance)
@@ -657,9 +657,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddSharedGroupMembersResultEvent != null)
+			if (this.OnAddSharedGroupMembersResultEvent != null)
 			{
-				invocationList = OnAddSharedGroupMembersResultEvent.GetInvocationList();
+				invocationList = this.OnAddSharedGroupMembersResultEvent.GetInvocationList();
 				foreach (Delegate obj11 in invocationList)
 				{
 					if (obj11.Target == instance)
@@ -668,9 +668,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddUsernamePasswordRequestEvent != null)
+			if (this.OnAddUsernamePasswordRequestEvent != null)
 			{
-				invocationList = OnAddUsernamePasswordRequestEvent.GetInvocationList();
+				invocationList = this.OnAddUsernamePasswordRequestEvent.GetInvocationList();
 				foreach (Delegate obj12 in invocationList)
 				{
 					if (obj12.Target == instance)
@@ -679,9 +679,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddUsernamePasswordResultEvent != null)
+			if (this.OnAddUsernamePasswordResultEvent != null)
 			{
-				invocationList = OnAddUsernamePasswordResultEvent.GetInvocationList();
+				invocationList = this.OnAddUsernamePasswordResultEvent.GetInvocationList();
 				foreach (Delegate obj13 in invocationList)
 				{
 					if (obj13.Target == instance)
@@ -690,9 +690,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddUserVirtualCurrencyRequestEvent != null)
+			if (this.OnAddUserVirtualCurrencyRequestEvent != null)
 			{
-				invocationList = OnAddUserVirtualCurrencyRequestEvent.GetInvocationList();
+				invocationList = this.OnAddUserVirtualCurrencyRequestEvent.GetInvocationList();
 				foreach (Delegate obj14 in invocationList)
 				{
 					if (obj14.Target == instance)
@@ -701,9 +701,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAddUserVirtualCurrencyResultEvent != null)
+			if (this.OnAddUserVirtualCurrencyResultEvent != null)
 			{
-				invocationList = OnAddUserVirtualCurrencyResultEvent.GetInvocationList();
+				invocationList = this.OnAddUserVirtualCurrencyResultEvent.GetInvocationList();
 				foreach (Delegate obj15 in invocationList)
 				{
 					if (obj15.Target == instance)
@@ -712,9 +712,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAndroidDevicePushNotificationRegistrationRequestEvent != null)
+			if (this.OnAndroidDevicePushNotificationRegistrationRequestEvent != null)
 			{
-				invocationList = OnAndroidDevicePushNotificationRegistrationRequestEvent.GetInvocationList();
+				invocationList = this.OnAndroidDevicePushNotificationRegistrationRequestEvent.GetInvocationList();
 				foreach (Delegate obj16 in invocationList)
 				{
 					if (obj16.Target == instance)
@@ -723,9 +723,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAndroidDevicePushNotificationRegistrationResultEvent != null)
+			if (this.OnAndroidDevicePushNotificationRegistrationResultEvent != null)
 			{
-				invocationList = OnAndroidDevicePushNotificationRegistrationResultEvent.GetInvocationList();
+				invocationList = this.OnAndroidDevicePushNotificationRegistrationResultEvent.GetInvocationList();
 				foreach (Delegate obj17 in invocationList)
 				{
 					if (obj17.Target == instance)
@@ -734,9 +734,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAttributeInstallRequestEvent != null)
+			if (this.OnAttributeInstallRequestEvent != null)
 			{
-				invocationList = OnAttributeInstallRequestEvent.GetInvocationList();
+				invocationList = this.OnAttributeInstallRequestEvent.GetInvocationList();
 				foreach (Delegate obj18 in invocationList)
 				{
 					if (obj18.Target == instance)
@@ -745,9 +745,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnAttributeInstallResultEvent != null)
+			if (this.OnAttributeInstallResultEvent != null)
 			{
-				invocationList = OnAttributeInstallResultEvent.GetInvocationList();
+				invocationList = this.OnAttributeInstallResultEvent.GetInvocationList();
 				foreach (Delegate obj19 in invocationList)
 				{
 					if (obj19.Target == instance)
@@ -756,9 +756,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnCancelTradeRequestEvent != null)
+			if (this.OnCancelTradeRequestEvent != null)
 			{
-				invocationList = OnCancelTradeRequestEvent.GetInvocationList();
+				invocationList = this.OnCancelTradeRequestEvent.GetInvocationList();
 				foreach (Delegate obj20 in invocationList)
 				{
 					if (obj20.Target == instance)
@@ -767,9 +767,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnCancelTradeResultEvent != null)
+			if (this.OnCancelTradeResultEvent != null)
 			{
-				invocationList = OnCancelTradeResultEvent.GetInvocationList();
+				invocationList = this.OnCancelTradeResultEvent.GetInvocationList();
 				foreach (Delegate obj21 in invocationList)
 				{
 					if (obj21.Target == instance)
@@ -778,9 +778,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnConfirmPurchaseRequestEvent != null)
+			if (this.OnConfirmPurchaseRequestEvent != null)
 			{
-				invocationList = OnConfirmPurchaseRequestEvent.GetInvocationList();
+				invocationList = this.OnConfirmPurchaseRequestEvent.GetInvocationList();
 				foreach (Delegate obj22 in invocationList)
 				{
 					if (obj22.Target == instance)
@@ -789,9 +789,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnConfirmPurchaseResultEvent != null)
+			if (this.OnConfirmPurchaseResultEvent != null)
 			{
-				invocationList = OnConfirmPurchaseResultEvent.GetInvocationList();
+				invocationList = this.OnConfirmPurchaseResultEvent.GetInvocationList();
 				foreach (Delegate obj23 in invocationList)
 				{
 					if (obj23.Target == instance)
@@ -800,9 +800,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnConsumeItemRequestEvent != null)
+			if (this.OnConsumeItemRequestEvent != null)
 			{
-				invocationList = OnConsumeItemRequestEvent.GetInvocationList();
+				invocationList = this.OnConsumeItemRequestEvent.GetInvocationList();
 				foreach (Delegate obj24 in invocationList)
 				{
 					if (obj24.Target == instance)
@@ -811,9 +811,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnConsumeItemResultEvent != null)
+			if (this.OnConsumeItemResultEvent != null)
 			{
-				invocationList = OnConsumeItemResultEvent.GetInvocationList();
+				invocationList = this.OnConsumeItemResultEvent.GetInvocationList();
 				foreach (Delegate obj25 in invocationList)
 				{
 					if (obj25.Target == instance)
@@ -822,9 +822,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnCreateSharedGroupRequestEvent != null)
+			if (this.OnCreateSharedGroupRequestEvent != null)
 			{
-				invocationList = OnCreateSharedGroupRequestEvent.GetInvocationList();
+				invocationList = this.OnCreateSharedGroupRequestEvent.GetInvocationList();
 				foreach (Delegate obj26 in invocationList)
 				{
 					if (obj26.Target == instance)
@@ -833,9 +833,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnCreateSharedGroupResultEvent != null)
+			if (this.OnCreateSharedGroupResultEvent != null)
 			{
-				invocationList = OnCreateSharedGroupResultEvent.GetInvocationList();
+				invocationList = this.OnCreateSharedGroupResultEvent.GetInvocationList();
 				foreach (Delegate obj27 in invocationList)
 				{
 					if (obj27.Target == instance)
@@ -844,9 +844,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnExecuteCloudScriptRequestEvent != null)
+			if (this.OnExecuteCloudScriptRequestEvent != null)
 			{
-				invocationList = OnExecuteCloudScriptRequestEvent.GetInvocationList();
+				invocationList = this.OnExecuteCloudScriptRequestEvent.GetInvocationList();
 				foreach (Delegate obj28 in invocationList)
 				{
 					if (obj28.Target == instance)
@@ -855,9 +855,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnExecuteCloudScriptResultEvent != null)
+			if (this.OnExecuteCloudScriptResultEvent != null)
 			{
-				invocationList = OnExecuteCloudScriptResultEvent.GetInvocationList();
+				invocationList = this.OnExecuteCloudScriptResultEvent.GetInvocationList();
 				foreach (Delegate obj29 in invocationList)
 				{
 					if (obj29.Target == instance)
@@ -866,9 +866,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetAccountInfoRequestEvent != null)
+			if (this.OnGetAccountInfoRequestEvent != null)
 			{
-				invocationList = OnGetAccountInfoRequestEvent.GetInvocationList();
+				invocationList = this.OnGetAccountInfoRequestEvent.GetInvocationList();
 				foreach (Delegate obj30 in invocationList)
 				{
 					if (obj30.Target == instance)
@@ -877,9 +877,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetAccountInfoResultEvent != null)
+			if (this.OnGetAccountInfoResultEvent != null)
 			{
-				invocationList = OnGetAccountInfoResultEvent.GetInvocationList();
+				invocationList = this.OnGetAccountInfoResultEvent.GetInvocationList();
 				foreach (Delegate obj31 in invocationList)
 				{
 					if (obj31.Target == instance)
@@ -888,9 +888,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetAllUsersCharactersRequestEvent != null)
+			if (this.OnGetAllUsersCharactersRequestEvent != null)
 			{
-				invocationList = OnGetAllUsersCharactersRequestEvent.GetInvocationList();
+				invocationList = this.OnGetAllUsersCharactersRequestEvent.GetInvocationList();
 				foreach (Delegate obj32 in invocationList)
 				{
 					if (obj32.Target == instance)
@@ -899,9 +899,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetAllUsersCharactersResultEvent != null)
+			if (this.OnGetAllUsersCharactersResultEvent != null)
 			{
-				invocationList = OnGetAllUsersCharactersResultEvent.GetInvocationList();
+				invocationList = this.OnGetAllUsersCharactersResultEvent.GetInvocationList();
 				foreach (Delegate obj33 in invocationList)
 				{
 					if (obj33.Target == instance)
@@ -910,9 +910,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCatalogItemsRequestEvent != null)
+			if (this.OnGetCatalogItemsRequestEvent != null)
 			{
-				invocationList = OnGetCatalogItemsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetCatalogItemsRequestEvent.GetInvocationList();
 				foreach (Delegate obj34 in invocationList)
 				{
 					if (obj34.Target == instance)
@@ -921,9 +921,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCatalogItemsResultEvent != null)
+			if (this.OnGetCatalogItemsResultEvent != null)
 			{
-				invocationList = OnGetCatalogItemsResultEvent.GetInvocationList();
+				invocationList = this.OnGetCatalogItemsResultEvent.GetInvocationList();
 				foreach (Delegate obj35 in invocationList)
 				{
 					if (obj35.Target == instance)
@@ -932,9 +932,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCharacterDataRequestEvent != null)
+			if (this.OnGetCharacterDataRequestEvent != null)
 			{
-				invocationList = OnGetCharacterDataRequestEvent.GetInvocationList();
+				invocationList = this.OnGetCharacterDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj36 in invocationList)
 				{
 					if (obj36.Target == instance)
@@ -943,9 +943,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCharacterDataResultEvent != null)
+			if (this.OnGetCharacterDataResultEvent != null)
 			{
-				invocationList = OnGetCharacterDataResultEvent.GetInvocationList();
+				invocationList = this.OnGetCharacterDataResultEvent.GetInvocationList();
 				foreach (Delegate obj37 in invocationList)
 				{
 					if (obj37.Target == instance)
@@ -954,9 +954,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCharacterInventoryRequestEvent != null)
+			if (this.OnGetCharacterInventoryRequestEvent != null)
 			{
-				invocationList = OnGetCharacterInventoryRequestEvent.GetInvocationList();
+				invocationList = this.OnGetCharacterInventoryRequestEvent.GetInvocationList();
 				foreach (Delegate obj38 in invocationList)
 				{
 					if (obj38.Target == instance)
@@ -965,9 +965,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCharacterInventoryResultEvent != null)
+			if (this.OnGetCharacterInventoryResultEvent != null)
 			{
-				invocationList = OnGetCharacterInventoryResultEvent.GetInvocationList();
+				invocationList = this.OnGetCharacterInventoryResultEvent.GetInvocationList();
 				foreach (Delegate obj39 in invocationList)
 				{
 					if (obj39.Target == instance)
@@ -976,9 +976,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCharacterLeaderboardRequestEvent != null)
+			if (this.OnGetCharacterLeaderboardRequestEvent != null)
 			{
-				invocationList = OnGetCharacterLeaderboardRequestEvent.GetInvocationList();
+				invocationList = this.OnGetCharacterLeaderboardRequestEvent.GetInvocationList();
 				foreach (Delegate obj40 in invocationList)
 				{
 					if (obj40.Target == instance)
@@ -987,9 +987,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCharacterLeaderboardResultEvent != null)
+			if (this.OnGetCharacterLeaderboardResultEvent != null)
 			{
-				invocationList = OnGetCharacterLeaderboardResultEvent.GetInvocationList();
+				invocationList = this.OnGetCharacterLeaderboardResultEvent.GetInvocationList();
 				foreach (Delegate obj41 in invocationList)
 				{
 					if (obj41.Target == instance)
@@ -998,9 +998,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCharacterReadOnlyDataRequestEvent != null)
+			if (this.OnGetCharacterReadOnlyDataRequestEvent != null)
 			{
-				invocationList = OnGetCharacterReadOnlyDataRequestEvent.GetInvocationList();
+				invocationList = this.OnGetCharacterReadOnlyDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj42 in invocationList)
 				{
 					if (obj42.Target == instance)
@@ -1009,9 +1009,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCharacterReadOnlyDataResultEvent != null)
+			if (this.OnGetCharacterReadOnlyDataResultEvent != null)
 			{
-				invocationList = OnGetCharacterReadOnlyDataResultEvent.GetInvocationList();
+				invocationList = this.OnGetCharacterReadOnlyDataResultEvent.GetInvocationList();
 				foreach (Delegate obj43 in invocationList)
 				{
 					if (obj43.Target == instance)
@@ -1020,9 +1020,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCharacterStatisticsRequestEvent != null)
+			if (this.OnGetCharacterStatisticsRequestEvent != null)
 			{
-				invocationList = OnGetCharacterStatisticsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetCharacterStatisticsRequestEvent.GetInvocationList();
 				foreach (Delegate obj44 in invocationList)
 				{
 					if (obj44.Target == instance)
@@ -1031,9 +1031,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCharacterStatisticsResultEvent != null)
+			if (this.OnGetCharacterStatisticsResultEvent != null)
 			{
-				invocationList = OnGetCharacterStatisticsResultEvent.GetInvocationList();
+				invocationList = this.OnGetCharacterStatisticsResultEvent.GetInvocationList();
 				foreach (Delegate obj45 in invocationList)
 				{
 					if (obj45.Target == instance)
@@ -1042,9 +1042,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetContentDownloadUrlRequestEvent != null)
+			if (this.OnGetContentDownloadUrlRequestEvent != null)
 			{
-				invocationList = OnGetContentDownloadUrlRequestEvent.GetInvocationList();
+				invocationList = this.OnGetContentDownloadUrlRequestEvent.GetInvocationList();
 				foreach (Delegate obj46 in invocationList)
 				{
 					if (obj46.Target == instance)
@@ -1053,9 +1053,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetContentDownloadUrlResultEvent != null)
+			if (this.OnGetContentDownloadUrlResultEvent != null)
 			{
-				invocationList = OnGetContentDownloadUrlResultEvent.GetInvocationList();
+				invocationList = this.OnGetContentDownloadUrlResultEvent.GetInvocationList();
 				foreach (Delegate obj47 in invocationList)
 				{
 					if (obj47.Target == instance)
@@ -1064,9 +1064,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCurrentGamesRequestEvent != null)
+			if (this.OnGetCurrentGamesRequestEvent != null)
 			{
-				invocationList = OnGetCurrentGamesRequestEvent.GetInvocationList();
+				invocationList = this.OnGetCurrentGamesRequestEvent.GetInvocationList();
 				foreach (Delegate obj48 in invocationList)
 				{
 					if (obj48.Target == instance)
@@ -1075,9 +1075,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetCurrentGamesResultEvent != null)
+			if (this.OnGetCurrentGamesResultEvent != null)
 			{
-				invocationList = OnGetCurrentGamesResultEvent.GetInvocationList();
+				invocationList = this.OnGetCurrentGamesResultEvent.GetInvocationList();
 				foreach (Delegate obj49 in invocationList)
 				{
 					if (obj49.Target == instance)
@@ -1086,9 +1086,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetFriendLeaderboardRequestEvent != null)
+			if (this.OnGetFriendLeaderboardRequestEvent != null)
 			{
-				invocationList = OnGetFriendLeaderboardRequestEvent.GetInvocationList();
+				invocationList = this.OnGetFriendLeaderboardRequestEvent.GetInvocationList();
 				foreach (Delegate obj50 in invocationList)
 				{
 					if (obj50.Target == instance)
@@ -1097,9 +1097,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetFriendLeaderboardResultEvent != null)
+			if (this.OnGetFriendLeaderboardResultEvent != null)
 			{
-				invocationList = OnGetFriendLeaderboardResultEvent.GetInvocationList();
+				invocationList = this.OnGetFriendLeaderboardResultEvent.GetInvocationList();
 				foreach (Delegate obj51 in invocationList)
 				{
 					if (obj51.Target == instance)
@@ -1108,9 +1108,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetFriendLeaderboardAroundPlayerRequestEvent != null)
+			if (this.OnGetFriendLeaderboardAroundPlayerRequestEvent != null)
 			{
-				invocationList = OnGetFriendLeaderboardAroundPlayerRequestEvent.GetInvocationList();
+				invocationList = this.OnGetFriendLeaderboardAroundPlayerRequestEvent.GetInvocationList();
 				foreach (Delegate obj52 in invocationList)
 				{
 					if (obj52.Target == instance)
@@ -1119,9 +1119,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetFriendLeaderboardAroundPlayerResultEvent != null)
+			if (this.OnGetFriendLeaderboardAroundPlayerResultEvent != null)
 			{
-				invocationList = OnGetFriendLeaderboardAroundPlayerResultEvent.GetInvocationList();
+				invocationList = this.OnGetFriendLeaderboardAroundPlayerResultEvent.GetInvocationList();
 				foreach (Delegate obj53 in invocationList)
 				{
 					if (obj53.Target == instance)
@@ -1130,9 +1130,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetFriendsListRequestEvent != null)
+			if (this.OnGetFriendsListRequestEvent != null)
 			{
-				invocationList = OnGetFriendsListRequestEvent.GetInvocationList();
+				invocationList = this.OnGetFriendsListRequestEvent.GetInvocationList();
 				foreach (Delegate obj54 in invocationList)
 				{
 					if (obj54.Target == instance)
@@ -1141,9 +1141,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetFriendsListResultEvent != null)
+			if (this.OnGetFriendsListResultEvent != null)
 			{
-				invocationList = OnGetFriendsListResultEvent.GetInvocationList();
+				invocationList = this.OnGetFriendsListResultEvent.GetInvocationList();
 				foreach (Delegate obj55 in invocationList)
 				{
 					if (obj55.Target == instance)
@@ -1152,9 +1152,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetGameServerRegionsRequestEvent != null)
+			if (this.OnGetGameServerRegionsRequestEvent != null)
 			{
-				invocationList = OnGetGameServerRegionsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetGameServerRegionsRequestEvent.GetInvocationList();
 				foreach (Delegate obj56 in invocationList)
 				{
 					if (obj56.Target == instance)
@@ -1163,9 +1163,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetGameServerRegionsResultEvent != null)
+			if (this.OnGetGameServerRegionsResultEvent != null)
 			{
-				invocationList = OnGetGameServerRegionsResultEvent.GetInvocationList();
+				invocationList = this.OnGetGameServerRegionsResultEvent.GetInvocationList();
 				foreach (Delegate obj57 in invocationList)
 				{
 					if (obj57.Target == instance)
@@ -1174,9 +1174,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetLeaderboardRequestEvent != null)
+			if (this.OnGetLeaderboardRequestEvent != null)
 			{
-				invocationList = OnGetLeaderboardRequestEvent.GetInvocationList();
+				invocationList = this.OnGetLeaderboardRequestEvent.GetInvocationList();
 				foreach (Delegate obj58 in invocationList)
 				{
 					if (obj58.Target == instance)
@@ -1185,9 +1185,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetLeaderboardResultEvent != null)
+			if (this.OnGetLeaderboardResultEvent != null)
 			{
-				invocationList = OnGetLeaderboardResultEvent.GetInvocationList();
+				invocationList = this.OnGetLeaderboardResultEvent.GetInvocationList();
 				foreach (Delegate obj59 in invocationList)
 				{
 					if (obj59.Target == instance)
@@ -1196,9 +1196,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetLeaderboardAroundCharacterRequestEvent != null)
+			if (this.OnGetLeaderboardAroundCharacterRequestEvent != null)
 			{
-				invocationList = OnGetLeaderboardAroundCharacterRequestEvent.GetInvocationList();
+				invocationList = this.OnGetLeaderboardAroundCharacterRequestEvent.GetInvocationList();
 				foreach (Delegate obj60 in invocationList)
 				{
 					if (obj60.Target == instance)
@@ -1207,9 +1207,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetLeaderboardAroundCharacterResultEvent != null)
+			if (this.OnGetLeaderboardAroundCharacterResultEvent != null)
 			{
-				invocationList = OnGetLeaderboardAroundCharacterResultEvent.GetInvocationList();
+				invocationList = this.OnGetLeaderboardAroundCharacterResultEvent.GetInvocationList();
 				foreach (Delegate obj61 in invocationList)
 				{
 					if (obj61.Target == instance)
@@ -1218,9 +1218,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetLeaderboardAroundPlayerRequestEvent != null)
+			if (this.OnGetLeaderboardAroundPlayerRequestEvent != null)
 			{
-				invocationList = OnGetLeaderboardAroundPlayerRequestEvent.GetInvocationList();
+				invocationList = this.OnGetLeaderboardAroundPlayerRequestEvent.GetInvocationList();
 				foreach (Delegate obj62 in invocationList)
 				{
 					if (obj62.Target == instance)
@@ -1229,9 +1229,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetLeaderboardAroundPlayerResultEvent != null)
+			if (this.OnGetLeaderboardAroundPlayerResultEvent != null)
 			{
-				invocationList = OnGetLeaderboardAroundPlayerResultEvent.GetInvocationList();
+				invocationList = this.OnGetLeaderboardAroundPlayerResultEvent.GetInvocationList();
 				foreach (Delegate obj63 in invocationList)
 				{
 					if (obj63.Target == instance)
@@ -1240,9 +1240,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetLeaderboardForUserCharactersRequestEvent != null)
+			if (this.OnGetLeaderboardForUserCharactersRequestEvent != null)
 			{
-				invocationList = OnGetLeaderboardForUserCharactersRequestEvent.GetInvocationList();
+				invocationList = this.OnGetLeaderboardForUserCharactersRequestEvent.GetInvocationList();
 				foreach (Delegate obj64 in invocationList)
 				{
 					if (obj64.Target == instance)
@@ -1251,9 +1251,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetLeaderboardForUserCharactersResultEvent != null)
+			if (this.OnGetLeaderboardForUserCharactersResultEvent != null)
 			{
-				invocationList = OnGetLeaderboardForUserCharactersResultEvent.GetInvocationList();
+				invocationList = this.OnGetLeaderboardForUserCharactersResultEvent.GetInvocationList();
 				foreach (Delegate obj65 in invocationList)
 				{
 					if (obj65.Target == instance)
@@ -1262,9 +1262,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPaymentTokenRequestEvent != null)
+			if (this.OnGetPaymentTokenRequestEvent != null)
 			{
-				invocationList = OnGetPaymentTokenRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPaymentTokenRequestEvent.GetInvocationList();
 				foreach (Delegate obj66 in invocationList)
 				{
 					if (obj66.Target == instance)
@@ -1273,9 +1273,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPaymentTokenResultEvent != null)
+			if (this.OnGetPaymentTokenResultEvent != null)
 			{
-				invocationList = OnGetPaymentTokenResultEvent.GetInvocationList();
+				invocationList = this.OnGetPaymentTokenResultEvent.GetInvocationList();
 				foreach (Delegate obj67 in invocationList)
 				{
 					if (obj67.Target == instance)
@@ -1284,9 +1284,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPhotonAuthenticationTokenRequestEvent != null)
+			if (this.OnGetPhotonAuthenticationTokenRequestEvent != null)
 			{
-				invocationList = OnGetPhotonAuthenticationTokenRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPhotonAuthenticationTokenRequestEvent.GetInvocationList();
 				foreach (Delegate obj68 in invocationList)
 				{
 					if (obj68.Target == instance)
@@ -1295,9 +1295,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPhotonAuthenticationTokenResultEvent != null)
+			if (this.OnGetPhotonAuthenticationTokenResultEvent != null)
 			{
-				invocationList = OnGetPhotonAuthenticationTokenResultEvent.GetInvocationList();
+				invocationList = this.OnGetPhotonAuthenticationTokenResultEvent.GetInvocationList();
 				foreach (Delegate obj69 in invocationList)
 				{
 					if (obj69.Target == instance)
@@ -1306,9 +1306,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerCombinedInfoRequestEvent != null)
+			if (this.OnGetPlayerCombinedInfoRequestEvent != null)
 			{
-				invocationList = OnGetPlayerCombinedInfoRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerCombinedInfoRequestEvent.GetInvocationList();
 				foreach (Delegate obj70 in invocationList)
 				{
 					if (obj70.Target == instance)
@@ -1317,9 +1317,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerCombinedInfoResultEvent != null)
+			if (this.OnGetPlayerCombinedInfoResultEvent != null)
 			{
-				invocationList = OnGetPlayerCombinedInfoResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerCombinedInfoResultEvent.GetInvocationList();
 				foreach (Delegate obj71 in invocationList)
 				{
 					if (obj71.Target == instance)
@@ -1328,9 +1328,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerProfileRequestEvent != null)
+			if (this.OnGetPlayerProfileRequestEvent != null)
 			{
-				invocationList = OnGetPlayerProfileRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerProfileRequestEvent.GetInvocationList();
 				foreach (Delegate obj72 in invocationList)
 				{
 					if (obj72.Target == instance)
@@ -1339,9 +1339,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerProfileResultEvent != null)
+			if (this.OnGetPlayerProfileResultEvent != null)
 			{
-				invocationList = OnGetPlayerProfileResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerProfileResultEvent.GetInvocationList();
 				foreach (Delegate obj73 in invocationList)
 				{
 					if (obj73.Target == instance)
@@ -1350,9 +1350,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerSegmentsRequestEvent != null)
+			if (this.OnGetPlayerSegmentsRequestEvent != null)
 			{
-				invocationList = OnGetPlayerSegmentsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerSegmentsRequestEvent.GetInvocationList();
 				foreach (Delegate obj74 in invocationList)
 				{
 					if (obj74.Target == instance)
@@ -1361,9 +1361,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerSegmentsResultEvent != null)
+			if (this.OnGetPlayerSegmentsResultEvent != null)
 			{
-				invocationList = OnGetPlayerSegmentsResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerSegmentsResultEvent.GetInvocationList();
 				foreach (Delegate obj75 in invocationList)
 				{
 					if (obj75.Target == instance)
@@ -1372,9 +1372,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerStatisticsRequestEvent != null)
+			if (this.OnGetPlayerStatisticsRequestEvent != null)
 			{
-				invocationList = OnGetPlayerStatisticsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerStatisticsRequestEvent.GetInvocationList();
 				foreach (Delegate obj76 in invocationList)
 				{
 					if (obj76.Target == instance)
@@ -1383,9 +1383,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerStatisticsResultEvent != null)
+			if (this.OnGetPlayerStatisticsResultEvent != null)
 			{
-				invocationList = OnGetPlayerStatisticsResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerStatisticsResultEvent.GetInvocationList();
 				foreach (Delegate obj77 in invocationList)
 				{
 					if (obj77.Target == instance)
@@ -1394,9 +1394,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerStatisticVersionsRequestEvent != null)
+			if (this.OnGetPlayerStatisticVersionsRequestEvent != null)
 			{
-				invocationList = OnGetPlayerStatisticVersionsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerStatisticVersionsRequestEvent.GetInvocationList();
 				foreach (Delegate obj78 in invocationList)
 				{
 					if (obj78.Target == instance)
@@ -1405,9 +1405,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerStatisticVersionsResultEvent != null)
+			if (this.OnGetPlayerStatisticVersionsResultEvent != null)
 			{
-				invocationList = OnGetPlayerStatisticVersionsResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerStatisticVersionsResultEvent.GetInvocationList();
 				foreach (Delegate obj79 in invocationList)
 				{
 					if (obj79.Target == instance)
@@ -1416,9 +1416,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerTagsRequestEvent != null)
+			if (this.OnGetPlayerTagsRequestEvent != null)
 			{
-				invocationList = OnGetPlayerTagsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerTagsRequestEvent.GetInvocationList();
 				foreach (Delegate obj80 in invocationList)
 				{
 					if (obj80.Target == instance)
@@ -1427,9 +1427,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerTagsResultEvent != null)
+			if (this.OnGetPlayerTagsResultEvent != null)
 			{
-				invocationList = OnGetPlayerTagsResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerTagsResultEvent.GetInvocationList();
 				foreach (Delegate obj81 in invocationList)
 				{
 					if (obj81.Target == instance)
@@ -1438,9 +1438,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerTradesRequestEvent != null)
+			if (this.OnGetPlayerTradesRequestEvent != null)
 			{
-				invocationList = OnGetPlayerTradesRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerTradesRequestEvent.GetInvocationList();
 				foreach (Delegate obj82 in invocationList)
 				{
 					if (obj82.Target == instance)
@@ -1449,9 +1449,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayerTradesResultEvent != null)
+			if (this.OnGetPlayerTradesResultEvent != null)
 			{
-				invocationList = OnGetPlayerTradesResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayerTradesResultEvent.GetInvocationList();
 				foreach (Delegate obj83 in invocationList)
 				{
 					if (obj83.Target == instance)
@@ -1460,9 +1460,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromFacebookIDsRequestEvent != null)
+			if (this.OnGetPlayFabIDsFromFacebookIDsRequestEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromFacebookIDsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromFacebookIDsRequestEvent.GetInvocationList();
 				foreach (Delegate obj84 in invocationList)
 				{
 					if (obj84.Target == instance)
@@ -1471,9 +1471,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromFacebookIDsResultEvent != null)
+			if (this.OnGetPlayFabIDsFromFacebookIDsResultEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromFacebookIDsResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromFacebookIDsResultEvent.GetInvocationList();
 				foreach (Delegate obj85 in invocationList)
 				{
 					if (obj85.Target == instance)
@@ -1482,9 +1482,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromGameCenterIDsRequestEvent != null)
+			if (this.OnGetPlayFabIDsFromGameCenterIDsRequestEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromGameCenterIDsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromGameCenterIDsRequestEvent.GetInvocationList();
 				foreach (Delegate obj86 in invocationList)
 				{
 					if (obj86.Target == instance)
@@ -1493,9 +1493,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromGameCenterIDsResultEvent != null)
+			if (this.OnGetPlayFabIDsFromGameCenterIDsResultEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromGameCenterIDsResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromGameCenterIDsResultEvent.GetInvocationList();
 				foreach (Delegate obj87 in invocationList)
 				{
 					if (obj87.Target == instance)
@@ -1504,9 +1504,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromGenericIDsRequestEvent != null)
+			if (this.OnGetPlayFabIDsFromGenericIDsRequestEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromGenericIDsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromGenericIDsRequestEvent.GetInvocationList();
 				foreach (Delegate obj88 in invocationList)
 				{
 					if (obj88.Target == instance)
@@ -1515,9 +1515,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromGenericIDsResultEvent != null)
+			if (this.OnGetPlayFabIDsFromGenericIDsResultEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromGenericIDsResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromGenericIDsResultEvent.GetInvocationList();
 				foreach (Delegate obj89 in invocationList)
 				{
 					if (obj89.Target == instance)
@@ -1526,9 +1526,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromGoogleIDsRequestEvent != null)
+			if (this.OnGetPlayFabIDsFromGoogleIDsRequestEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromGoogleIDsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromGoogleIDsRequestEvent.GetInvocationList();
 				foreach (Delegate obj90 in invocationList)
 				{
 					if (obj90.Target == instance)
@@ -1537,9 +1537,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromGoogleIDsResultEvent != null)
+			if (this.OnGetPlayFabIDsFromGoogleIDsResultEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromGoogleIDsResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromGoogleIDsResultEvent.GetInvocationList();
 				foreach (Delegate obj91 in invocationList)
 				{
 					if (obj91.Target == instance)
@@ -1548,9 +1548,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromKongregateIDsRequestEvent != null)
+			if (this.OnGetPlayFabIDsFromKongregateIDsRequestEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromKongregateIDsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromKongregateIDsRequestEvent.GetInvocationList();
 				foreach (Delegate obj92 in invocationList)
 				{
 					if (obj92.Target == instance)
@@ -1559,9 +1559,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromKongregateIDsResultEvent != null)
+			if (this.OnGetPlayFabIDsFromKongregateIDsResultEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromKongregateIDsResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromKongregateIDsResultEvent.GetInvocationList();
 				foreach (Delegate obj93 in invocationList)
 				{
 					if (obj93.Target == instance)
@@ -1570,9 +1570,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromSteamIDsRequestEvent != null)
+			if (this.OnGetPlayFabIDsFromSteamIDsRequestEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromSteamIDsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromSteamIDsRequestEvent.GetInvocationList();
 				foreach (Delegate obj94 in invocationList)
 				{
 					if (obj94.Target == instance)
@@ -1581,9 +1581,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromSteamIDsResultEvent != null)
+			if (this.OnGetPlayFabIDsFromSteamIDsResultEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromSteamIDsResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromSteamIDsResultEvent.GetInvocationList();
 				foreach (Delegate obj95 in invocationList)
 				{
 					if (obj95.Target == instance)
@@ -1592,9 +1592,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromTwitchIDsRequestEvent != null)
+			if (this.OnGetPlayFabIDsFromTwitchIDsRequestEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromTwitchIDsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromTwitchIDsRequestEvent.GetInvocationList();
 				foreach (Delegate obj96 in invocationList)
 				{
 					if (obj96.Target == instance)
@@ -1603,9 +1603,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPlayFabIDsFromTwitchIDsResultEvent != null)
+			if (this.OnGetPlayFabIDsFromTwitchIDsResultEvent != null)
 			{
-				invocationList = OnGetPlayFabIDsFromTwitchIDsResultEvent.GetInvocationList();
+				invocationList = this.OnGetPlayFabIDsFromTwitchIDsResultEvent.GetInvocationList();
 				foreach (Delegate obj97 in invocationList)
 				{
 					if (obj97.Target == instance)
@@ -1614,9 +1614,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPublisherDataRequestEvent != null)
+			if (this.OnGetPublisherDataRequestEvent != null)
 			{
-				invocationList = OnGetPublisherDataRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPublisherDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj98 in invocationList)
 				{
 					if (obj98.Target == instance)
@@ -1625,9 +1625,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPublisherDataResultEvent != null)
+			if (this.OnGetPublisherDataResultEvent != null)
 			{
-				invocationList = OnGetPublisherDataResultEvent.GetInvocationList();
+				invocationList = this.OnGetPublisherDataResultEvent.GetInvocationList();
 				foreach (Delegate obj99 in invocationList)
 				{
 					if (obj99.Target == instance)
@@ -1636,9 +1636,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPurchaseRequestEvent != null)
+			if (this.OnGetPurchaseRequestEvent != null)
 			{
-				invocationList = OnGetPurchaseRequestEvent.GetInvocationList();
+				invocationList = this.OnGetPurchaseRequestEvent.GetInvocationList();
 				foreach (Delegate obj100 in invocationList)
 				{
 					if (obj100.Target == instance)
@@ -1647,9 +1647,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetPurchaseResultEvent != null)
+			if (this.OnGetPurchaseResultEvent != null)
 			{
-				invocationList = OnGetPurchaseResultEvent.GetInvocationList();
+				invocationList = this.OnGetPurchaseResultEvent.GetInvocationList();
 				foreach (Delegate obj101 in invocationList)
 				{
 					if (obj101.Target == instance)
@@ -1658,9 +1658,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetSharedGroupDataRequestEvent != null)
+			if (this.OnGetSharedGroupDataRequestEvent != null)
 			{
-				invocationList = OnGetSharedGroupDataRequestEvent.GetInvocationList();
+				invocationList = this.OnGetSharedGroupDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj102 in invocationList)
 				{
 					if (obj102.Target == instance)
@@ -1669,9 +1669,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetSharedGroupDataResultEvent != null)
+			if (this.OnGetSharedGroupDataResultEvent != null)
 			{
-				invocationList = OnGetSharedGroupDataResultEvent.GetInvocationList();
+				invocationList = this.OnGetSharedGroupDataResultEvent.GetInvocationList();
 				foreach (Delegate obj103 in invocationList)
 				{
 					if (obj103.Target == instance)
@@ -1680,9 +1680,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetStoreItemsRequestEvent != null)
+			if (this.OnGetStoreItemsRequestEvent != null)
 			{
-				invocationList = OnGetStoreItemsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetStoreItemsRequestEvent.GetInvocationList();
 				foreach (Delegate obj104 in invocationList)
 				{
 					if (obj104.Target == instance)
@@ -1691,9 +1691,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetStoreItemsResultEvent != null)
+			if (this.OnGetStoreItemsResultEvent != null)
 			{
-				invocationList = OnGetStoreItemsResultEvent.GetInvocationList();
+				invocationList = this.OnGetStoreItemsResultEvent.GetInvocationList();
 				foreach (Delegate obj105 in invocationList)
 				{
 					if (obj105.Target == instance)
@@ -1702,9 +1702,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetTimeRequestEvent != null)
+			if (this.OnGetTimeRequestEvent != null)
 			{
-				invocationList = OnGetTimeRequestEvent.GetInvocationList();
+				invocationList = this.OnGetTimeRequestEvent.GetInvocationList();
 				foreach (Delegate obj106 in invocationList)
 				{
 					if (obj106.Target == instance)
@@ -1713,9 +1713,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetTimeResultEvent != null)
+			if (this.OnGetTimeResultEvent != null)
 			{
-				invocationList = OnGetTimeResultEvent.GetInvocationList();
+				invocationList = this.OnGetTimeResultEvent.GetInvocationList();
 				foreach (Delegate obj107 in invocationList)
 				{
 					if (obj107.Target == instance)
@@ -1724,9 +1724,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetTitleDataRequestEvent != null)
+			if (this.OnGetTitleDataRequestEvent != null)
 			{
-				invocationList = OnGetTitleDataRequestEvent.GetInvocationList();
+				invocationList = this.OnGetTitleDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj108 in invocationList)
 				{
 					if (obj108.Target == instance)
@@ -1735,9 +1735,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetTitleDataResultEvent != null)
+			if (this.OnGetTitleDataResultEvent != null)
 			{
-				invocationList = OnGetTitleDataResultEvent.GetInvocationList();
+				invocationList = this.OnGetTitleDataResultEvent.GetInvocationList();
 				foreach (Delegate obj109 in invocationList)
 				{
 					if (obj109.Target == instance)
@@ -1746,9 +1746,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetTitleNewsRequestEvent != null)
+			if (this.OnGetTitleNewsRequestEvent != null)
 			{
-				invocationList = OnGetTitleNewsRequestEvent.GetInvocationList();
+				invocationList = this.OnGetTitleNewsRequestEvent.GetInvocationList();
 				foreach (Delegate obj110 in invocationList)
 				{
 					if (obj110.Target == instance)
@@ -1757,9 +1757,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetTitleNewsResultEvent != null)
+			if (this.OnGetTitleNewsResultEvent != null)
 			{
-				invocationList = OnGetTitleNewsResultEvent.GetInvocationList();
+				invocationList = this.OnGetTitleNewsResultEvent.GetInvocationList();
 				foreach (Delegate obj111 in invocationList)
 				{
 					if (obj111.Target == instance)
@@ -1768,9 +1768,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetTitlePublicKeyRequestEvent != null)
+			if (this.OnGetTitlePublicKeyRequestEvent != null)
 			{
-				invocationList = OnGetTitlePublicKeyRequestEvent.GetInvocationList();
+				invocationList = this.OnGetTitlePublicKeyRequestEvent.GetInvocationList();
 				foreach (Delegate obj112 in invocationList)
 				{
 					if (obj112.Target == instance)
@@ -1779,9 +1779,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetTitlePublicKeyResultEvent != null)
+			if (this.OnGetTitlePublicKeyResultEvent != null)
 			{
-				invocationList = OnGetTitlePublicKeyResultEvent.GetInvocationList();
+				invocationList = this.OnGetTitlePublicKeyResultEvent.GetInvocationList();
 				foreach (Delegate obj113 in invocationList)
 				{
 					if (obj113.Target == instance)
@@ -1790,9 +1790,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetTradeStatusRequestEvent != null)
+			if (this.OnGetTradeStatusRequestEvent != null)
 			{
-				invocationList = OnGetTradeStatusRequestEvent.GetInvocationList();
+				invocationList = this.OnGetTradeStatusRequestEvent.GetInvocationList();
 				foreach (Delegate obj114 in invocationList)
 				{
 					if (obj114.Target == instance)
@@ -1801,9 +1801,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetTradeStatusResultEvent != null)
+			if (this.OnGetTradeStatusResultEvent != null)
 			{
-				invocationList = OnGetTradeStatusResultEvent.GetInvocationList();
+				invocationList = this.OnGetTradeStatusResultEvent.GetInvocationList();
 				foreach (Delegate obj115 in invocationList)
 				{
 					if (obj115.Target == instance)
@@ -1812,9 +1812,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetUserDataRequestEvent != null)
+			if (this.OnGetUserDataRequestEvent != null)
 			{
-				invocationList = OnGetUserDataRequestEvent.GetInvocationList();
+				invocationList = this.OnGetUserDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj116 in invocationList)
 				{
 					if (obj116.Target == instance)
@@ -1823,9 +1823,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetUserDataResultEvent != null)
+			if (this.OnGetUserDataResultEvent != null)
 			{
-				invocationList = OnGetUserDataResultEvent.GetInvocationList();
+				invocationList = this.OnGetUserDataResultEvent.GetInvocationList();
 				foreach (Delegate obj117 in invocationList)
 				{
 					if (obj117.Target == instance)
@@ -1834,9 +1834,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetUserInventoryRequestEvent != null)
+			if (this.OnGetUserInventoryRequestEvent != null)
 			{
-				invocationList = OnGetUserInventoryRequestEvent.GetInvocationList();
+				invocationList = this.OnGetUserInventoryRequestEvent.GetInvocationList();
 				foreach (Delegate obj118 in invocationList)
 				{
 					if (obj118.Target == instance)
@@ -1845,9 +1845,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetUserInventoryResultEvent != null)
+			if (this.OnGetUserInventoryResultEvent != null)
 			{
-				invocationList = OnGetUserInventoryResultEvent.GetInvocationList();
+				invocationList = this.OnGetUserInventoryResultEvent.GetInvocationList();
 				foreach (Delegate obj119 in invocationList)
 				{
 					if (obj119.Target == instance)
@@ -1856,9 +1856,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetUserPublisherDataRequestEvent != null)
+			if (this.OnGetUserPublisherDataRequestEvent != null)
 			{
-				invocationList = OnGetUserPublisherDataRequestEvent.GetInvocationList();
+				invocationList = this.OnGetUserPublisherDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj120 in invocationList)
 				{
 					if (obj120.Target == instance)
@@ -1867,9 +1867,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetUserPublisherDataResultEvent != null)
+			if (this.OnGetUserPublisherDataResultEvent != null)
 			{
-				invocationList = OnGetUserPublisherDataResultEvent.GetInvocationList();
+				invocationList = this.OnGetUserPublisherDataResultEvent.GetInvocationList();
 				foreach (Delegate obj121 in invocationList)
 				{
 					if (obj121.Target == instance)
@@ -1878,9 +1878,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetUserPublisherReadOnlyDataRequestEvent != null)
+			if (this.OnGetUserPublisherReadOnlyDataRequestEvent != null)
 			{
-				invocationList = OnGetUserPublisherReadOnlyDataRequestEvent.GetInvocationList();
+				invocationList = this.OnGetUserPublisherReadOnlyDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj122 in invocationList)
 				{
 					if (obj122.Target == instance)
@@ -1889,9 +1889,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetUserPublisherReadOnlyDataResultEvent != null)
+			if (this.OnGetUserPublisherReadOnlyDataResultEvent != null)
 			{
-				invocationList = OnGetUserPublisherReadOnlyDataResultEvent.GetInvocationList();
+				invocationList = this.OnGetUserPublisherReadOnlyDataResultEvent.GetInvocationList();
 				foreach (Delegate obj123 in invocationList)
 				{
 					if (obj123.Target == instance)
@@ -1900,9 +1900,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetUserReadOnlyDataRequestEvent != null)
+			if (this.OnGetUserReadOnlyDataRequestEvent != null)
 			{
-				invocationList = OnGetUserReadOnlyDataRequestEvent.GetInvocationList();
+				invocationList = this.OnGetUserReadOnlyDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj124 in invocationList)
 				{
 					if (obj124.Target == instance)
@@ -1911,9 +1911,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetUserReadOnlyDataResultEvent != null)
+			if (this.OnGetUserReadOnlyDataResultEvent != null)
 			{
-				invocationList = OnGetUserReadOnlyDataResultEvent.GetInvocationList();
+				invocationList = this.OnGetUserReadOnlyDataResultEvent.GetInvocationList();
 				foreach (Delegate obj125 in invocationList)
 				{
 					if (obj125.Target == instance)
@@ -1922,9 +1922,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetWindowsHelloChallengeRequestEvent != null)
+			if (this.OnGetWindowsHelloChallengeRequestEvent != null)
 			{
-				invocationList = OnGetWindowsHelloChallengeRequestEvent.GetInvocationList();
+				invocationList = this.OnGetWindowsHelloChallengeRequestEvent.GetInvocationList();
 				foreach (Delegate obj126 in invocationList)
 				{
 					if (obj126.Target == instance)
@@ -1933,9 +1933,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGetWindowsHelloChallengeResultEvent != null)
+			if (this.OnGetWindowsHelloChallengeResultEvent != null)
 			{
-				invocationList = OnGetWindowsHelloChallengeResultEvent.GetInvocationList();
+				invocationList = this.OnGetWindowsHelloChallengeResultEvent.GetInvocationList();
 				foreach (Delegate obj127 in invocationList)
 				{
 					if (obj127.Target == instance)
@@ -1944,9 +1944,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGrantCharacterToUserRequestEvent != null)
+			if (this.OnGrantCharacterToUserRequestEvent != null)
 			{
-				invocationList = OnGrantCharacterToUserRequestEvent.GetInvocationList();
+				invocationList = this.OnGrantCharacterToUserRequestEvent.GetInvocationList();
 				foreach (Delegate obj128 in invocationList)
 				{
 					if (obj128.Target == instance)
@@ -1955,9 +1955,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnGrantCharacterToUserResultEvent != null)
+			if (this.OnGrantCharacterToUserResultEvent != null)
 			{
-				invocationList = OnGrantCharacterToUserResultEvent.GetInvocationList();
+				invocationList = this.OnGrantCharacterToUserResultEvent.GetInvocationList();
 				foreach (Delegate obj129 in invocationList)
 				{
 					if (obj129.Target == instance)
@@ -1966,9 +1966,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkAndroidDeviceIDRequestEvent != null)
+			if (this.OnLinkAndroidDeviceIDRequestEvent != null)
 			{
-				invocationList = OnLinkAndroidDeviceIDRequestEvent.GetInvocationList();
+				invocationList = this.OnLinkAndroidDeviceIDRequestEvent.GetInvocationList();
 				foreach (Delegate obj130 in invocationList)
 				{
 					if (obj130.Target == instance)
@@ -1977,9 +1977,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkAndroidDeviceIDResultEvent != null)
+			if (this.OnLinkAndroidDeviceIDResultEvent != null)
 			{
-				invocationList = OnLinkAndroidDeviceIDResultEvent.GetInvocationList();
+				invocationList = this.OnLinkAndroidDeviceIDResultEvent.GetInvocationList();
 				foreach (Delegate obj131 in invocationList)
 				{
 					if (obj131.Target == instance)
@@ -1988,9 +1988,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkCustomIDRequestEvent != null)
+			if (this.OnLinkCustomIDRequestEvent != null)
 			{
-				invocationList = OnLinkCustomIDRequestEvent.GetInvocationList();
+				invocationList = this.OnLinkCustomIDRequestEvent.GetInvocationList();
 				foreach (Delegate obj132 in invocationList)
 				{
 					if (obj132.Target == instance)
@@ -1999,9 +1999,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkCustomIDResultEvent != null)
+			if (this.OnLinkCustomIDResultEvent != null)
 			{
-				invocationList = OnLinkCustomIDResultEvent.GetInvocationList();
+				invocationList = this.OnLinkCustomIDResultEvent.GetInvocationList();
 				foreach (Delegate obj133 in invocationList)
 				{
 					if (obj133.Target == instance)
@@ -2010,9 +2010,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkFacebookAccountRequestEvent != null)
+			if (this.OnLinkFacebookAccountRequestEvent != null)
 			{
-				invocationList = OnLinkFacebookAccountRequestEvent.GetInvocationList();
+				invocationList = this.OnLinkFacebookAccountRequestEvent.GetInvocationList();
 				foreach (Delegate obj134 in invocationList)
 				{
 					if (obj134.Target == instance)
@@ -2021,9 +2021,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkFacebookAccountResultEvent != null)
+			if (this.OnLinkFacebookAccountResultEvent != null)
 			{
-				invocationList = OnLinkFacebookAccountResultEvent.GetInvocationList();
+				invocationList = this.OnLinkFacebookAccountResultEvent.GetInvocationList();
 				foreach (Delegate obj135 in invocationList)
 				{
 					if (obj135.Target == instance)
@@ -2032,9 +2032,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkGameCenterAccountRequestEvent != null)
+			if (this.OnLinkGameCenterAccountRequestEvent != null)
 			{
-				invocationList = OnLinkGameCenterAccountRequestEvent.GetInvocationList();
+				invocationList = this.OnLinkGameCenterAccountRequestEvent.GetInvocationList();
 				foreach (Delegate obj136 in invocationList)
 				{
 					if (obj136.Target == instance)
@@ -2043,9 +2043,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkGameCenterAccountResultEvent != null)
+			if (this.OnLinkGameCenterAccountResultEvent != null)
 			{
-				invocationList = OnLinkGameCenterAccountResultEvent.GetInvocationList();
+				invocationList = this.OnLinkGameCenterAccountResultEvent.GetInvocationList();
 				foreach (Delegate obj137 in invocationList)
 				{
 					if (obj137.Target == instance)
@@ -2054,9 +2054,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkGoogleAccountRequestEvent != null)
+			if (this.OnLinkGoogleAccountRequestEvent != null)
 			{
-				invocationList = OnLinkGoogleAccountRequestEvent.GetInvocationList();
+				invocationList = this.OnLinkGoogleAccountRequestEvent.GetInvocationList();
 				foreach (Delegate obj138 in invocationList)
 				{
 					if (obj138.Target == instance)
@@ -2065,9 +2065,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkGoogleAccountResultEvent != null)
+			if (this.OnLinkGoogleAccountResultEvent != null)
 			{
-				invocationList = OnLinkGoogleAccountResultEvent.GetInvocationList();
+				invocationList = this.OnLinkGoogleAccountResultEvent.GetInvocationList();
 				foreach (Delegate obj139 in invocationList)
 				{
 					if (obj139.Target == instance)
@@ -2076,9 +2076,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkIOSDeviceIDRequestEvent != null)
+			if (this.OnLinkIOSDeviceIDRequestEvent != null)
 			{
-				invocationList = OnLinkIOSDeviceIDRequestEvent.GetInvocationList();
+				invocationList = this.OnLinkIOSDeviceIDRequestEvent.GetInvocationList();
 				foreach (Delegate obj140 in invocationList)
 				{
 					if (obj140.Target == instance)
@@ -2087,9 +2087,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkIOSDeviceIDResultEvent != null)
+			if (this.OnLinkIOSDeviceIDResultEvent != null)
 			{
-				invocationList = OnLinkIOSDeviceIDResultEvent.GetInvocationList();
+				invocationList = this.OnLinkIOSDeviceIDResultEvent.GetInvocationList();
 				foreach (Delegate obj141 in invocationList)
 				{
 					if (obj141.Target == instance)
@@ -2098,9 +2098,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkKongregateRequestEvent != null)
+			if (this.OnLinkKongregateRequestEvent != null)
 			{
-				invocationList = OnLinkKongregateRequestEvent.GetInvocationList();
+				invocationList = this.OnLinkKongregateRequestEvent.GetInvocationList();
 				foreach (Delegate obj142 in invocationList)
 				{
 					if (obj142.Target == instance)
@@ -2109,9 +2109,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkKongregateResultEvent != null)
+			if (this.OnLinkKongregateResultEvent != null)
 			{
-				invocationList = OnLinkKongregateResultEvent.GetInvocationList();
+				invocationList = this.OnLinkKongregateResultEvent.GetInvocationList();
 				foreach (Delegate obj143 in invocationList)
 				{
 					if (obj143.Target == instance)
@@ -2120,9 +2120,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkSteamAccountRequestEvent != null)
+			if (this.OnLinkSteamAccountRequestEvent != null)
 			{
-				invocationList = OnLinkSteamAccountRequestEvent.GetInvocationList();
+				invocationList = this.OnLinkSteamAccountRequestEvent.GetInvocationList();
 				foreach (Delegate obj144 in invocationList)
 				{
 					if (obj144.Target == instance)
@@ -2131,9 +2131,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkSteamAccountResultEvent != null)
+			if (this.OnLinkSteamAccountResultEvent != null)
 			{
-				invocationList = OnLinkSteamAccountResultEvent.GetInvocationList();
+				invocationList = this.OnLinkSteamAccountResultEvent.GetInvocationList();
 				foreach (Delegate obj145 in invocationList)
 				{
 					if (obj145.Target == instance)
@@ -2142,9 +2142,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkTwitchRequestEvent != null)
+			if (this.OnLinkTwitchRequestEvent != null)
 			{
-				invocationList = OnLinkTwitchRequestEvent.GetInvocationList();
+				invocationList = this.OnLinkTwitchRequestEvent.GetInvocationList();
 				foreach (Delegate obj146 in invocationList)
 				{
 					if (obj146.Target == instance)
@@ -2153,9 +2153,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkTwitchResultEvent != null)
+			if (this.OnLinkTwitchResultEvent != null)
 			{
-				invocationList = OnLinkTwitchResultEvent.GetInvocationList();
+				invocationList = this.OnLinkTwitchResultEvent.GetInvocationList();
 				foreach (Delegate obj147 in invocationList)
 				{
 					if (obj147.Target == instance)
@@ -2164,9 +2164,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkWindowsHelloRequestEvent != null)
+			if (this.OnLinkWindowsHelloRequestEvent != null)
 			{
-				invocationList = OnLinkWindowsHelloRequestEvent.GetInvocationList();
+				invocationList = this.OnLinkWindowsHelloRequestEvent.GetInvocationList();
 				foreach (Delegate obj148 in invocationList)
 				{
 					if (obj148.Target == instance)
@@ -2175,9 +2175,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLinkWindowsHelloResultEvent != null)
+			if (this.OnLinkWindowsHelloResultEvent != null)
 			{
-				invocationList = OnLinkWindowsHelloResultEvent.GetInvocationList();
+				invocationList = this.OnLinkWindowsHelloResultEvent.GetInvocationList();
 				foreach (Delegate obj149 in invocationList)
 				{
 					if (obj149.Target == instance)
@@ -2186,9 +2186,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithAndroidDeviceIDRequestEvent != null)
+			if (this.OnLoginWithAndroidDeviceIDRequestEvent != null)
 			{
-				invocationList = OnLoginWithAndroidDeviceIDRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithAndroidDeviceIDRequestEvent.GetInvocationList();
 				foreach (Delegate obj150 in invocationList)
 				{
 					if (obj150.Target == instance)
@@ -2197,9 +2197,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithCustomIDRequestEvent != null)
+			if (this.OnLoginWithCustomIDRequestEvent != null)
 			{
-				invocationList = OnLoginWithCustomIDRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithCustomIDRequestEvent.GetInvocationList();
 				foreach (Delegate obj151 in invocationList)
 				{
 					if (obj151.Target == instance)
@@ -2208,9 +2208,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithEmailAddressRequestEvent != null)
+			if (this.OnLoginWithEmailAddressRequestEvent != null)
 			{
-				invocationList = OnLoginWithEmailAddressRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithEmailAddressRequestEvent.GetInvocationList();
 				foreach (Delegate obj152 in invocationList)
 				{
 					if (obj152.Target == instance)
@@ -2219,9 +2219,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithFacebookRequestEvent != null)
+			if (this.OnLoginWithFacebookRequestEvent != null)
 			{
-				invocationList = OnLoginWithFacebookRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithFacebookRequestEvent.GetInvocationList();
 				foreach (Delegate obj153 in invocationList)
 				{
 					if (obj153.Target == instance)
@@ -2230,9 +2230,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithGameCenterRequestEvent != null)
+			if (this.OnLoginWithGameCenterRequestEvent != null)
 			{
-				invocationList = OnLoginWithGameCenterRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithGameCenterRequestEvent.GetInvocationList();
 				foreach (Delegate obj154 in invocationList)
 				{
 					if (obj154.Target == instance)
@@ -2241,9 +2241,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithGoogleAccountRequestEvent != null)
+			if (this.OnLoginWithGoogleAccountRequestEvent != null)
 			{
-				invocationList = OnLoginWithGoogleAccountRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithGoogleAccountRequestEvent.GetInvocationList();
 				foreach (Delegate obj155 in invocationList)
 				{
 					if (obj155.Target == instance)
@@ -2252,9 +2252,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithIOSDeviceIDRequestEvent != null)
+			if (this.OnLoginWithIOSDeviceIDRequestEvent != null)
 			{
-				invocationList = OnLoginWithIOSDeviceIDRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithIOSDeviceIDRequestEvent.GetInvocationList();
 				foreach (Delegate obj156 in invocationList)
 				{
 					if (obj156.Target == instance)
@@ -2263,9 +2263,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithKongregateRequestEvent != null)
+			if (this.OnLoginWithKongregateRequestEvent != null)
 			{
-				invocationList = OnLoginWithKongregateRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithKongregateRequestEvent.GetInvocationList();
 				foreach (Delegate obj157 in invocationList)
 				{
 					if (obj157.Target == instance)
@@ -2274,9 +2274,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithPlayFabRequestEvent != null)
+			if (this.OnLoginWithPlayFabRequestEvent != null)
 			{
-				invocationList = OnLoginWithPlayFabRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithPlayFabRequestEvent.GetInvocationList();
 				foreach (Delegate obj158 in invocationList)
 				{
 					if (obj158.Target == instance)
@@ -2285,9 +2285,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithSteamRequestEvent != null)
+			if (this.OnLoginWithSteamRequestEvent != null)
 			{
-				invocationList = OnLoginWithSteamRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithSteamRequestEvent.GetInvocationList();
 				foreach (Delegate obj159 in invocationList)
 				{
 					if (obj159.Target == instance)
@@ -2296,9 +2296,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithTwitchRequestEvent != null)
+			if (this.OnLoginWithTwitchRequestEvent != null)
 			{
-				invocationList = OnLoginWithTwitchRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithTwitchRequestEvent.GetInvocationList();
 				foreach (Delegate obj160 in invocationList)
 				{
 					if (obj160.Target == instance)
@@ -2307,9 +2307,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnLoginWithWindowsHelloRequestEvent != null)
+			if (this.OnLoginWithWindowsHelloRequestEvent != null)
 			{
-				invocationList = OnLoginWithWindowsHelloRequestEvent.GetInvocationList();
+				invocationList = this.OnLoginWithWindowsHelloRequestEvent.GetInvocationList();
 				foreach (Delegate obj161 in invocationList)
 				{
 					if (obj161.Target == instance)
@@ -2318,9 +2318,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnMatchmakeRequestEvent != null)
+			if (this.OnMatchmakeRequestEvent != null)
 			{
-				invocationList = OnMatchmakeRequestEvent.GetInvocationList();
+				invocationList = this.OnMatchmakeRequestEvent.GetInvocationList();
 				foreach (Delegate obj162 in invocationList)
 				{
 					if (obj162.Target == instance)
@@ -2329,9 +2329,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnMatchmakeResultEvent != null)
+			if (this.OnMatchmakeResultEvent != null)
 			{
-				invocationList = OnMatchmakeResultEvent.GetInvocationList();
+				invocationList = this.OnMatchmakeResultEvent.GetInvocationList();
 				foreach (Delegate obj163 in invocationList)
 				{
 					if (obj163.Target == instance)
@@ -2340,9 +2340,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnOpenTradeRequestEvent != null)
+			if (this.OnOpenTradeRequestEvent != null)
 			{
-				invocationList = OnOpenTradeRequestEvent.GetInvocationList();
+				invocationList = this.OnOpenTradeRequestEvent.GetInvocationList();
 				foreach (Delegate obj164 in invocationList)
 				{
 					if (obj164.Target == instance)
@@ -2351,9 +2351,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnOpenTradeResultEvent != null)
+			if (this.OnOpenTradeResultEvent != null)
 			{
-				invocationList = OnOpenTradeResultEvent.GetInvocationList();
+				invocationList = this.OnOpenTradeResultEvent.GetInvocationList();
 				foreach (Delegate obj165 in invocationList)
 				{
 					if (obj165.Target == instance)
@@ -2362,9 +2362,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnPayForPurchaseRequestEvent != null)
+			if (this.OnPayForPurchaseRequestEvent != null)
 			{
-				invocationList = OnPayForPurchaseRequestEvent.GetInvocationList();
+				invocationList = this.OnPayForPurchaseRequestEvent.GetInvocationList();
 				foreach (Delegate obj166 in invocationList)
 				{
 					if (obj166.Target == instance)
@@ -2373,9 +2373,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnPayForPurchaseResultEvent != null)
+			if (this.OnPayForPurchaseResultEvent != null)
 			{
-				invocationList = OnPayForPurchaseResultEvent.GetInvocationList();
+				invocationList = this.OnPayForPurchaseResultEvent.GetInvocationList();
 				foreach (Delegate obj167 in invocationList)
 				{
 					if (obj167.Target == instance)
@@ -2384,9 +2384,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnPurchaseItemRequestEvent != null)
+			if (this.OnPurchaseItemRequestEvent != null)
 			{
-				invocationList = OnPurchaseItemRequestEvent.GetInvocationList();
+				invocationList = this.OnPurchaseItemRequestEvent.GetInvocationList();
 				foreach (Delegate obj168 in invocationList)
 				{
 					if (obj168.Target == instance)
@@ -2395,9 +2395,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnPurchaseItemResultEvent != null)
+			if (this.OnPurchaseItemResultEvent != null)
 			{
-				invocationList = OnPurchaseItemResultEvent.GetInvocationList();
+				invocationList = this.OnPurchaseItemResultEvent.GetInvocationList();
 				foreach (Delegate obj169 in invocationList)
 				{
 					if (obj169.Target == instance)
@@ -2406,9 +2406,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRedeemCouponRequestEvent != null)
+			if (this.OnRedeemCouponRequestEvent != null)
 			{
-				invocationList = OnRedeemCouponRequestEvent.GetInvocationList();
+				invocationList = this.OnRedeemCouponRequestEvent.GetInvocationList();
 				foreach (Delegate obj170 in invocationList)
 				{
 					if (obj170.Target == instance)
@@ -2417,9 +2417,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRedeemCouponResultEvent != null)
+			if (this.OnRedeemCouponResultEvent != null)
 			{
-				invocationList = OnRedeemCouponResultEvent.GetInvocationList();
+				invocationList = this.OnRedeemCouponResultEvent.GetInvocationList();
 				foreach (Delegate obj171 in invocationList)
 				{
 					if (obj171.Target == instance)
@@ -2428,9 +2428,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRegisterForIOSPushNotificationRequestEvent != null)
+			if (this.OnRegisterForIOSPushNotificationRequestEvent != null)
 			{
-				invocationList = OnRegisterForIOSPushNotificationRequestEvent.GetInvocationList();
+				invocationList = this.OnRegisterForIOSPushNotificationRequestEvent.GetInvocationList();
 				foreach (Delegate obj172 in invocationList)
 				{
 					if (obj172.Target == instance)
@@ -2439,9 +2439,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRegisterForIOSPushNotificationResultEvent != null)
+			if (this.OnRegisterForIOSPushNotificationResultEvent != null)
 			{
-				invocationList = OnRegisterForIOSPushNotificationResultEvent.GetInvocationList();
+				invocationList = this.OnRegisterForIOSPushNotificationResultEvent.GetInvocationList();
 				foreach (Delegate obj173 in invocationList)
 				{
 					if (obj173.Target == instance)
@@ -2450,9 +2450,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRegisterPlayFabUserRequestEvent != null)
+			if (this.OnRegisterPlayFabUserRequestEvent != null)
 			{
-				invocationList = OnRegisterPlayFabUserRequestEvent.GetInvocationList();
+				invocationList = this.OnRegisterPlayFabUserRequestEvent.GetInvocationList();
 				foreach (Delegate obj174 in invocationList)
 				{
 					if (obj174.Target == instance)
@@ -2461,9 +2461,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRegisterPlayFabUserResultEvent != null)
+			if (this.OnRegisterPlayFabUserResultEvent != null)
 			{
-				invocationList = OnRegisterPlayFabUserResultEvent.GetInvocationList();
+				invocationList = this.OnRegisterPlayFabUserResultEvent.GetInvocationList();
 				foreach (Delegate obj175 in invocationList)
 				{
 					if (obj175.Target == instance)
@@ -2472,9 +2472,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRegisterWithWindowsHelloRequestEvent != null)
+			if (this.OnRegisterWithWindowsHelloRequestEvent != null)
 			{
-				invocationList = OnRegisterWithWindowsHelloRequestEvent.GetInvocationList();
+				invocationList = this.OnRegisterWithWindowsHelloRequestEvent.GetInvocationList();
 				foreach (Delegate obj176 in invocationList)
 				{
 					if (obj176.Target == instance)
@@ -2483,9 +2483,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRemoveContactEmailRequestEvent != null)
+			if (this.OnRemoveContactEmailRequestEvent != null)
 			{
-				invocationList = OnRemoveContactEmailRequestEvent.GetInvocationList();
+				invocationList = this.OnRemoveContactEmailRequestEvent.GetInvocationList();
 				foreach (Delegate obj177 in invocationList)
 				{
 					if (obj177.Target == instance)
@@ -2494,9 +2494,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRemoveContactEmailResultEvent != null)
+			if (this.OnRemoveContactEmailResultEvent != null)
 			{
-				invocationList = OnRemoveContactEmailResultEvent.GetInvocationList();
+				invocationList = this.OnRemoveContactEmailResultEvent.GetInvocationList();
 				foreach (Delegate obj178 in invocationList)
 				{
 					if (obj178.Target == instance)
@@ -2505,9 +2505,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRemoveFriendRequestEvent != null)
+			if (this.OnRemoveFriendRequestEvent != null)
 			{
-				invocationList = OnRemoveFriendRequestEvent.GetInvocationList();
+				invocationList = this.OnRemoveFriendRequestEvent.GetInvocationList();
 				foreach (Delegate obj179 in invocationList)
 				{
 					if (obj179.Target == instance)
@@ -2516,9 +2516,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRemoveFriendResultEvent != null)
+			if (this.OnRemoveFriendResultEvent != null)
 			{
-				invocationList = OnRemoveFriendResultEvent.GetInvocationList();
+				invocationList = this.OnRemoveFriendResultEvent.GetInvocationList();
 				foreach (Delegate obj180 in invocationList)
 				{
 					if (obj180.Target == instance)
@@ -2527,9 +2527,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRemoveGenericIDRequestEvent != null)
+			if (this.OnRemoveGenericIDRequestEvent != null)
 			{
-				invocationList = OnRemoveGenericIDRequestEvent.GetInvocationList();
+				invocationList = this.OnRemoveGenericIDRequestEvent.GetInvocationList();
 				foreach (Delegate obj181 in invocationList)
 				{
 					if (obj181.Target == instance)
@@ -2538,9 +2538,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRemoveGenericIDResultEvent != null)
+			if (this.OnRemoveGenericIDResultEvent != null)
 			{
-				invocationList = OnRemoveGenericIDResultEvent.GetInvocationList();
+				invocationList = this.OnRemoveGenericIDResultEvent.GetInvocationList();
 				foreach (Delegate obj182 in invocationList)
 				{
 					if (obj182.Target == instance)
@@ -2549,9 +2549,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRemoveSharedGroupMembersRequestEvent != null)
+			if (this.OnRemoveSharedGroupMembersRequestEvent != null)
 			{
-				invocationList = OnRemoveSharedGroupMembersRequestEvent.GetInvocationList();
+				invocationList = this.OnRemoveSharedGroupMembersRequestEvent.GetInvocationList();
 				foreach (Delegate obj183 in invocationList)
 				{
 					if (obj183.Target == instance)
@@ -2560,9 +2560,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRemoveSharedGroupMembersResultEvent != null)
+			if (this.OnRemoveSharedGroupMembersResultEvent != null)
 			{
-				invocationList = OnRemoveSharedGroupMembersResultEvent.GetInvocationList();
+				invocationList = this.OnRemoveSharedGroupMembersResultEvent.GetInvocationList();
 				foreach (Delegate obj184 in invocationList)
 				{
 					if (obj184.Target == instance)
@@ -2571,9 +2571,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnReportDeviceInfoRequestEvent != null)
+			if (this.OnReportDeviceInfoRequestEvent != null)
 			{
-				invocationList = OnReportDeviceInfoRequestEvent.GetInvocationList();
+				invocationList = this.OnReportDeviceInfoRequestEvent.GetInvocationList();
 				foreach (Delegate obj185 in invocationList)
 				{
 					if (obj185.Target == instance)
@@ -2582,9 +2582,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnReportDeviceInfoResultEvent != null)
+			if (this.OnReportDeviceInfoResultEvent != null)
 			{
-				invocationList = OnReportDeviceInfoResultEvent.GetInvocationList();
+				invocationList = this.OnReportDeviceInfoResultEvent.GetInvocationList();
 				foreach (Delegate obj186 in invocationList)
 				{
 					if (obj186.Target == instance)
@@ -2593,9 +2593,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnReportPlayerRequestEvent != null)
+			if (this.OnReportPlayerRequestEvent != null)
 			{
-				invocationList = OnReportPlayerRequestEvent.GetInvocationList();
+				invocationList = this.OnReportPlayerRequestEvent.GetInvocationList();
 				foreach (Delegate obj187 in invocationList)
 				{
 					if (obj187.Target == instance)
@@ -2604,9 +2604,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnReportPlayerResultEvent != null)
+			if (this.OnReportPlayerResultEvent != null)
 			{
-				invocationList = OnReportPlayerResultEvent.GetInvocationList();
+				invocationList = this.OnReportPlayerResultEvent.GetInvocationList();
 				foreach (Delegate obj188 in invocationList)
 				{
 					if (obj188.Target == instance)
@@ -2615,9 +2615,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRestoreIOSPurchasesRequestEvent != null)
+			if (this.OnRestoreIOSPurchasesRequestEvent != null)
 			{
-				invocationList = OnRestoreIOSPurchasesRequestEvent.GetInvocationList();
+				invocationList = this.OnRestoreIOSPurchasesRequestEvent.GetInvocationList();
 				foreach (Delegate obj189 in invocationList)
 				{
 					if (obj189.Target == instance)
@@ -2626,9 +2626,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnRestoreIOSPurchasesResultEvent != null)
+			if (this.OnRestoreIOSPurchasesResultEvent != null)
 			{
-				invocationList = OnRestoreIOSPurchasesResultEvent.GetInvocationList();
+				invocationList = this.OnRestoreIOSPurchasesResultEvent.GetInvocationList();
 				foreach (Delegate obj190 in invocationList)
 				{
 					if (obj190.Target == instance)
@@ -2637,9 +2637,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnSendAccountRecoveryEmailRequestEvent != null)
+			if (this.OnSendAccountRecoveryEmailRequestEvent != null)
 			{
-				invocationList = OnSendAccountRecoveryEmailRequestEvent.GetInvocationList();
+				invocationList = this.OnSendAccountRecoveryEmailRequestEvent.GetInvocationList();
 				foreach (Delegate obj191 in invocationList)
 				{
 					if (obj191.Target == instance)
@@ -2648,9 +2648,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnSendAccountRecoveryEmailResultEvent != null)
+			if (this.OnSendAccountRecoveryEmailResultEvent != null)
 			{
-				invocationList = OnSendAccountRecoveryEmailResultEvent.GetInvocationList();
+				invocationList = this.OnSendAccountRecoveryEmailResultEvent.GetInvocationList();
 				foreach (Delegate obj192 in invocationList)
 				{
 					if (obj192.Target == instance)
@@ -2659,9 +2659,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnSetFriendTagsRequestEvent != null)
+			if (this.OnSetFriendTagsRequestEvent != null)
 			{
-				invocationList = OnSetFriendTagsRequestEvent.GetInvocationList();
+				invocationList = this.OnSetFriendTagsRequestEvent.GetInvocationList();
 				foreach (Delegate obj193 in invocationList)
 				{
 					if (obj193.Target == instance)
@@ -2670,9 +2670,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnSetFriendTagsResultEvent != null)
+			if (this.OnSetFriendTagsResultEvent != null)
 			{
-				invocationList = OnSetFriendTagsResultEvent.GetInvocationList();
+				invocationList = this.OnSetFriendTagsResultEvent.GetInvocationList();
 				foreach (Delegate obj194 in invocationList)
 				{
 					if (obj194.Target == instance)
@@ -2681,9 +2681,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnSetPlayerSecretRequestEvent != null)
+			if (this.OnSetPlayerSecretRequestEvent != null)
 			{
-				invocationList = OnSetPlayerSecretRequestEvent.GetInvocationList();
+				invocationList = this.OnSetPlayerSecretRequestEvent.GetInvocationList();
 				foreach (Delegate obj195 in invocationList)
 				{
 					if (obj195.Target == instance)
@@ -2692,9 +2692,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnSetPlayerSecretResultEvent != null)
+			if (this.OnSetPlayerSecretResultEvent != null)
 			{
-				invocationList = OnSetPlayerSecretResultEvent.GetInvocationList();
+				invocationList = this.OnSetPlayerSecretResultEvent.GetInvocationList();
 				foreach (Delegate obj196 in invocationList)
 				{
 					if (obj196.Target == instance)
@@ -2703,9 +2703,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnStartGameRequestEvent != null)
+			if (this.OnStartGameRequestEvent != null)
 			{
-				invocationList = OnStartGameRequestEvent.GetInvocationList();
+				invocationList = this.OnStartGameRequestEvent.GetInvocationList();
 				foreach (Delegate obj197 in invocationList)
 				{
 					if (obj197.Target == instance)
@@ -2714,9 +2714,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnStartGameResultEvent != null)
+			if (this.OnStartGameResultEvent != null)
 			{
-				invocationList = OnStartGameResultEvent.GetInvocationList();
+				invocationList = this.OnStartGameResultEvent.GetInvocationList();
 				foreach (Delegate obj198 in invocationList)
 				{
 					if (obj198.Target == instance)
@@ -2725,9 +2725,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnStartPurchaseRequestEvent != null)
+			if (this.OnStartPurchaseRequestEvent != null)
 			{
-				invocationList = OnStartPurchaseRequestEvent.GetInvocationList();
+				invocationList = this.OnStartPurchaseRequestEvent.GetInvocationList();
 				foreach (Delegate obj199 in invocationList)
 				{
 					if (obj199.Target == instance)
@@ -2736,9 +2736,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnStartPurchaseResultEvent != null)
+			if (this.OnStartPurchaseResultEvent != null)
 			{
-				invocationList = OnStartPurchaseResultEvent.GetInvocationList();
+				invocationList = this.OnStartPurchaseResultEvent.GetInvocationList();
 				foreach (Delegate obj200 in invocationList)
 				{
 					if (obj200.Target == instance)
@@ -2747,9 +2747,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnSubtractUserVirtualCurrencyRequestEvent != null)
+			if (this.OnSubtractUserVirtualCurrencyRequestEvent != null)
 			{
-				invocationList = OnSubtractUserVirtualCurrencyRequestEvent.GetInvocationList();
+				invocationList = this.OnSubtractUserVirtualCurrencyRequestEvent.GetInvocationList();
 				foreach (Delegate obj201 in invocationList)
 				{
 					if (obj201.Target == instance)
@@ -2758,9 +2758,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnSubtractUserVirtualCurrencyResultEvent != null)
+			if (this.OnSubtractUserVirtualCurrencyResultEvent != null)
 			{
-				invocationList = OnSubtractUserVirtualCurrencyResultEvent.GetInvocationList();
+				invocationList = this.OnSubtractUserVirtualCurrencyResultEvent.GetInvocationList();
 				foreach (Delegate obj202 in invocationList)
 				{
 					if (obj202.Target == instance)
@@ -2769,9 +2769,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkAndroidDeviceIDRequestEvent != null)
+			if (this.OnUnlinkAndroidDeviceIDRequestEvent != null)
 			{
-				invocationList = OnUnlinkAndroidDeviceIDRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlinkAndroidDeviceIDRequestEvent.GetInvocationList();
 				foreach (Delegate obj203 in invocationList)
 				{
 					if (obj203.Target == instance)
@@ -2780,9 +2780,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkAndroidDeviceIDResultEvent != null)
+			if (this.OnUnlinkAndroidDeviceIDResultEvent != null)
 			{
-				invocationList = OnUnlinkAndroidDeviceIDResultEvent.GetInvocationList();
+				invocationList = this.OnUnlinkAndroidDeviceIDResultEvent.GetInvocationList();
 				foreach (Delegate obj204 in invocationList)
 				{
 					if (obj204.Target == instance)
@@ -2791,9 +2791,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkCustomIDRequestEvent != null)
+			if (this.OnUnlinkCustomIDRequestEvent != null)
 			{
-				invocationList = OnUnlinkCustomIDRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlinkCustomIDRequestEvent.GetInvocationList();
 				foreach (Delegate obj205 in invocationList)
 				{
 					if (obj205.Target == instance)
@@ -2802,9 +2802,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkCustomIDResultEvent != null)
+			if (this.OnUnlinkCustomIDResultEvent != null)
 			{
-				invocationList = OnUnlinkCustomIDResultEvent.GetInvocationList();
+				invocationList = this.OnUnlinkCustomIDResultEvent.GetInvocationList();
 				foreach (Delegate obj206 in invocationList)
 				{
 					if (obj206.Target == instance)
@@ -2813,9 +2813,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkFacebookAccountRequestEvent != null)
+			if (this.OnUnlinkFacebookAccountRequestEvent != null)
 			{
-				invocationList = OnUnlinkFacebookAccountRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlinkFacebookAccountRequestEvent.GetInvocationList();
 				foreach (Delegate obj207 in invocationList)
 				{
 					if (obj207.Target == instance)
@@ -2824,9 +2824,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkFacebookAccountResultEvent != null)
+			if (this.OnUnlinkFacebookAccountResultEvent != null)
 			{
-				invocationList = OnUnlinkFacebookAccountResultEvent.GetInvocationList();
+				invocationList = this.OnUnlinkFacebookAccountResultEvent.GetInvocationList();
 				foreach (Delegate obj208 in invocationList)
 				{
 					if (obj208.Target == instance)
@@ -2835,9 +2835,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkGameCenterAccountRequestEvent != null)
+			if (this.OnUnlinkGameCenterAccountRequestEvent != null)
 			{
-				invocationList = OnUnlinkGameCenterAccountRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlinkGameCenterAccountRequestEvent.GetInvocationList();
 				foreach (Delegate obj209 in invocationList)
 				{
 					if (obj209.Target == instance)
@@ -2846,9 +2846,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkGameCenterAccountResultEvent != null)
+			if (this.OnUnlinkGameCenterAccountResultEvent != null)
 			{
-				invocationList = OnUnlinkGameCenterAccountResultEvent.GetInvocationList();
+				invocationList = this.OnUnlinkGameCenterAccountResultEvent.GetInvocationList();
 				foreach (Delegate obj210 in invocationList)
 				{
 					if (obj210.Target == instance)
@@ -2857,9 +2857,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkGoogleAccountRequestEvent != null)
+			if (this.OnUnlinkGoogleAccountRequestEvent != null)
 			{
-				invocationList = OnUnlinkGoogleAccountRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlinkGoogleAccountRequestEvent.GetInvocationList();
 				foreach (Delegate obj211 in invocationList)
 				{
 					if (obj211.Target == instance)
@@ -2868,9 +2868,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkGoogleAccountResultEvent != null)
+			if (this.OnUnlinkGoogleAccountResultEvent != null)
 			{
-				invocationList = OnUnlinkGoogleAccountResultEvent.GetInvocationList();
+				invocationList = this.OnUnlinkGoogleAccountResultEvent.GetInvocationList();
 				foreach (Delegate obj212 in invocationList)
 				{
 					if (obj212.Target == instance)
@@ -2879,9 +2879,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkIOSDeviceIDRequestEvent != null)
+			if (this.OnUnlinkIOSDeviceIDRequestEvent != null)
 			{
-				invocationList = OnUnlinkIOSDeviceIDRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlinkIOSDeviceIDRequestEvent.GetInvocationList();
 				foreach (Delegate obj213 in invocationList)
 				{
 					if (obj213.Target == instance)
@@ -2890,9 +2890,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkIOSDeviceIDResultEvent != null)
+			if (this.OnUnlinkIOSDeviceIDResultEvent != null)
 			{
-				invocationList = OnUnlinkIOSDeviceIDResultEvent.GetInvocationList();
+				invocationList = this.OnUnlinkIOSDeviceIDResultEvent.GetInvocationList();
 				foreach (Delegate obj214 in invocationList)
 				{
 					if (obj214.Target == instance)
@@ -2901,9 +2901,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkKongregateRequestEvent != null)
+			if (this.OnUnlinkKongregateRequestEvent != null)
 			{
-				invocationList = OnUnlinkKongregateRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlinkKongregateRequestEvent.GetInvocationList();
 				foreach (Delegate obj215 in invocationList)
 				{
 					if (obj215.Target == instance)
@@ -2912,9 +2912,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkKongregateResultEvent != null)
+			if (this.OnUnlinkKongregateResultEvent != null)
 			{
-				invocationList = OnUnlinkKongregateResultEvent.GetInvocationList();
+				invocationList = this.OnUnlinkKongregateResultEvent.GetInvocationList();
 				foreach (Delegate obj216 in invocationList)
 				{
 					if (obj216.Target == instance)
@@ -2923,9 +2923,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkSteamAccountRequestEvent != null)
+			if (this.OnUnlinkSteamAccountRequestEvent != null)
 			{
-				invocationList = OnUnlinkSteamAccountRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlinkSteamAccountRequestEvent.GetInvocationList();
 				foreach (Delegate obj217 in invocationList)
 				{
 					if (obj217.Target == instance)
@@ -2934,9 +2934,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkSteamAccountResultEvent != null)
+			if (this.OnUnlinkSteamAccountResultEvent != null)
 			{
-				invocationList = OnUnlinkSteamAccountResultEvent.GetInvocationList();
+				invocationList = this.OnUnlinkSteamAccountResultEvent.GetInvocationList();
 				foreach (Delegate obj218 in invocationList)
 				{
 					if (obj218.Target == instance)
@@ -2945,9 +2945,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkTwitchRequestEvent != null)
+			if (this.OnUnlinkTwitchRequestEvent != null)
 			{
-				invocationList = OnUnlinkTwitchRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlinkTwitchRequestEvent.GetInvocationList();
 				foreach (Delegate obj219 in invocationList)
 				{
 					if (obj219.Target == instance)
@@ -2956,9 +2956,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkTwitchResultEvent != null)
+			if (this.OnUnlinkTwitchResultEvent != null)
 			{
-				invocationList = OnUnlinkTwitchResultEvent.GetInvocationList();
+				invocationList = this.OnUnlinkTwitchResultEvent.GetInvocationList();
 				foreach (Delegate obj220 in invocationList)
 				{
 					if (obj220.Target == instance)
@@ -2967,9 +2967,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkWindowsHelloRequestEvent != null)
+			if (this.OnUnlinkWindowsHelloRequestEvent != null)
 			{
-				invocationList = OnUnlinkWindowsHelloRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlinkWindowsHelloRequestEvent.GetInvocationList();
 				foreach (Delegate obj221 in invocationList)
 				{
 					if (obj221.Target == instance)
@@ -2978,9 +2978,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlinkWindowsHelloResultEvent != null)
+			if (this.OnUnlinkWindowsHelloResultEvent != null)
 			{
-				invocationList = OnUnlinkWindowsHelloResultEvent.GetInvocationList();
+				invocationList = this.OnUnlinkWindowsHelloResultEvent.GetInvocationList();
 				foreach (Delegate obj222 in invocationList)
 				{
 					if (obj222.Target == instance)
@@ -2989,9 +2989,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlockContainerInstanceRequestEvent != null)
+			if (this.OnUnlockContainerInstanceRequestEvent != null)
 			{
-				invocationList = OnUnlockContainerInstanceRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlockContainerInstanceRequestEvent.GetInvocationList();
 				foreach (Delegate obj223 in invocationList)
 				{
 					if (obj223.Target == instance)
@@ -3000,9 +3000,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlockContainerInstanceResultEvent != null)
+			if (this.OnUnlockContainerInstanceResultEvent != null)
 			{
-				invocationList = OnUnlockContainerInstanceResultEvent.GetInvocationList();
+				invocationList = this.OnUnlockContainerInstanceResultEvent.GetInvocationList();
 				foreach (Delegate obj224 in invocationList)
 				{
 					if (obj224.Target == instance)
@@ -3011,9 +3011,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlockContainerItemRequestEvent != null)
+			if (this.OnUnlockContainerItemRequestEvent != null)
 			{
-				invocationList = OnUnlockContainerItemRequestEvent.GetInvocationList();
+				invocationList = this.OnUnlockContainerItemRequestEvent.GetInvocationList();
 				foreach (Delegate obj225 in invocationList)
 				{
 					if (obj225.Target == instance)
@@ -3022,9 +3022,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUnlockContainerItemResultEvent != null)
+			if (this.OnUnlockContainerItemResultEvent != null)
 			{
-				invocationList = OnUnlockContainerItemResultEvent.GetInvocationList();
+				invocationList = this.OnUnlockContainerItemResultEvent.GetInvocationList();
 				foreach (Delegate obj226 in invocationList)
 				{
 					if (obj226.Target == instance)
@@ -3033,9 +3033,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateAvatarUrlRequestEvent != null)
+			if (this.OnUpdateAvatarUrlRequestEvent != null)
 			{
-				invocationList = OnUpdateAvatarUrlRequestEvent.GetInvocationList();
+				invocationList = this.OnUpdateAvatarUrlRequestEvent.GetInvocationList();
 				foreach (Delegate obj227 in invocationList)
 				{
 					if (obj227.Target == instance)
@@ -3044,9 +3044,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateAvatarUrlResultEvent != null)
+			if (this.OnUpdateAvatarUrlResultEvent != null)
 			{
-				invocationList = OnUpdateAvatarUrlResultEvent.GetInvocationList();
+				invocationList = this.OnUpdateAvatarUrlResultEvent.GetInvocationList();
 				foreach (Delegate obj228 in invocationList)
 				{
 					if (obj228.Target == instance)
@@ -3055,9 +3055,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateCharacterDataRequestEvent != null)
+			if (this.OnUpdateCharacterDataRequestEvent != null)
 			{
-				invocationList = OnUpdateCharacterDataRequestEvent.GetInvocationList();
+				invocationList = this.OnUpdateCharacterDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj229 in invocationList)
 				{
 					if (obj229.Target == instance)
@@ -3066,9 +3066,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateCharacterDataResultEvent != null)
+			if (this.OnUpdateCharacterDataResultEvent != null)
 			{
-				invocationList = OnUpdateCharacterDataResultEvent.GetInvocationList();
+				invocationList = this.OnUpdateCharacterDataResultEvent.GetInvocationList();
 				foreach (Delegate obj230 in invocationList)
 				{
 					if (obj230.Target == instance)
@@ -3077,9 +3077,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateCharacterStatisticsRequestEvent != null)
+			if (this.OnUpdateCharacterStatisticsRequestEvent != null)
 			{
-				invocationList = OnUpdateCharacterStatisticsRequestEvent.GetInvocationList();
+				invocationList = this.OnUpdateCharacterStatisticsRequestEvent.GetInvocationList();
 				foreach (Delegate obj231 in invocationList)
 				{
 					if (obj231.Target == instance)
@@ -3088,9 +3088,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateCharacterStatisticsResultEvent != null)
+			if (this.OnUpdateCharacterStatisticsResultEvent != null)
 			{
-				invocationList = OnUpdateCharacterStatisticsResultEvent.GetInvocationList();
+				invocationList = this.OnUpdateCharacterStatisticsResultEvent.GetInvocationList();
 				foreach (Delegate obj232 in invocationList)
 				{
 					if (obj232.Target == instance)
@@ -3099,9 +3099,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdatePlayerStatisticsRequestEvent != null)
+			if (this.OnUpdatePlayerStatisticsRequestEvent != null)
 			{
-				invocationList = OnUpdatePlayerStatisticsRequestEvent.GetInvocationList();
+				invocationList = this.OnUpdatePlayerStatisticsRequestEvent.GetInvocationList();
 				foreach (Delegate obj233 in invocationList)
 				{
 					if (obj233.Target == instance)
@@ -3110,9 +3110,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdatePlayerStatisticsResultEvent != null)
+			if (this.OnUpdatePlayerStatisticsResultEvent != null)
 			{
-				invocationList = OnUpdatePlayerStatisticsResultEvent.GetInvocationList();
+				invocationList = this.OnUpdatePlayerStatisticsResultEvent.GetInvocationList();
 				foreach (Delegate obj234 in invocationList)
 				{
 					if (obj234.Target == instance)
@@ -3121,9 +3121,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateSharedGroupDataRequestEvent != null)
+			if (this.OnUpdateSharedGroupDataRequestEvent != null)
 			{
-				invocationList = OnUpdateSharedGroupDataRequestEvent.GetInvocationList();
+				invocationList = this.OnUpdateSharedGroupDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj235 in invocationList)
 				{
 					if (obj235.Target == instance)
@@ -3132,9 +3132,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateSharedGroupDataResultEvent != null)
+			if (this.OnUpdateSharedGroupDataResultEvent != null)
 			{
-				invocationList = OnUpdateSharedGroupDataResultEvent.GetInvocationList();
+				invocationList = this.OnUpdateSharedGroupDataResultEvent.GetInvocationList();
 				foreach (Delegate obj236 in invocationList)
 				{
 					if (obj236.Target == instance)
@@ -3143,9 +3143,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateUserDataRequestEvent != null)
+			if (this.OnUpdateUserDataRequestEvent != null)
 			{
-				invocationList = OnUpdateUserDataRequestEvent.GetInvocationList();
+				invocationList = this.OnUpdateUserDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj237 in invocationList)
 				{
 					if (obj237.Target == instance)
@@ -3154,9 +3154,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateUserDataResultEvent != null)
+			if (this.OnUpdateUserDataResultEvent != null)
 			{
-				invocationList = OnUpdateUserDataResultEvent.GetInvocationList();
+				invocationList = this.OnUpdateUserDataResultEvent.GetInvocationList();
 				foreach (Delegate obj238 in invocationList)
 				{
 					if (obj238.Target == instance)
@@ -3165,9 +3165,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateUserPublisherDataRequestEvent != null)
+			if (this.OnUpdateUserPublisherDataRequestEvent != null)
 			{
-				invocationList = OnUpdateUserPublisherDataRequestEvent.GetInvocationList();
+				invocationList = this.OnUpdateUserPublisherDataRequestEvent.GetInvocationList();
 				foreach (Delegate obj239 in invocationList)
 				{
 					if (obj239.Target == instance)
@@ -3176,9 +3176,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateUserPublisherDataResultEvent != null)
+			if (this.OnUpdateUserPublisherDataResultEvent != null)
 			{
-				invocationList = OnUpdateUserPublisherDataResultEvent.GetInvocationList();
+				invocationList = this.OnUpdateUserPublisherDataResultEvent.GetInvocationList();
 				foreach (Delegate obj240 in invocationList)
 				{
 					if (obj240.Target == instance)
@@ -3187,9 +3187,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateUserTitleDisplayNameRequestEvent != null)
+			if (this.OnUpdateUserTitleDisplayNameRequestEvent != null)
 			{
-				invocationList = OnUpdateUserTitleDisplayNameRequestEvent.GetInvocationList();
+				invocationList = this.OnUpdateUserTitleDisplayNameRequestEvent.GetInvocationList();
 				foreach (Delegate obj241 in invocationList)
 				{
 					if (obj241.Target == instance)
@@ -3198,9 +3198,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnUpdateUserTitleDisplayNameResultEvent != null)
+			if (this.OnUpdateUserTitleDisplayNameResultEvent != null)
 			{
-				invocationList = OnUpdateUserTitleDisplayNameResultEvent.GetInvocationList();
+				invocationList = this.OnUpdateUserTitleDisplayNameResultEvent.GetInvocationList();
 				foreach (Delegate obj242 in invocationList)
 				{
 					if (obj242.Target == instance)
@@ -3209,9 +3209,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnValidateAmazonIAPReceiptRequestEvent != null)
+			if (this.OnValidateAmazonIAPReceiptRequestEvent != null)
 			{
-				invocationList = OnValidateAmazonIAPReceiptRequestEvent.GetInvocationList();
+				invocationList = this.OnValidateAmazonIAPReceiptRequestEvent.GetInvocationList();
 				foreach (Delegate obj243 in invocationList)
 				{
 					if (obj243.Target == instance)
@@ -3220,9 +3220,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnValidateAmazonIAPReceiptResultEvent != null)
+			if (this.OnValidateAmazonIAPReceiptResultEvent != null)
 			{
-				invocationList = OnValidateAmazonIAPReceiptResultEvent.GetInvocationList();
+				invocationList = this.OnValidateAmazonIAPReceiptResultEvent.GetInvocationList();
 				foreach (Delegate obj244 in invocationList)
 				{
 					if (obj244.Target == instance)
@@ -3231,9 +3231,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnValidateGooglePlayPurchaseRequestEvent != null)
+			if (this.OnValidateGooglePlayPurchaseRequestEvent != null)
 			{
-				invocationList = OnValidateGooglePlayPurchaseRequestEvent.GetInvocationList();
+				invocationList = this.OnValidateGooglePlayPurchaseRequestEvent.GetInvocationList();
 				foreach (Delegate obj245 in invocationList)
 				{
 					if (obj245.Target == instance)
@@ -3242,9 +3242,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnValidateGooglePlayPurchaseResultEvent != null)
+			if (this.OnValidateGooglePlayPurchaseResultEvent != null)
 			{
-				invocationList = OnValidateGooglePlayPurchaseResultEvent.GetInvocationList();
+				invocationList = this.OnValidateGooglePlayPurchaseResultEvent.GetInvocationList();
 				foreach (Delegate obj246 in invocationList)
 				{
 					if (obj246.Target == instance)
@@ -3253,9 +3253,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnValidateIOSReceiptRequestEvent != null)
+			if (this.OnValidateIOSReceiptRequestEvent != null)
 			{
-				invocationList = OnValidateIOSReceiptRequestEvent.GetInvocationList();
+				invocationList = this.OnValidateIOSReceiptRequestEvent.GetInvocationList();
 				foreach (Delegate obj247 in invocationList)
 				{
 					if (obj247.Target == instance)
@@ -3264,9 +3264,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnValidateIOSReceiptResultEvent != null)
+			if (this.OnValidateIOSReceiptResultEvent != null)
 			{
-				invocationList = OnValidateIOSReceiptResultEvent.GetInvocationList();
+				invocationList = this.OnValidateIOSReceiptResultEvent.GetInvocationList();
 				foreach (Delegate obj248 in invocationList)
 				{
 					if (obj248.Target == instance)
@@ -3275,9 +3275,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnValidateWindowsStoreReceiptRequestEvent != null)
+			if (this.OnValidateWindowsStoreReceiptRequestEvent != null)
 			{
-				invocationList = OnValidateWindowsStoreReceiptRequestEvent.GetInvocationList();
+				invocationList = this.OnValidateWindowsStoreReceiptRequestEvent.GetInvocationList();
 				foreach (Delegate obj249 in invocationList)
 				{
 					if (obj249.Target == instance)
@@ -3286,9 +3286,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnValidateWindowsStoreReceiptResultEvent != null)
+			if (this.OnValidateWindowsStoreReceiptResultEvent != null)
 			{
-				invocationList = OnValidateWindowsStoreReceiptResultEvent.GetInvocationList();
+				invocationList = this.OnValidateWindowsStoreReceiptResultEvent.GetInvocationList();
 				foreach (Delegate obj250 in invocationList)
 				{
 					if (obj250.Target == instance)
@@ -3297,9 +3297,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnWriteCharacterEventRequestEvent != null)
+			if (this.OnWriteCharacterEventRequestEvent != null)
 			{
-				invocationList = OnWriteCharacterEventRequestEvent.GetInvocationList();
+				invocationList = this.OnWriteCharacterEventRequestEvent.GetInvocationList();
 				foreach (Delegate obj251 in invocationList)
 				{
 					if (obj251.Target == instance)
@@ -3308,9 +3308,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnWriteCharacterEventResultEvent != null)
+			if (this.OnWriteCharacterEventResultEvent != null)
 			{
-				invocationList = OnWriteCharacterEventResultEvent.GetInvocationList();
+				invocationList = this.OnWriteCharacterEventResultEvent.GetInvocationList();
 				foreach (Delegate obj252 in invocationList)
 				{
 					if (obj252.Target == instance)
@@ -3319,9 +3319,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnWritePlayerEventRequestEvent != null)
+			if (this.OnWritePlayerEventRequestEvent != null)
 			{
-				invocationList = OnWritePlayerEventRequestEvent.GetInvocationList();
+				invocationList = this.OnWritePlayerEventRequestEvent.GetInvocationList();
 				foreach (Delegate obj253 in invocationList)
 				{
 					if (obj253.Target == instance)
@@ -3330,9 +3330,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnWritePlayerEventResultEvent != null)
+			if (this.OnWritePlayerEventResultEvent != null)
 			{
-				invocationList = OnWritePlayerEventResultEvent.GetInvocationList();
+				invocationList = this.OnWritePlayerEventResultEvent.GetInvocationList();
 				foreach (Delegate obj254 in invocationList)
 				{
 					if (obj254.Target == instance)
@@ -3341,9 +3341,9 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnWriteTitleEventRequestEvent != null)
+			if (this.OnWriteTitleEventRequestEvent != null)
 			{
-				invocationList = OnWriteTitleEventRequestEvent.GetInvocationList();
+				invocationList = this.OnWriteTitleEventRequestEvent.GetInvocationList();
 				foreach (Delegate obj255 in invocationList)
 				{
 					if (obj255.Target == instance)
@@ -3352,11 +3352,11 @@ namespace PlayFab.Events
 					}
 				}
 			}
-			if (OnWriteTitleEventResultEvent == null)
+			if (this.OnWriteTitleEventResultEvent == null)
 			{
 				return;
 			}
-			invocationList = OnWriteTitleEventResultEvent.GetInvocationList();
+			invocationList = this.OnWriteTitleEventResultEvent.GetInvocationList();
 			foreach (Delegate obj256 in invocationList)
 			{
 				if (obj256.Target == instance)

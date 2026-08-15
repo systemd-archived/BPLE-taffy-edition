@@ -16,8 +16,6 @@ public class AnimateColor : MonoBehaviour
 	[NonSerialized]
 	private Material materialInstance;
 
-	private Color m_lastColor;
-
 	private void Awake()
 	{
 		Reset();
@@ -32,7 +30,6 @@ public class AnimateColor : MonoBehaviour
 			AtlasMaterials.Instance.AddMaterialInstance(materialInstance);
 			m_renderer.material = materialInstance;
 		}
-		m_lastColor = color;
 	}
 
 	private void OnDestroy()
@@ -45,9 +42,8 @@ public class AnimateColor : MonoBehaviour
 
 	private void Update()
 	{
-		if (!(materialInstance == null) && color != m_lastColor)
+		if (!(materialInstance == null))
 		{
-			m_lastColor = color;
 			materialInstance.SetColor(colorName, color);
 		}
 	}

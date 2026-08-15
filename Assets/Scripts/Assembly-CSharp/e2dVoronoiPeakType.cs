@@ -1,6 +1,6 @@
 public enum e2dVoronoiPeakType
 {
-	LINEAR,
-	SINE,
-	QUADRATIC
+	LINEAR = 0,
+	SINE = 1,
+	QUADRATIC = 2
 }

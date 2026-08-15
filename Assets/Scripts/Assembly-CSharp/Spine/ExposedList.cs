@@ -632,14 +632,14 @@ namespace Spine
 
 		public void Reverse()
 		{
-			Array.Reverse<T>(Items, 0, Count);
+			Array.Reverse(Items, 0, Count);
 			version++;
 		}
 
 		public void Reverse(int index, int count)
 		{
 			CheckRange(index, count);
-			Array.Reverse<T>(Items, index, count);
+			Array.Reverse(Items, index, count);
 			version++;
 		}
 

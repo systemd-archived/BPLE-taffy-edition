@@ -118,7 +118,7 @@ public class LeaderboardEntry : MonoBehaviour
 		Show();
 		bool flag = playFabId.Equals(HatchManager.CurrentPlayer.PlayFabID);
 		string format = ((!flag) ? "{0}" : string.Format("{0} ({1})", GetLocalizedPlayerName(), "{0}"));
-		string[] array = name.Split('|');
+		string[] array = name.Split(new char[1] { '|' });
 		if (array != null && array.Length != 0)
 		{
 			playerName = string.Format(format, array[0]);

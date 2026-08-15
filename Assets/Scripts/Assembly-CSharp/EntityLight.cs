@@ -226,7 +226,7 @@ public class EntityLight : MonoBehaviour
 		}
 		else
 		{
-			m_cos = Mathf.Cos(m_angle * ((float)Math.PI / 360f));
+			m_cos = Mathf.Cos(m_angle * (MathF.PI / 360f));
 			m_meshFilter.sharedMesh = MeshExtensions.CreateCircleMesh(m_length, m_halfWidth, m_angle, 150);
 		}
 		if (Contraption.Instance.IsRunning)
@@ -275,60 +275,63 @@ public class EntityLight : MonoBehaviour
 
 	private void InitializeColor()
 	{
-		Color color = default(Color);
 		bool flag = !Contraption.Instance.HasTurboCharge;
 		BasePart enclosedInto = m_part.m_enclosedInto;
 		if (INSettings.GetBool(INFeature.ColoredFrame) && enclosedInto != null && enclosedInto is ColoredFrame coloredFrame)
 		{
 			m_colored = true;
-			color = coloredFrame.Color;
-			color.a *= (flag ? 0.5f : 0.7f);
+			m_color = coloredFrame.Color.WithAlpha(flag ? 0.5f : 0.7f);
+			return;
+		}
+		m_colored = false;
+		if (flag)
+		{
+			Color color;
+			switch (m_type)
+			{
+			case 0:
+				color = new Color(0.5f, 0.75f, 1f, 0.5f);
+				break;
+			case 1:
+				color = new Color(0.5f, 0.65f, 1f, 0.5f);
+				break;
+			case 2:
+			case 4:
+				color = new Color(0.5f, 0.7f, 1f, 0.5f);
+				break;
+			case 3:
+				color = new Color(0.5f, 0.6f, 1f, 0.5f);
+				break;
+			default:
+				color = default(Color);
+				break;
+			}
+			m_color = color;
 		}
 		else
 		{
-			m_colored = false;
-			if (flag)
+			Color color;
+			switch (m_type)
 			{
-				float a = 0.5f;
-				switch (m_type)
-				{
-				case 0:
-					color = new Color(0.5f, 0.75f, 1f, a);
-					break;
-				case 1:
-					color = new Color(0.5f, 0.65f, 1f, a);
-					break;
-				case 2:
-				case 4:
-					color = new Color(0.5f, 0.7f, 1f, a);
-					break;
-				case 3:
-					color = new Color(0.5f, 0.6f, 1f, a);
-					break;
-				}
+			case 0:
+				color = new Color(0.55f, 0.5f, 1f, 0.7f);
+				break;
+			case 1:
+				color = new Color(0.65f, 0.5f, 1f, 0.7f);
+				break;
+			case 2:
+			case 4:
+				color = new Color(0.6f, 0.5f, 1f, 0.7f);
+				break;
+			case 3:
+				color = new Color(0.7f, 0.5f, 1f, 0.7f);
+				break;
+			default:
+				color = default(Color);
+				break;
 			}
-			else
-			{
-				float a2 = 0.7f;
-				switch (m_type)
-				{
-				case 0:
-					color = new Color(0.55f, 0.5f, 1f, a2);
-					break;
-				case 1:
-					color = new Color(0.65f, 0.5f, 1f, a2);
-					break;
-				case 2:
-				case 4:
-					color = new Color(0.6f, 0.5f, 1f, a2);
-					break;
-				case 3:
-					color = new Color(0.7f, 0.5f, 1f, a2);
-					break;
-				}
-			}
+			m_color = color;
 		}
-		m_color = color;
 	}
 
 	public void UpdateSelf()
@@ -505,32 +508,35 @@ public class EntityLight : MonoBehaviour
 	{
 		if (!Contraption.Instance.IsRunning)
 		{
+			Color color;
 			if (m_type == 4)
 			{
-				m_meshRenderer.material.color = Color.clear;
-				return;
+				color = default(Color);
 			}
-			if (m_part.m_enclosedInto != null)
+			else if (m_part.m_enclosedInto != null)
 			{
-				m_meshRenderer.material.color = new Color(1f, 1f, 1f, 0.1f);
-				return;
+				color = ((!INSettings.GetBool(INFeature.ColoredFrame) || !(m_part.m_enclosedInto is ColoredFrame coloredFrame)) ? new Color(1f, 1f, 1f, 0.15f) : coloredFrame.Color.WithAlpha(0.15f));
 			}
-			Contraption instance = Contraption.Instance;
-			int num = 1;
-			int num2 = 0;
-			for (int i = 0; i < 4; i++)
+			else
 			{
-				BasePart part = instance.FindPartAt(m_part.m_coordX + num, m_part.m_coordY + num2);
-				if (instance.CanConnectTo(m_part, part, (BasePart.Direction)i))
+				color = default(Color);
+				Contraption instance = Contraption.Instance;
+				int num = 1;
+				int num2 = 0;
+				for (int i = 0; i < 4; i++)
 				{
-					m_meshRenderer.material.color = new Color(1f, 1f, 1f, 0.1f);
-					return;
+					BasePart part = instance.FindPartAt(m_part.m_coordX + num, m_part.m_coordY + num2);
+					if (instance.CanConnectTo(m_part, part, (BasePart.Direction)i))
+					{
+						color = new Color(1f, 1f, 1f, 0.15f);
+						break;
+					}
+					int num3 = num;
+					num = -num2;
+					num2 = num3;
 				}
-				int num3 = num;
-				num = -num2;
-				num2 = num3;
 			}
-			m_meshRenderer.material.color = Color.clear;
+			m_meshRenderer.material.color = color;
 		}
 		else if (!m_enabled)
 		{
@@ -538,21 +544,20 @@ public class EntityLight : MonoBehaviour
 		}
 		else
 		{
-			Color color = m_color;
-			Color a = (m_colored ? m_color : new Color(1f, 0.25f, 0.25f));
-			a.a = 0.1f;
+			Color color2 = m_color;
+			Color a = (m_colored ? m_color.WithAlpha(0.1f) : new Color(1f, 0.25f, 0.25f, 0.1f));
 			if (m_type == 4)
 			{
-				color.a /= m_componentSize;
+				color2.a /= m_componentSize;
 				a.a /= m_componentSize;
 			}
 			if (!m_manager.ConsumePower)
 			{
-				m_meshRenderer.material.color = color;
+				m_meshRenderer.material.color = color2;
 				return;
 			}
 			float num4 = m_manager.m_electricities[m_index] / m_manager.m_capacities[m_index];
-			m_meshRenderer.material.color = Color.Lerp(a, color, (num4 > 0f) ? Mathf.Sqrt(num4) : 0f);
+			m_meshRenderer.material.color = Color.Lerp(a, color2, (num4 > 0f) ? Mathf.Sqrt(num4) : 0f);
 		}
 	}
 

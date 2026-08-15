@@ -7,11 +7,11 @@ public class DailyChallengeLoader : WPFMonoBehaviour
 {
 	private enum State
 	{
-		None,
-		Loading,
-		Error,
-		Ready,
-		TimeOut
+		None = 0,
+		Loading = 1,
+		Error = 2,
+		Ready = 3,
+		TimeOut = 4
 	}
 
 	public Action OnImageReady;

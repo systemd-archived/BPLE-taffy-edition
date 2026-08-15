@@ -6,10 +6,10 @@ public class UnlockLootCrateSlotDialog : TextDialog
 {
 	public enum UnlockType
 	{
-		PurchaseLockedCrate,
-		PurchaseInactiveCrate,
-		StartUnlocking,
-		DiscardPopup
+		PurchaseLockedCrate = 0,
+		PurchaseInactiveCrate = 1,
+		StartUnlocking = 2,
+		DiscardPopup = 3
 	}
 
 	[SerializeField]

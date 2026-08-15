@@ -77,7 +77,7 @@ public class OffRoadWheel : BasePart
 		m_wheelPivot = base.transform.Find("WheelPivot");
 		m_fakeWheelPivot = base.transform.Find("FakeWheelPivot");
 		m_radius = GetComponent<SphereCollider>().radius;
-		m_circumference = (float)Math.PI * 2f * m_radius;
+		m_circumference = MathF.PI * 2f * m_radius;
 		if ((bool)base.transform.Find("SupportCollider"))
 		{
 			m_supportCollider = base.transform.Find("SupportCollider").GetComponent<Collider>();
@@ -258,7 +258,7 @@ public class OffRoadWheel : BasePart
 		}
 		if ((bool)m_fakeWheelPivot)
 		{
-			float angle = 0f - z + Mathf.Sin(2f * m_angle * ((float)Math.PI / 180f)) * 8f;
+			float angle = 0f - z + Mathf.Sin(2f * m_angle * (MathF.PI / 180f)) * 8f;
 			m_fakeWheelPivot.transform.localRotation = Quaternion.AngleAxis(angle, Vector3.forward);
 		}
 		UpdateSoundEffect();

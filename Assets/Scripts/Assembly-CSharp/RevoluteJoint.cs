@@ -115,13 +115,13 @@ public class RevoluteJoint : JointBase
 		if (!m_bodyA.IsFixed())
 		{
 			m_bodyA.position = vector6 - invMA * vector9;
-			eulerAngles.z -= 180f / (float)Math.PI * invIA * Vector.Cross2(vector, vector9);
+			eulerAngles.z -= 180f / MathF.PI * invIA * Vector.Cross2(vector, vector9);
 			m_bodyA.rotation = Quaternion.Euler(eulerAngles);
 		}
 		if (!m_bodyB.IsFixed())
 		{
 			m_bodyB.position = vector7 + invMB * vector9;
-			eulerAngles2.z += 180f / (float)Math.PI * invIB * Vector.Cross2(vector2, vector9);
+			eulerAngles2.z += 180f / MathF.PI * invIB * Vector.Cross2(vector2, vector9);
 			m_bodyB.rotation = Quaternion.Euler(eulerAngles2);
 		}
 	}

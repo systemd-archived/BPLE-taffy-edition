@@ -68,7 +68,7 @@ public class Umbrella : BasePart
 
 	public override void OnSliderButtonTriggered(UIPartSliderButton button)
 	{
-		m_deltaAngle = button.Value * ((float)Math.PI / 180f);
+		m_deltaAngle = button.Value * (MathF.PI / 180f);
 	}
 
 	public override Direction EffectDirection()
@@ -127,7 +127,7 @@ public class Umbrella : BasePart
 			bool flag = INSettings.GetBool(INFeature.SpecialUmbrellas) && !this.IsSinglePart();
 			if (flag && m_partTier == PartTier.Common)
 			{
-				float num = (float)Math.PI;
+				float num = MathF.PI;
 				float num2 = 150f;
 				Vector3 up = base.transform.up;
 				float num3 = Mathf.Atan2(up.y, up.x);
@@ -166,7 +166,7 @@ public class Umbrella : BasePart
 			}
 			else if (flag && m_partTier == PartTier.Epic)
 			{
-				float num7 = (float)Math.PI;
+				float num7 = MathF.PI;
 				float num8 = 150f;
 				Vector3 up2 = base.transform.up;
 				float z2 = base.rigidbody.angularVelocity.z;
@@ -179,7 +179,7 @@ public class Umbrella : BasePart
 				vector = new Vector3(0f - vector.y, vector.x);
 				num11 = Math.Clamp(num11, 0f - num8, num8);
 				base.rigidbody.AddForce(new Vector3(vector.x * num11, vector.y * num11), ForceMode.Force);
-				base.rigidbody.angularVelocity = new Vector3(0f, 0f, 0f);
+				base.rigidbody.AddTorque(new Vector3(0f, 0f, -64f * z2 + 1024f * num10), ForceMode.Acceleration);
 			}
 			else
 			{

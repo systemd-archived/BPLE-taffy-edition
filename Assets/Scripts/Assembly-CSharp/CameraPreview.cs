@@ -6,10 +6,10 @@ public class CameraPreview : WPFMonoBehaviour
 {
 	public enum EasingAnimation
 	{
-		None,
-		EasingIn,
-		EasingOut,
-		EasingInOut
+		None = 0,
+		EasingIn = 1,
+		EasingOut = 2,
+		EasingInOut = 3
 	}
 
 	[Serializable]

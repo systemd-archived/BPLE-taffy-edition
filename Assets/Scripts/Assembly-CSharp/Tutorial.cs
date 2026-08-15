@@ -6,12 +6,12 @@ public class Tutorial : WPFMonoBehaviour
 {
 	private enum State
 	{
-		Initial,
-		OpenBook,
-		DragPart,
-		DragPig,
-		StartContraption,
-		StartEngine
+		Initial = 0,
+		OpenBook = 1,
+		DragPart = 2,
+		DragPig = 3,
+		StartContraption = 4,
+		StartEngine = 5
 	}
 
 	public class Pointer

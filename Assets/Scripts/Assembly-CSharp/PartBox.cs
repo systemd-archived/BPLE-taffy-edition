@@ -28,7 +28,7 @@ public class PartBox : OneTimeCollectable
 
 	private void OnDataLoaded()
 	{
-		foreach (GameObject part in WPFMonoBehaviour.gameData.m_parts)
+		foreach (GameObject part in WPFMonoBehaviour.gameData.Parts)
 		{
 			BasePart component = part.GetComponent<BasePart>();
 			if (component.m_partType == partType)
@@ -131,13 +131,13 @@ public class PartBox : OneTimeCollectable
 				}
 			}
 		}
-		if (onCollected != null)
+		if (PartBox.onCollected != null)
 		{
-			onCollected();
+			PartBox.onCollected();
 		}
-		if (onCollect != null)
+		if (this.onCollect != null)
 		{
-			onCollect(this);
+			this.onCollect(this);
 		}
 	}
 

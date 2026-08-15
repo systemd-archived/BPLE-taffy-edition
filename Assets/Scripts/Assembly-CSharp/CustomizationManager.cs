@@ -132,12 +132,16 @@ public class CustomizationManager
 
 	public static int GetUnlockedPartCount(bool useTier = false, BasePart.PartTier tier = BasePart.PartTier.Common)
 	{
+		if (IsOverridden())
+		{
+			return GetUnlockedPartCountOverridden(useTier, tier);
+		}
 		int num = 0;
 		if (!useTier)
 		{
 			num = cachedUnlockedPartCount;
 		}
-		if ((num < 0) | useTier)
+		if (num < 0 || useTier)
 		{
 			num = 0;
 			List<CustomPartInfo> customParts = WPFMonoBehaviour.gameData.m_customParts;
@@ -175,6 +179,10 @@ public class CustomizationManager
 
 	public static List<BasePart> GetAllTierParts(BasePart.PartTier tier, PartFlags flags = PartFlags.None)
 	{
+		if (IsOverridden())
+		{
+			return GetAllTierPartsOverridden(tier, flags);
+		}
 		List<BasePart> list = new List<BasePart>();
 		if (tier == BasePart.PartTier.Regular)
 		{
@@ -209,6 +217,10 @@ public class CustomizationManager
 
 	public static List<BasePart> GetCustomParts(BasePart.PartType type, BasePart.PartTier tier, bool onlyLocked = false)
 	{
+		if (IsOverridden())
+		{
+			return GetCustomPartsOverridden(type, tier, onlyLocked);
+		}
 		List<BasePart> list = new List<BasePart>();
 		List<CustomPartInfo> customParts = WPFMonoBehaviour.gameData.m_customParts;
 		for (int i = 0; i < customParts.Count; i++)
@@ -238,6 +250,10 @@ public class CustomizationManager
 
 	public static List<BasePart> GetCustomParts(BasePart.PartType type, bool onlyLocked = false)
 	{
+		if (IsOverridden())
+		{
+			return GetCustomPartsOverridden(type, onlyLocked);
+		}
 		List<BasePart> list = new List<BasePart>();
 		List<CustomPartInfo> customParts = WPFMonoBehaviour.gameData.m_customParts;
 		for (int i = 0; i < customParts.Count; i++)
@@ -264,6 +280,10 @@ public class CustomizationManager
 
 	public static int CustomizationCount(BasePart.PartTier tier, PartFlags flags = PartFlags.None)
 	{
+		if (IsOverridden())
+		{
+			return CustomizationCountOverridden(tier, flags);
+		}
 		int num = 0;
 		List<CustomPartInfo> customParts = WPFMonoBehaviour.gameData.m_customParts;
 		for (int i = 0; i < customParts.Count; i++)
@@ -427,5 +447,121 @@ public class CustomizationManager
 		{
 			Singleton<SocialGameManager>.Instance.ReportAchievementProgress("grp.GET_GOLDEN_PART", 100.0);
 		}
+	}
+
+	public static bool IsOverridden()
+	{
+		return INSettings.GetBool(INFeature.RuntimeGameData);
+	}
+
+	public static int GetUnlockedPartCountOverridden(bool useTier = false, BasePart.PartTier tier = BasePart.PartTier.Common)
+	{
+		int num = 0;
+		if (!useTier)
+		{
+			num = cachedUnlockedPartCount;
+		}
+		if (num < 0 || useTier)
+		{
+			num = 0;
+			foreach (IReadOnlyList<BasePart> customPart in WPFMonoBehaviour.gameData.CustomParts)
+			{
+				if (customPart == null)
+				{
+					continue;
+				}
+				foreach (BasePart item in customPart)
+				{
+					if (IsPartUnlocked(item) && (!useTier || item.m_partTier == tier))
+					{
+						num++;
+					}
+				}
+			}
+		}
+		if (!useTier)
+		{
+			cachedUnlockedPartCount = num;
+		}
+		return num;
+	}
+
+	public static List<BasePart> GetAllTierPartsOverridden(BasePart.PartTier tier, PartFlags flags = PartFlags.None)
+	{
+		List<BasePart> list = new List<BasePart>();
+		if (tier == BasePart.PartTier.Regular)
+		{
+			foreach (GameObject part in WPFMonoBehaviour.gameData.Parts)
+			{
+				if (flags == PartFlags.None)
+				{
+					list.Add(part.GetComponent<BasePart>());
+				}
+			}
+		}
+		else
+		{
+			foreach (IReadOnlyList<BasePart> customPart in WPFMonoBehaviour.gameData.CustomParts)
+			{
+				if (customPart == null)
+				{
+					continue;
+				}
+				foreach (BasePart item in customPart)
+				{
+					if (item.m_partTier == tier && HasPartFlags(item, flags))
+					{
+						list.Add(item);
+					}
+				}
+			}
+		}
+		return list;
+	}
+
+	public static List<BasePart> GetCustomPartsOverridden(BasePart.PartType type, BasePart.PartTier tier, bool onlyLocked = false)
+	{
+		List<BasePart> list = new List<BasePart>();
+		foreach (BasePart part in WPFMonoBehaviour.gameData.GetCustomPart(type).PartList)
+		{
+			if (part.m_partTier == tier && (!onlyLocked || !IsPartUnlocked(part)))
+			{
+				list.Add(part);
+			}
+		}
+		return list;
+	}
+
+	public static List<BasePart> GetCustomPartsOverridden(BasePart.PartType type, bool onlyLocked = false)
+	{
+		List<BasePart> list = new List<BasePart>();
+		foreach (BasePart part in WPFMonoBehaviour.gameData.GetCustomPart(type).PartList)
+		{
+			if (!onlyLocked || !IsPartUnlocked(part))
+			{
+				list.Add(part);
+			}
+		}
+		return list;
+	}
+
+	public static int CustomizationCountOverridden(BasePart.PartTier tier, PartFlags flags = PartFlags.None)
+	{
+		int num = 0;
+		foreach (IReadOnlyList<BasePart> customPart in WPFMonoBehaviour.gameData.CustomParts)
+		{
+			if (customPart == null)
+			{
+				continue;
+			}
+			foreach (BasePart item in customPart)
+			{
+				if (item.m_partTier == tier && HasPartFlags(item, flags))
+				{
+					num++;
+				}
+			}
+		}
+		return num;
 	}
 }

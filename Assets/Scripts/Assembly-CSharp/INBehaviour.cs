@@ -2,9 +2,9 @@ public abstract class INBehaviour
 {
 	public enum StatusCode
 	{
-		None,
-		Building,
-		Running
+		None = 0,
+		Building = 1,
+		Running = 2
 	}
 
 	public virtual StatusCode Status { get; }

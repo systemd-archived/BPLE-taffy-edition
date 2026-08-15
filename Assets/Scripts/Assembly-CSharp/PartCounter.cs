@@ -11,7 +11,7 @@ public class PartCounter : MonoBehaviour
 		m_textMesh = GetComponent<TextMesh>();
 		if (((Singleton<BuildCustomizationLoader>.Instance.IsHDVersion && Singleton<BuildCustomizationLoader>.Instance.CustomerID.Equals("amazon")) || (Singleton<BuildCustomizationLoader>.Instance.IsHDVersion && Singleton<BuildCustomizationLoader>.Instance.CustomerID.Equals("nook"))) && Screen.width > 1024)
 		{
-			m_textMesh.GetComponent<Renderer>().material.shader = ShaderCache.Get("_Custom/Unlit_Alpha8Bit_Color");
+			m_textMesh.GetComponent<Renderer>().material.shader = Shader.Find("_Custom/Unlit_Alpha8Bit_Color");
 		}
 		EventManager.Connect<PartCountChanged>(ReceivePartCountChangedEvent);
 	}

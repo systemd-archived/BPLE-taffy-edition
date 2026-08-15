@@ -6,10 +6,10 @@ namespace TMPro.Examples
 	{
 		public enum FpsCounterAnchorPositions
 		{
-			TopLeft,
-			BottomLeft,
-			TopRight,
-			BottomRight
+			TopLeft = 0,
+			BottomLeft = 1,
+			TopRight = 2,
+			BottomRight = 3
 		}
 
 		public FpsCounterAnchorPositions AnchorPosition = FpsCounterAnchorPositions.BottomLeft;

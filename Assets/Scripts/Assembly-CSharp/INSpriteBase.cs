@@ -5,10 +5,10 @@ public class INSpriteBase : MonoBehaviour
 {
 	public enum GraphicType
 	{
-		None,
-		Mesh,
-		Image,
-		RawImage
+		None = 0,
+		Mesh = 1,
+		Image = 2,
+		RawImage = 3
 	}
 
 	protected INSpriteData m_spriteData;

@@ -2,9 +2,9 @@ namespace PlayFab
 {
 	public enum PlayFabExceptionCode
 	{
-		DeveloperKeyNotSet,
-		EntityTokenNotSet,
-		NotLoggedIn,
-		TitleNotSet
+		DeveloperKeyNotSet = 0,
+		EntityTokenNotSet = 1,
+		NotLoggedIn = 2,
+		TitleNotSet = 3
 	}
 }

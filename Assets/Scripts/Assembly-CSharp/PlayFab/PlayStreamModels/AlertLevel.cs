@@ -2,8 +2,8 @@ namespace PlayFab.PlayStreamModels
 {
 	public enum AlertLevel
 	{
-		Warn,
-		Alert,
-		Critical
+		Warn = 0,
+		Alert = 1,
+		Critical = 2
 	}
 }

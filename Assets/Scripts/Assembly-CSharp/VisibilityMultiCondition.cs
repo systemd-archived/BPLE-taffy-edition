@@ -56,7 +56,7 @@ public class VisibilityMultiCondition : MonoBehaviour
 				break;
 			}
 		}
-		if ((flag != lastState) | force)
+		if (flag != lastState || force)
 		{
 			lastState = flag;
 			SetEnabled(flag);

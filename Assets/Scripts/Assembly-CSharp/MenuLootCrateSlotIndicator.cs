@@ -51,7 +51,7 @@ public class MenuLootCrateSlotIndicator : MonoBehaviour
 			string slotIdentifier = LootCrateSlot.GetSlotIdentifier(i);
 			if (GameProgress.HasKey(slotIdentifier))
 			{
-				string[] array = GameProgress.GetString(slotIdentifier, string.Empty).Split(',');
+				string[] array = GameProgress.GetString(slotIdentifier, string.Empty).Split(new char[1] { ',' });
 				if (array.Length != 0 && array[0] == "Unlocked")
 				{
 					index = i;
@@ -69,7 +69,7 @@ public class MenuLootCrateSlotIndicator : MonoBehaviour
 
 	private LootCrateType GetLootCrateType(int index)
 	{
-		string[] array = GameProgress.GetString(LootCrateSlot.GetSlotIdentifier(index), string.Empty).Split(',');
+		string[] array = GameProgress.GetString(LootCrateSlot.GetSlotIdentifier(index), string.Empty).Split(new char[1] { ',' });
 		return (LootCrateType)Enum.Parse(typeof(LootCrateType), array[1], ignoreCase: true);
 	}
 

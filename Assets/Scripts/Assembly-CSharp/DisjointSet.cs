@@ -1,6 +1,6 @@
 using System;
 
-public sealed class DisjointSet
+public class DisjointSet
 {
 	private int m_count;
 
@@ -71,33 +71,6 @@ public sealed class DisjointSet
 
 	public void Clear()
 	{
-		for (int i = 0; i < m_count; i++)
-		{
-			MakeSet(i);
-		}
-	}
-
-	/// <summary>
-	/// 重置并集并设置新的元素数量。如果 size 不变则复用内部数组。
-	/// </summary>
-	public void Reset(int count)
-	{
-		if (m_parent == null || m_parent.Length < count)
-		{
-			m_count = count;
-			if (count == 0)
-			{
-				m_parent = Array.Empty<int>();
-				m_size = Array.Empty<int>();
-				return;
-			}
-			m_parent = new int[count];
-			m_size = new int[count];
-		}
-		else
-		{
-			m_count = count;
-		}
 		for (int i = 0; i < m_count; i++)
 		{
 			MakeSet(i);

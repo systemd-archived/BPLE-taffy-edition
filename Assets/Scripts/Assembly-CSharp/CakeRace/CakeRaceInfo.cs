@@ -9,10 +9,10 @@ namespace CakeRace
 		public enum Tag
 		{
 			Undefined = -1,
-			Easy,
-			Normal,
-			Hard,
-			Locked
+			Easy = 0,
+			Normal = 1,
+			Hard = 2,
+			Locked = 3
 		}
 
 		private const int DEFAULT_TIME_LIMIT = 10;

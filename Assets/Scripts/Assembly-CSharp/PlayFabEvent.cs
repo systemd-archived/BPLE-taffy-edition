@@ -2,12 +2,12 @@ public struct PlayFabEvent : EventManager.Event
 {
 	public enum Type
 	{
-		None,
-		UserDataUploadStarted,
-		UserDataUploadEnded,
-		UserDeltaChangeUploadStarted,
-		UserDeltaChangeUploadEnded,
-		LocalDataUpdated
+		None = 0,
+		UserDataUploadStarted = 1,
+		UserDataUploadEnded = 2,
+		UserDeltaChangeUploadStarted = 3,
+		UserDeltaChangeUploadEnded = 4,
+		LocalDataUpdated = 5
 	}
 
 	public Type type;

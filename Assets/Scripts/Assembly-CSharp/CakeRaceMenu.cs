@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using CakeRace;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -13,8 +14,6 @@ public class CakeRaceMenu : WPFMonoBehaviour
 
 	[SerializeField]
 	private MeshRenderer cloudRenderer;
-
-	private Material cloudMaterial;
 
 	[SerializeField]
 	private float cloudSpeed = 0.1f;
@@ -260,7 +259,7 @@ public class CakeRaceMenu : WPFMonoBehaviour
 			string key = i.ToString();
 			if (config.HasKey(key))
 			{
-				List<string> value = new List<string>(config[key].Split(','));
+				List<string> value = new List<string>(config[key].Split(new char[1] { ',' }));
 				AllSeasonTracks.Add(i, value);
 			}
 		}
@@ -601,18 +600,16 @@ public class CakeRaceMenu : WPFMonoBehaviour
 	{
 		if (cloudRenderer != null)
 		{
-			if (cloudMaterial == null)
-				cloudMaterial = cloudRenderer.material;
 			currentOffset += GameTime.RealTimeDelta * cloudSpeed;
 			if (currentOffset > 1f)
 			{
-				currentOffset--;
+				currentOffset -= 1f;
 			}
 			else if (currentOffset < -1f)
 			{
-				currentOffset++;
+				currentOffset += 1f;
 			}
-			cloudMaterial.SetTextureOffset("_MainTex", Vector2.right * currentOffset);
+			cloudRenderer.material.SetTextureOffset("_MainTex", Vector2.right * currentOffset);
 		}
 	}
 
@@ -666,13 +663,13 @@ public class CakeRaceMenu : WPFMonoBehaviour
 		}
 		else
 		{
-			value = DateTime.Parse(GameProgress.GetString("cake_race_first_day", string.Empty));
+			value = DateTime.Parse(GameProgress.GetString("cake_race_first_day", string.Empty), CultureInfo.InvariantCulture);
 		}
 		serverTime.Subtract(value);
 		DateTime value2 = serverTime;
 		if (GameProgress.HasKey("cake_race_last_played"))
 		{
-			value2 = DateTime.Parse(GameProgress.GetString("cake_race_last_played", DateTime.MinValue.ToShortDateString()));
+			value2 = DateTime.Parse(GameProgress.GetString("cake_race_last_played", DateTime.MinValue.ToShortDateString()), CultureInfo.InvariantCulture);
 		}
 		GameProgress.SetString("cake_race_last_played", serverTime.ToShortDateString());
 		int num = GameProgress.GetInt("cake_race_days_played", 1);

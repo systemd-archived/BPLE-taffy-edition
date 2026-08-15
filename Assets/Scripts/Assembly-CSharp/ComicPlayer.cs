@@ -7,12 +7,12 @@ public class ComicPlayer : MonoBehaviour
 {
 	public enum Type
 	{
-		EpisodeStart,
-		EpisodeEnd,
-		EpisodeOneTime,
-		EpisodeContinue,
-		DailyChallenge,
-		CakeRace
+		EpisodeStart = 0,
+		EpisodeEnd = 1,
+		EpisodeOneTime = 2,
+		EpisodeContinue = 3,
+		DailyChallenge = 4,
+		CakeRace = 5
 	}
 
 	[Serializable]

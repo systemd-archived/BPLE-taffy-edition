@@ -65,31 +65,31 @@ public class KeyListener : Singleton<KeyListener>
 		{
 			return;
 		}
-		if (keyPressed != null || keyReleased != null || keyHold != null)
+		if (KeyListener.keyPressed != null || KeyListener.keyReleased != null || KeyListener.keyHold != null)
 		{
 			for (int i = 0; i < m_hotkeys.Count; i++)
 			{
 				KeyCode keyCode = m_hotkeys[i];
-				if (Input.GetKeyUp(keyCode) && keyReleased != null)
+				if (Input.GetKeyUp(keyCode) && KeyListener.keyReleased != null)
 				{
-					InvokeDelegates(keyReleased, keyCode);
+					InvokeDelegates(KeyListener.keyReleased, keyCode);
 				}
-				if (Input.GetKeyDown(keyCode) && keyPressed != null)
+				if (Input.GetKeyDown(keyCode) && KeyListener.keyPressed != null)
 				{
-					InvokeDelegates(keyPressed, keyCode);
+					InvokeDelegates(KeyListener.keyPressed, keyCode);
 				}
-				if (Input.GetKey(keyCode) && keyHold != null)
+				if (Input.GetKey(keyCode) && KeyListener.keyHold != null)
 				{
-					InvokeDelegates(keyHold, keyCode);
+					InvokeDelegates(KeyListener.keyHold, keyCode);
 				}
 			}
 		}
-		if (mouseWheel != null)
+		if (KeyListener.mouseWheel != null)
 		{
 			float axisRaw = Input.GetAxisRaw("Mouse ScrollWheel");
 			if (axisRaw != 0f)
 			{
-				InvokeDelegates(mouseWheel, axisRaw);
+				InvokeDelegates(KeyListener.mouseWheel, axisRaw);
 			}
 		}
 		if (INSettings.GetBool(INFeature.InputSettings) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.S))

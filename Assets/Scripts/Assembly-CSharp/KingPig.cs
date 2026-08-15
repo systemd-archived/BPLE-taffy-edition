@@ -53,7 +53,6 @@ public class KingPig : BasePart
 		m_faceRotation = base.transform.Find("KingPig").Find("Face").GetComponent<FaceRotation>();
 		m_pupilMover = m_faceRotation.transform.Find("PupilMover");
 		m_faceAnimation = m_faceRotation.transform.Find("Face").GetComponent<SpriteAnimation>();
-		m_autoAlign = AutoAlignType.Rotate;
 	}
 
 	private void OnEnable()

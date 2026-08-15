@@ -29,15 +29,16 @@ public class INPhysicsManager : MonoBehaviour
 		UnityEngine.Object.DontDestroyOnLoad(this);
 		Physics.autoSimulation = false;
 		m_timeStep = Time.fixedDeltaTime;
+		UnityEngine.Object.DontDestroyOnLoad(new GameObject("INImpactFrameCompensation").AddComponent<INImpactFrameCompensation>());
 	}
 
 	private void FixedUpdate()
 	{
-		BeforeSimulation?.Invoke();
+		this.BeforeSimulation?.Invoke();
 		if (!Physics.autoSimulation)
 		{
 			Physics.Simulate(m_timeStep);
 		}
-		AfterSimulation?.Invoke();
+		this.AfterSimulation?.Invoke();
 	}
 }

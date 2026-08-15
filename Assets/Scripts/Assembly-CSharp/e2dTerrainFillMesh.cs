@@ -147,7 +147,7 @@ public class e2dTerrainFillMesh : e2dTerrainMesh
 		}
 		sharedMaterials = new Material[1]
 		{
-			new Material(ShaderCache.Get("_Custom/Unlit_Color_Geometry"))
+			new Material(Shader.Find("_Custom/Unlit_Color_Geometry"))
 		};
 		if (!base.Terrain.FillTexture)
 		{

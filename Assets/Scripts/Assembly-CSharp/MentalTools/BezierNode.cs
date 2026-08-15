@@ -8,9 +8,9 @@ namespace MentalTools
 	{
 		public enum TangentType
 		{
-			None,
-			Free,
-			Mirrored
+			None = 0,
+			Free = 1,
+			Mirrored = 2
 		}
 
 		[SerializeField]

@@ -5,18 +5,18 @@ public class PlayParticlesOnCollision : WPFMonoBehaviour
 {
 	public enum CollisionEvent
 	{
-		Enter,
-		Stay,
-		Exit
+		Enter = 0,
+		Stay = 1,
+		Exit = 2
 	}
 
 	public enum Action
 	{
-		PlayByEffectManager,
-		ShowEffectByEffectManager,
-		PlayParticleSystem,
-		Instantinate,
-		SpawnAudioOneShotEffect
+		PlayByEffectManager = 0,
+		ShowEffectByEffectManager = 1,
+		PlayParticleSystem = 2,
+		Instantinate = 3,
+		SpawnAudioOneShotEffect = 4
 	}
 
 	private bool m_enabled = true;

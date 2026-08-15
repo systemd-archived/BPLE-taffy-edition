@@ -105,19 +105,19 @@ namespace Spine.Unity
 				skeleton.Update(deltaTime);
 				state.Update(deltaTime);
 				state.Apply(skeleton);
-				if (UpdateLocal != null)
+				if (this.UpdateLocal != null)
 				{
-					UpdateLocal(this);
+					this.UpdateLocal(this);
 				}
 				skeleton.UpdateWorldTransform();
-				if (UpdateWorld != null)
+				if (this.UpdateWorld != null)
 				{
-					UpdateWorld(this);
+					this.UpdateWorld(this);
 					skeleton.UpdateWorldTransform();
 				}
-				if (UpdateComplete != null)
+				if (this.UpdateComplete != null)
 				{
-					UpdateComplete(this);
+					this.UpdateComplete(this);
 				}
 			}
 		}

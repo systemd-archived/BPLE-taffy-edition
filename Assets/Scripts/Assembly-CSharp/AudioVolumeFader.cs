@@ -6,9 +6,9 @@ public class AudioVolumeFader : MonoBehaviour
 {
 	private enum ActiveFade
 	{
-		NoFade,
-		FadeOut,
-		FadeIn
+		NoFade = 0,
+		FadeOut = 1,
+		FadeIn = 2
 	}
 
 	[SerializeField]

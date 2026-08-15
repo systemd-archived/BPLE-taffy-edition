@@ -6,10 +6,10 @@ public class LootCrateSlot : WPFMonoBehaviour
 {
 	public enum State
 	{
-		Empty,
-		Inactive,
-		Locked,
-		Unlocked
+		Empty = 0,
+		Inactive = 1,
+		Locked = 2,
+		Unlocked = 3
 	}
 
 	[SerializeField]
@@ -249,7 +249,7 @@ public class LootCrateSlot : WPFMonoBehaviour
 
 	private void TryRecover()
 	{
-		string[] array = GameProgress.GetString(identifier, string.Empty).Split(',');
+		string[] array = GameProgress.GetString(identifier, string.Empty).Split(new char[1] { ',' });
 		if (array != null && array.Length >= 2 && UpdateSlotFromString(array) && state == State.Empty)
 		{
 			GameProgress.DeleteKey(identifier);

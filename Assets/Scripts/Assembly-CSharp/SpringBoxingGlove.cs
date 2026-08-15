@@ -6,9 +6,9 @@ public class SpringBoxingGlove : BasePart
 {
 	private enum State
 	{
-		WindedUp,
-		Shoot,
-		Winding
+		WindedUp = 0,
+		Shoot = 1,
+		Winding = 2
 	}
 
 	private float m_SpringVisualizationInitZ;

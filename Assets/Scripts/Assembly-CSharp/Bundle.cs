@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -20,8 +21,6 @@ public class Bundle : MonoBehaviour
 
 		private AssetBundle assetBundle;
 
-		private Dictionary<string, UnityEngine.Object> assetCache = new Dictionary<string, UnityEngine.Object>();
-
 		public string BundleFileName => bundleId + "." + bundleFileExtension;
 
 		public string BundleId => bundleId;
@@ -31,6 +30,8 @@ public class Bundle : MonoBehaviour
 		public bool LoadAtStart => loadAtStart;
 
 		public bool IsAssetBundleInMemory => assetBundle != null;
+
+		public bool LoadAttempted { get; set; }
 
 		public AssetBundle LoadedAssetBundle => assetBundle;
 
@@ -56,27 +57,9 @@ public class Bundle : MonoBehaviour
 		{
 			if (!(assetBundle == null))
 			{
-				assetCache.Clear();
 				assetBundle.Unload(unloadAllObjects);
 				assetBundle = null;
 			}
-		}
-
-		public T LoadAssetCached<T>(string objectName) where T : UnityEngine.Object
-		{
-			if (string.IsNullOrEmpty(objectName))
-			{
-				return null;
-			}
-			if (!assetCache.TryGetValue(objectName, out var cached))
-			{
-				cached = assetBundle.LoadAsset(objectName, typeof(T));
-				if (cached != null)
-				{
-					assetCache[objectName] = cached;
-				}
-			}
-			return cached as T;
 		}
 	}
 
@@ -169,7 +152,7 @@ public class Bundle : MonoBehaviour
 		{
 			string assetBundleId = assetBundles[i].assetBundleId;
 			BundleObject bundleObject = ((!bundleObjects.ContainsKey(assetBundleId)) ? new BundleObject(assetBundleId, "unity3d", assetBundles[i].loadAtStart, string.Empty) : bundleObjects[assetBundleId]);
-			string bundleLocation = Path.Combine(Application.streamingAssetsPath, "AssetBundles/" + bundleObject.BundleFileName);
+			string bundleLocation = GetBundleLocation(bundleObject.BundleFileName);
 			bundleObject.SetBundleLocation(bundleLocation);
 			if (!bundleObjects.ContainsKey(assetBundleId))
 			{
@@ -195,8 +178,6 @@ public class Bundle : MonoBehaviour
 	{
 		if (bundleObjects == null || !bundleObjects.ContainsKey(bundleId))
 		{
-			Debug.LogWarning($"[Bundle] LoadAssetBundle: bundle '{bundleId}' not found in bundleObjects");
-			onFinish?.Invoke();
 			yield break;
 		}
 		BundleObject bo = bundleObjects[bundleId];
@@ -209,40 +190,39 @@ public class Bundle : MonoBehaviour
 		if (!string.IsNullOrEmpty(bundleLocation))
 		{
 #if UNITY_ANDROID && !UNITY_EDITOR
-			using (UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(bundleLocation))
+			using (UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(new Uri(bundleLocation)))
 			{
 				yield return request.SendWebRequest();
-				AssetBundle assetBundle = DownloadHandlerAssetBundle.GetContent(request);
+				if (request.result == UnityWebRequest.Result.Success)
+				{
+					AssetBundle assetBundle = DownloadHandlerAssetBundle.GetContent(request);
+					if (assetBundle != null)
+					{
+						assetBundle.name = bo.BundleId;
+						bo.SetLoadedBundle(assetBundle);
+					}
+				}
+			}
+#else
+			if (File.Exists(bundleLocation))
+			{
+				AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(bundleLocation);
+				yield return request;
+				AssetBundle assetBundle = request.assetBundle;
 				if (assetBundle != null)
 				{
 					assetBundle.name = bo.BundleId;
 					bo.SetLoadedBundle(assetBundle);
 				}
-				else
-				{
-					Debug.LogWarning($"[Bundle] LoadAssetBundle: failed to load bundle '{bundleId}' from {bundleLocation} (Android)");
-				}
-			}
-#else
-			AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(bundleLocation);
-			yield return request;
-			AssetBundle assetBundle = request.assetBundle;
-			if (assetBundle != null)
-			{
-				assetBundle.name = bo.BundleId;
-				bo.SetLoadedBundle(assetBundle);
-			}
-			else
-			{
-				Debug.LogWarning($"[Bundle] LoadAssetBundle: failed to load bundle '{bundleId}' from {bundleLocation}");
 			}
 #endif
 		}
-		else
-		{
-			Debug.LogWarning($"[Bundle] LoadAssetBundle: bundle '{bundleId}' has empty location");
-		}
+		bo.LoadAttempted = true;
 		onFinish?.Invoke();
+		if (!bo.IsAssetBundleInMemory && AssetBundleLoadFailed != null)
+		{
+			AssetBundleLoadFailed();
+		}
 	}
 
 	public static void LoadBundleAsync(string bundleId, Action onFinish = null)
@@ -302,7 +282,14 @@ public class Bundle : MonoBehaviour
 		{
 			return null;
 		}
-		return bundleObjects[bundleId].LoadAssetCached<T>(objectName);
+		try
+		{
+			return (T)bundleObjects[bundleId].LoadedAssetBundle.LoadAsset(objectName, typeof(T));
+		}
+		catch
+		{
+			return null;
+		}
 	}
 
 	public static T LoadObject<T>(string objectName) where T : UnityEngine.Object
@@ -333,7 +320,7 @@ public class Bundle : MonoBehaviour
 			{
 				num++;
 			}
-			if (bundleObject.Value.IsAssetBundleInMemory)
+			if (bundleObject.Value.IsAssetBundleInMemory || bundleObject.Value.LoadAttempted)
 			{
 				num2++;
 			}
@@ -362,5 +349,17 @@ public class Bundle : MonoBehaviour
 				UnloadAssetBundle(assetBundles[i].assetBundleId, unloadAllLoadedObjects: true);
 			}
 		}
+	}
+
+	private static string GetBundleLocation(string bundleFileName)
+	{
+		string fileNameLower = bundleFileName.ToLowerInvariant();
+#if UNITY_EDITOR
+		string folderName = EditorUserBuildSettings.activeBuildTarget.ToString();
+
+		return Path.Combine(Application.dataPath.Substring(0, Application.dataPath.LastIndexOf('/')), "Library", "BuiltAssetBundles", folderName, fileNameLower);
+#else
+		return Path.Combine(Application.streamingAssetsPath, "AssetBundles", fileNameLower);
+#endif
 	}
 }

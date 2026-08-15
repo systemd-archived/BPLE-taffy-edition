@@ -6,12 +6,12 @@ public abstract class Challenge : WPFMonoBehaviour
 {
 	public enum ChallengeType
 	{
-		DontUseParts,
-		Time,
-		PerfectFlight,
-		Transport,
-		Box,
-		Max
+		DontUseParts = 0,
+		Time = 1,
+		PerfectFlight = 2,
+		Transport = 3,
+		Box = 4,
+		Max = 5
 	}
 
 	public class ChallengeOrder : IComparer<Challenge>

@@ -13,6 +13,8 @@ public class PartSettings : SettingsBase
 
 	private float m_buoyancyCoefficient;
 
+	private bool m_renderDisplacedArea;
+
 	private float m_coloredFrameSaturation1;
 
 	private float m_coloredFrameSaturation2;
@@ -35,7 +37,11 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			m_noDrag = value;
+			if (m_noDrag != value)
+			{
+				m_noDrag = value;
+				OnPropertyChanged("NoDrag");
+			}
 		}
 	}
 
@@ -47,7 +53,11 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			m_disableAlienPartParticles = value;
+			if (m_disableAlienPartParticles != value)
+			{
+				m_disableAlienPartParticles = value;
+				OnPropertyChanged("DisableAlienPartParticles");
+			}
 		}
 	}
 
@@ -59,7 +69,11 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			m_enableWaterSystem = value;
+			if (m_enableWaterSystem != value)
+			{
+				m_enableWaterSystem = value;
+				OnPropertyChanged("EnableWaterSystem");
+			}
 		}
 	}
 
@@ -71,9 +85,10 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value))
+			if (m_waterLevel != value && float.IsFinite(value))
 			{
 				m_waterLevel = value;
+				OnPropertyChanged("WaterLevel");
 			}
 		}
 	}
@@ -86,9 +101,26 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value))
+			if (m_buoyancyCoefficient != value && float.IsFinite(value))
 			{
 				m_buoyancyCoefficient = value;
+				OnPropertyChanged("BuoyancyCoefficient");
+			}
+		}
+	}
+
+	public bool RenderDisplacedArea
+	{
+		get
+		{
+			return m_renderDisplacedArea;
+		}
+		set
+		{
+			if (m_renderDisplacedArea != value)
+			{
+				m_renderDisplacedArea = value;
+				OnPropertyChanged("RenderDisplacedArea");
 			}
 		}
 	}
@@ -101,9 +133,10 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f && value <= 1f)
+			if (m_coloredFrameSaturation1 != value && float.IsFinite(value) && value >= 0f && value <= 1f)
 			{
 				m_coloredFrameSaturation1 = value;
+				OnPropertyChanged("ColoredFrameSaturation1");
 			}
 		}
 	}
@@ -116,9 +149,10 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f && value <= 1f)
+			if (m_coloredFrameSaturation2 != value && float.IsFinite(value) && value >= 0f && value <= 1f)
 			{
 				m_coloredFrameSaturation2 = value;
+				OnPropertyChanged("ColoredFrameSaturation2");
 			}
 		}
 	}
@@ -131,9 +165,10 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f && value <= 1f)
+			if (m_coloredFrameBrightness1 != value && float.IsFinite(value) && value >= 0f && value <= 1f)
 			{
 				m_coloredFrameBrightness1 = value;
+				OnPropertyChanged("ColoredFrameBrightness1");
 			}
 		}
 	}
@@ -146,9 +181,10 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f && value <= 1f)
+			if (m_coloredFrameBrightness2 != value && float.IsFinite(value) && value >= 0f && value <= 1f)
 			{
 				m_coloredFrameBrightness2 = value;
+				OnPropertyChanged("ColoredFrameBrightness2");
 			}
 		}
 	}
@@ -161,9 +197,10 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f && value <= 1f)
+			if (m_coloredFrameBrightness3 != value && float.IsFinite(value) && value >= 0f && value <= 1f)
 			{
 				m_coloredFrameBrightness3 = value;
+				OnPropertyChanged("ColoredFrameBrightness3");
 			}
 		}
 	}
@@ -176,9 +213,10 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f && value <= 3000f)
+			if (m_jetEngineDefaultForce != value && float.IsFinite(value) && value >= 0f && value <= 3000f)
 			{
 				m_jetEngineDefaultForce = value;
+				OnPropertyChanged("JetEngineDefaultForce");
 			}
 		}
 	}
@@ -191,9 +229,10 @@ public class PartSettings : SettingsBase
 		}
 		set
 		{
-			if (float.IsFinite(value) && value >= 0f)
+			if (m_jetEngineForceStep != value && float.IsFinite(value) && value >= 0f)
 			{
 				m_jetEngineForceStep = value;
+				OnPropertyChanged("JetEngineForceStep");
 			}
 		}
 	}

@@ -142,17 +142,17 @@ public class SliderToggle : Widget
 			isDragging = false;
 			Vector3 vector = hudCamera.WorldToScreenPoint(base.transform.position);
 			bool flag = toggleStateAtPress == IsToggled && Time.realtimeSinceStartup - pressStartTime < clickThreshold && ((!toggleStateAtPress && lastDragPosition.x > vector.x) || (toggleStateAtPress && lastDragPosition.x < vector.x));
-			if ((bool)m_toggleSound & flag)
+			if ((bool)m_toggleSound && flag)
 			{
 				Singleton<AudioManager>.Instance.Play2dEffect(m_toggleSound);
 			}
-			if (flag | forceToggle)
+			if (flag || forceToggle)
 			{
 				freezeFrames = 4;
 			}
 			if (episodeSelector != null)
 			{
-				episodeSelector.ReleaseRotation(flag | forceToggle);
+				episodeSelector.ReleaseRotation(flag || forceToggle);
 			}
 		}
 	}

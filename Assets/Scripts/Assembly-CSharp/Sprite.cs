@@ -133,7 +133,7 @@ public class Sprite : MonoBehaviour, SpriteMeshGenerator
 		int num8 = num4 - num6;
 		int num9 = (int)(m_scaleX * (float)(num7 + data.pivotX + m_pivotX));
 		int num10 = (int)(m_scaleY * (float)(num8 + data.pivotY + m_pivotY));
-		if (((meshFilter.sharedMesh == null) | forceResetMesh) || num != m_spriteWidth || num2 != m_spriteHeight || num9 != m_spritePivotX || num10 != m_spritePivotY)
+		if (meshFilter.sharedMesh == null || forceResetMesh || num != m_spriteWidth || num2 != m_spriteHeight || num9 != m_spritePivotX || num10 != m_spritePivotY)
 		{
 			m_spritePivotX = num9;
 			m_spritePivotY = num10;

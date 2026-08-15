@@ -412,8 +412,8 @@ public class EntityLightManager : PartManager
 		bool flag2 = num3 < 0.25f && num4 > 0f && num4 > num3;
 		if (sides != 0)
 		{
-			flag &= (sides & 1) == 0;
-			flag2 &= (sides & 2) == 0;
+			flag = flag && (sides & 1) == 0;
+			flag2 = flag2 && (sides & 2) == 0;
 		}
 		if (!flag && !flag2)
 		{

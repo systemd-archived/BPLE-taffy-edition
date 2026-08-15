@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PartListBuilder
@@ -74,13 +75,9 @@ public class PartListBuilder
 
 	private IEnumerable<T> GetValuesInternal<T>(Dictionary<PartTypeInfo, T> dictionary, BasePart.PartType type)
 	{
-		foreach (KeyValuePair<PartTypeInfo, T> item in dictionary)
-		{
-			if (item.Key.PartType == type)
-			{
-				yield return item.Value;
-			}
-		}
+		return from pair in dictionary
+			where pair.Key.PartType == type
+			select pair.Value;
 	}
 
 	public BasePart CreatePart(PartTypeInfo partTypeInfo)
@@ -99,7 +96,6 @@ public class PartListBuilder
 		basePart.name = name;
 		basePart.Type = typeInfo.PartType;
 		basePart.Index = typeInfo.PartIndex;
-		basePart.gameObject.SetActive(value: false);
 		Sprite constructionIconSprite = part.m_constructionIconSprite;
 		if (constructionIconSprite != null)
 		{

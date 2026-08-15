@@ -8,12 +8,12 @@ public class WorkshopMenu : MonoBehaviour
 {
 	public enum CraftingMachineAction
 	{
-		None,
-		Idle,
-		ResetScrap,
-		AddScrap,
-		RemoveScrap,
-		CraftPart
+		None = 0,
+		Idle = 1,
+		ResetScrap = 2,
+		AddScrap = 3,
+		RemoveScrap = 4,
+		CraftPart = 5
 	}
 
 	public struct CraftingMachineEvent : EventManager.Event

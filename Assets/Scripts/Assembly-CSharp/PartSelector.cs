@@ -224,7 +224,7 @@ public class PartSelector : WPFMonoBehaviour, WidgetListener
 	private void ReadPartOrder()
 	{
 		m_partOrder.Clear();
-		for (int i = 0; i < 49; i++)
+		for (int i = 0; i < (int)SortedPartType.MAX; i++)
 		{
 			SortedPartType sortedPartType = (SortedPartType)i;
 			if (sortedPartType.IsValid())
@@ -349,7 +349,7 @@ public class PartSelector : WPFMonoBehaviour, WidgetListener
 	private void CreateTestPartList()
 	{
 		m_partDescs = new List<ConstructionUI.PartDesc>();
-		foreach (GameObject part in m_gameData.m_parts)
+		foreach (GameObject part in WPFMonoBehaviour.gameData.Parts)
 		{
 			ConstructionUI.PartDesc partDesc = new ConstructionUI.PartDesc();
 			partDesc.part = part.GetComponent<BasePart>();

@@ -6,20 +6,20 @@ public class Pig : BasePart
 {
 	public enum Expressions
 	{
-		Normal,
-		Laugh,
-		Grin,
-		Fear,
-		Fear2,
-		Hit,
-		Blink,
-		FearfulGrin,
-		Chew,
-		WaitForFood,
-		Burp,
-		Snooze,
-		Panting,
-		MAX
+		Normal = 0,
+		Laugh = 1,
+		Grin = 2,
+		Fear = 3,
+		Fear2 = 4,
+		Hit = 5,
+		Blink = 6,
+		FearfulGrin = 7,
+		Chew = 8,
+		WaitForFood = 9,
+		Burp = 10,
+		Snooze = 11,
+		Panting = 12,
+		MAX = 13
 	}
 
 	[Serializable]
@@ -202,7 +202,6 @@ public class Pig : BasePart
 		m_hpFilter = GetComponent<AudioHighPassFilter>();
 		m_lpFilter = GetComponent<AudioLowPassFilter>();
 		m_reverbFilter = GetComponent<AudioReverbFilter>();
-		m_autoAlign = AutoAlignType.Rotate;
 	}
 
 	private void OnEnable()

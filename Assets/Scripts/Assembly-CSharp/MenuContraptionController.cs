@@ -53,7 +53,7 @@ public class MenuContraptionController : MonoBehaviour
 				m_timer = 0f;
 				m_contraption.DestroyAllJoints();
 				m_contraption.ActivateParts((BasePart part) => BasePart.BaseType(part.m_partType) == BasePart.PartType.Balloon || BasePart.BaseType(part.m_partType) == BasePart.PartType.Sandbag);
-				m_partsToRemove = new Queue<BasePart>((IEnumerable<BasePart>)m_contraption.Parts);
+				m_partsToRemove = new Queue<BasePart>(m_contraption.Parts);
 			}
 		}
 		else

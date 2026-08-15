@@ -3,7 +3,7 @@ namespace Ionic.Zlib
 	internal enum ZlibStreamFlavor
 	{
 		ZLIB = 1950,
-		DEFLATE,
-		GZIP
+		DEFLATE = 1951,
+		GZIP = 1952
 	}
 }

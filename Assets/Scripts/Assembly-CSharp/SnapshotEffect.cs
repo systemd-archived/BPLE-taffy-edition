@@ -30,14 +30,14 @@ internal class SnapshotEffect : MonoBehaviour
 	private void OnEnable()
 	{
 		m_renderFunc = SnapshotFunc;
-		SnapshotFinished = null;
+		this.SnapshotFinished = null;
 	}
 
 	private void OnDisable()
 	{
-		if (SnapshotFinished != null)
+		if (this.SnapshotFinished != null)
 		{
-			SnapshotFinished();
+			this.SnapshotFinished();
 		}
 	}
 

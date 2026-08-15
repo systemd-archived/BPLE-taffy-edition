@@ -7,16 +7,16 @@ public class SpriteText : MonoBehaviour
 {
 	public enum VerticalAlignment
 	{
-		Bottom,
-		Center,
-		Top
+		Bottom = 0,
+		Center = 1,
+		Top = 2
 	}
 
 	public enum HorizontalAlignment
 	{
-		Left,
-		Center,
-		Right
+		Left = 0,
+		Center = 1,
+		Right = 2
 	}
 
 	private const float CameraScale = 5f / 192f;

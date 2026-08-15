@@ -10,6 +10,6 @@ namespace PlayFab
 		Info = 2,
 		Warning = 4,
 		Error = 8,
-		All = Debug | Info | Warning | Error
+		All = 0xF
 	}
 }

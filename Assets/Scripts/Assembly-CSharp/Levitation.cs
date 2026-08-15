@@ -21,7 +21,7 @@ public class Levitation : WPFMonoBehaviour
 	{
 		tf = base.transform;
 		original = tf.localPosition;
-		max = (float)Math.PI * 2f;
+		max = MathF.PI * 2f;
 	}
 
 	private void Update()

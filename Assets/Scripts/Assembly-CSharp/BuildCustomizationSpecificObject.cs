@@ -4,9 +4,9 @@ public class BuildCustomizationSpecificObject : WPFMonoBehaviour
 {
 	public enum Condition
 	{
-		IsContentLimited,
-		IsContentLimitedHasFieldOfDreams,
-		HasLeaderboards
+		IsContentLimited = 0,
+		IsContentLimitedHasFieldOfDreams = 1,
+		HasLeaderboards = 2
 	}
 
 	public Condition m_condition;

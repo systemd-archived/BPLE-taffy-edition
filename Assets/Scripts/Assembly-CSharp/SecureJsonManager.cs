@@ -13,38 +13,11 @@ public class SecureJsonManager
 
 	public void Initialize(Action<string> onDataLoaded)
 	{
-		try
+		Hashtable hashtable = MiniJSON.jsonDecode(Resources.Load<TextAsset>("rawAppConfig").text) as Hashtable;
+		string key = fileName;
+		if (hashtable.ContainsKey(key))
 		{
-			TextAsset rawConfig = Resources.Load<TextAsset>("rawAppConfig");
-			if (rawConfig == null)
-			{
-				Debug.LogError($"[SecureJsonManager] Resources.Load<TextAsset>(\"rawAppConfig\") returned null!");
-				return;
-			}
-			if (string.IsNullOrEmpty(rawConfig.text))
-			{
-				Debug.LogError($"[SecureJsonManager] rawAppConfig.text is null or empty!");
-				return;
-			}
-			Hashtable hashtable = MiniJSON.jsonDecode(rawConfig.text) as Hashtable;
-			if (hashtable == null)
-			{
-				Debug.LogError("[SecureJsonManager] jsonDecode returned null!");
-				return;
-			}
-			string key = fileName;
-			if (hashtable.ContainsKey(key))
-			{
-				onDataLoaded?.Invoke(MiniJSON.jsonEncode(hashtable[key]));
-			}
-			else
-			{
-				Debug.LogError($"[SecureJsonManager] key \"{key}\" not found in rawAppConfig!");
-			}
-		}
-		catch (System.Exception e)
-		{
-			Debug.LogError($"[SecureJsonManager] Exception in Initialize: {e.Message}\n{e.StackTrace}");
+			onDataLoaded?.Invoke(MiniJSON.jsonEncode(hashtable[key]));
 		}
 	}
 }

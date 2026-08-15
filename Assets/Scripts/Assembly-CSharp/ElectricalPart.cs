@@ -6,9 +6,9 @@ public class ElectricalPart : BasePart
 {
 	public enum LogicLevel
 	{
-		Invalid,
-		Low,
-		High
+		Invalid = 0,
+		Low = 1,
+		High = 2
 	}
 
 	protected struct ConnectionData

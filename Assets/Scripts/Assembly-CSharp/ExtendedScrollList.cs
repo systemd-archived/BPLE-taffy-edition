@@ -5,8 +5,8 @@ public class ExtendedScrollList : Widget, WidgetListener
 {
 	private enum Action
 	{
-		Place,
-		DrawGizmos
+		Place = 0,
+		DrawGizmos = 1
 	}
 
 	private struct ScrollInfo

@@ -6,8 +6,8 @@ public class PointLightMask : MonoBehaviour
 {
 	public enum LightType
 	{
-		PointLight,
-		BeamLight
+		PointLight = 0,
+		BeamLight = 1
 	}
 
 	public LightType lightType;
@@ -86,7 +86,7 @@ public class PointLightMask : MonoBehaviour
 		}
 		for (int j = 0; j < vertexCount; j++)
 		{
-			float f = (float)Math.PI * 2f / (float)vertexCount * (float)j;
+			float f = MathF.PI * 2f / (float)vertexCount * (float)j;
 			float x = newVertices[0].x + radius * Mathf.Cos(f);
 			float y = newVertices[0].y + radius * Mathf.Sin(f);
 			newVertices[j + 1] = new Vector3(x, y);

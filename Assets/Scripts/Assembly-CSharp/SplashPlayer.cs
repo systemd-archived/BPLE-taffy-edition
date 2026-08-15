@@ -10,6 +10,8 @@ public class SplashPlayer : MonoBehaviour
 	{
 		if (INUnity.Enabled)
 		{
+			Debug.Log($"INFileSystem root: {INFileSystem.Root}");
+			INUnity.InitializeRoot();
 			INInitializer initializer = Object.Instantiate(Resources.Load<GameObject>("Innovation/INInitializer")).GetComponent<INInitializer>();
 			while (!initializer.Initialized)
 			{
@@ -33,7 +35,7 @@ public class SplashPlayer : MonoBehaviour
 		string arg;
 		if (!Singleton<BuildCustomizationLoader>.Instance.IsChina)
 		{
-			arg = ((!Singleton<BuildCustomizationLoader>.Instance.IsHDVersion) ? "iPhone" : ((DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.Ios && DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.Android && DeviceInfo.ActiveDeviceFamily != DeviceInfo.DeviceFamily.BB10) ? "PC-OSX" : "iPad"));
+			arg = ((!Singleton<BuildCustomizationLoader>.Instance.IsHDVersion) ? "iPhone" : "PC-OSX");
 		}
 		else
 		{

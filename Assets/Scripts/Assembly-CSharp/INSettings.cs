@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Innovation;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
@@ -9,20 +10,20 @@ public static class INSettings
 {
 	private enum SettingScope
 	{
-		None,
-		Level,
-		Sandbox,
-		Global
+		None = 0,
+		Level = 1,
+		Sandbox = 2,
+		Global = 3
 	}
 
 	private enum SettingTypeCode
 	{
-		Empty,
-		Boolean,
-		Int32,
-		Single,
-		String,
-		Array
+		Empty = 0,
+		Boolean = 1,
+		Int32 = 2,
+		Single = 3,
+		String = 4,
+		Array = 5
 	}
 
 	[Serializable]
@@ -155,6 +156,7 @@ public static class INSettings
 
 		public object Value { get; set; }
 
+		[JsonConstructor]
 		public SerializedDeclaration(INFeature name, SettingType type, object value)
 		{
 			Name = name;
@@ -168,6 +170,7 @@ public static class INSettings
 	{
 		public SerializedDeclaration[] Items { get; set; }
 
+		[JsonConstructor]
 		public SerializedDeclarations(SerializedDeclaration[] items)
 		{
 			Items = items;
@@ -197,6 +200,7 @@ public static class INSettings
 
 		public object Value { get; set; }
 
+		[JsonConstructor]
 		public SerializedSetting(INFeature name, SettingScope scope, object value)
 		{
 			Name = name;
@@ -210,6 +214,7 @@ public static class INSettings
 	{
 		public SerializedSetting[] Items { get; set; }
 
+		[JsonConstructor]
 		public SerializedSettings(SerializedSetting[] items)
 		{
 			Items = items;

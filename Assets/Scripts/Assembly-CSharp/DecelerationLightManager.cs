@@ -70,7 +70,7 @@ public class DecelerationLightManager : PartManager
 				{
 					float mass2 = rigidbody2.mass;
 					bool flag2 = !rigidbody3.IsFixed();
-					if (flag | flag2)
+					if (flag || flag2)
 					{
 						float num6 = Mathf.Sqrt(num5);
 						float item = s_force * (mass * mass2 / (mass + mass2)) * ((num6 > s_innerRadius) ? (num3 / num6 - num4) : 1f);

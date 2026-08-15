@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using UnityEngine;
 
 public static class INUnity
 {
 	public enum VersionType
 	{
-		Original,
-		ModeO,
-		ModeA,
-		ModeB
+		Original = 0,
+		ModeO = 1,
+		ModeA = 2,
+		ModeB = 3
 	}
 
 	private static Dictionary<(string, string), UnityEngine.Object> s_resources;
@@ -19,6 +21,8 @@ public static class INUnity
 	public static Version Version { get; private set; }
 
 	public static string VersionText { get; private set; }
+
+	public static int BuildVersion { get; private set; }
 
 	public static string DataPath { get; private set; }
 
@@ -38,10 +42,14 @@ public static class INUnity
 
 	static INUnity()
 	{
-		Version = Version.Parse(Application.version);
 		VersionText = Application.version;
-		DataPath = Application.persistentDataPath;
-		SettingsPath = Application.persistentDataPath + "/Settings";
+		string[] array = VersionText.Split('-', 2);
+		Version = Version.Parse(array[0]);
+		BuildVersion = -1;
+		if (array.Length > 1)
+		{
+			BuildVersion = int.Parse(array[1], CultureInfo.InvariantCulture);
+		}
 		SystemLanguage systemLanguage = Application.systemLanguage;
 		if (systemLanguage == SystemLanguage.Chinese || systemLanguage == SystemLanguage.ChineseSimplified || systemLanguage == SystemLanguage.ChineseTraditional)
 		{
@@ -50,10 +58,26 @@ public static class INUnity
 		else
 		{
 			Language = SystemLanguage.English;
+			try
+			{
+				if (CultureInfo.CurrentCulture.Name.StartsWith("zh", StringComparison.OrdinalIgnoreCase))
+				{
+					Language = SystemLanguage.Chinese;
+				}
+			}
+			catch
+			{
+			}
 		}
 		ArialFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
 		QuadMesh = Resources.GetBuiltinResource<Mesh>("Quad.fbx");
 		s_resources = new Dictionary<(string, string), UnityEngine.Object>();
+	}
+
+	public static void InitializeRoot()
+	{
+		DataPath = INFileSystem.Root;
+		SettingsPath = Path.Combine(DataPath, "Settings");
 	}
 
 	public static void Initialize(ResourceData data)
@@ -65,6 +89,7 @@ public static class INUnity
 		InitializeResources("Material", data.Materials);
 		InitializeResources("TextAsset", data.TextAssets);
 		InitializeResources("ScriptableObject", data.ScriptableObjects);
+		s_resources.Add(("Font", "DefaultFont-Regular"), LoadFont("FrutigerNeueLTW1G-Regular"));
 		ColorShader = LoadShader("Unlit_Color");
 		ColorTransparentShader = LoadShader("Unlit_ColorTransparent");
 		CustomTransparentShader = LoadShader("PreAlpha_Unlit_ColorTransparent_Geometry");
@@ -95,41 +120,41 @@ public static class INUnity
 
 	public static Font LoadFont(string name)
 	{
-		return LoadObject<Font>("Font", name);
+		return (Font)LoadObject("Font", name);
 	}
 
 	public static GameObject LoadGameObject(string name)
 	{
-		return LoadObject<GameObject>("GameObject", name);
+		return (GameObject)LoadObject("GameObject", name);
 	}
 
 	public static Texture LoadTexture(string name)
 	{
-		return LoadObject<Texture>("Texture", name);
+		return (Texture)LoadObject("Texture", name);
 	}
 
 	public static Material LoadMaterial(string name)
 	{
-		return LoadObject<Material>("Material", name);
+		return (Material)LoadObject("Material", name);
 	}
 
 	public static Shader LoadShader(string name)
 	{
-		return LoadObject<Shader>("Shader", name);
+		return (Shader)LoadObject("Shader", name);
 	}
 
 	public static TextAsset LoadTextAsset(string name)
 	{
-		return LoadObject<TextAsset>("TextAsset", name);
+		return (TextAsset)LoadObject("TextAsset", name);
 	}
 
 	public static T LoadScriptableObject<T>(string name) where T : ScriptableObject
 	{
-		return LoadObject<T>("ScriptableObject", name);
+		return (T)LoadObject("ScriptableObject", name);
 	}
 
-	private static T LoadObject<T>(string typeName, string name) where T : UnityEngine.Object
+	public static UnityEngine.Object LoadObject(string typeName, string name)
 	{
-		return (T)s_resources[(typeName, name)];
+		return s_resources[(typeName, name)];
 	}
 }

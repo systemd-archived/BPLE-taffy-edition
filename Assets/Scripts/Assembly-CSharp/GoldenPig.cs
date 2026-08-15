@@ -36,10 +36,4 @@ public class GoldenPig : BasePart
 			loopingRollingSound.volume = Mathf.Lerp(loopingRollingSound.volume, targetVolume, Time.deltaTime * 5f);
 		}
 	}
-
-	private new void Awake()
-	{
-		base.Awake();
-		m_autoAlign = AutoAlignType.Rotate;
-	}
 }

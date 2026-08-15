@@ -35,30 +35,22 @@ namespace TMPro.Examples
 
 		private void OnCharacterSelection(char c, int index)
 		{
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 			Debug.Log("Character [" + c + "] at Index: " + index + " has been selected.");
-#endif
 		}
 
 		private void OnSpriteSelection(char c, int index)
 		{
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 			Debug.Log("Sprite [" + c + "] at Index: " + index + " has been selected.");
-#endif
 		}
 
 		private void OnWordSelection(string word, int firstCharacterIndex, int length)
 		{
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 			Debug.Log("Word [" + word + "] with first character index of " + firstCharacterIndex + " and length of " + length + " has been selected.");
-#endif
 		}
 
 		private void OnLineSelection(string lineText, int firstCharacterIndex, int length)
 		{
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 			Debug.Log("Line [" + lineText + "] with first character index of " + firstCharacterIndex + " and length of " + length + " has been selected.");
-#endif
 		}
 
 		private void OnLinkSelection(string linkID, string linkText, int linkIndex)
@@ -67,9 +59,7 @@ namespace TMPro.Examples
 			{
 				_ = ref m_TextComponent.textInfo.linkInfo[linkIndex];
 			}
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 			Debug.Log("Link Index: " + linkIndex + " with ID [" + linkID + "] and Text \"" + linkText + "\" has been selected.");
-#endif
 		}
 	}
 }

@@ -6,9 +6,9 @@ namespace TMPro.Examples
 	{
 		public enum CameraModes
 		{
-			Follow,
-			Isometric,
-			Free
+			Follow = 0,
+			Isometric = 1,
+			Free = 2
 		}
 
 		private Transform cameraTransform;

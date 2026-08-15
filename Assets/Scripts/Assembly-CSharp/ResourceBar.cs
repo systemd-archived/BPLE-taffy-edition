@@ -6,10 +6,10 @@ public class ResourceBar : WPFMonoBehaviour
 {
 	public enum Item
 	{
-		SnoutCoin,
-		Scrap,
-		PlayerProgress,
-		StarCounter
+		SnoutCoin = 0,
+		Scrap = 1,
+		PlayerProgress = 2,
+		StarCounter = 3
 	}
 
 	private static ResourceBar instance;

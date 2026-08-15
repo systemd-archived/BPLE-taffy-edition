@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,7 +56,7 @@ public class CreditsScroller : MonoBehaviour
 			TextMesh[] componentsInChildren2 = componentsInChildren[i].GetComponentsInChildren<TextMesh>();
 			for (int j = 0; j < componentsInChildren2.Length; j++)
 			{
-				UnityEngine.Object.DestroyImmediate(componentsInChildren2[j].gameObject);
+				Object.DestroyImmediate(componentsInChildren2[j].gameObject);
 			}
 		}
 	}
@@ -161,8 +160,6 @@ public class CreditsScroller : MonoBehaviour
 
 	private void CalculateScrollVelocity(Vector3 newDelta)
 	{
-		//IL_0072: Unknown result type (might be due to invalid IL or missing references)
-		//IL_0077: Unknown result type (might be due to invalid IL or missing references)
 		while (m_scrollHistory.Count > 0 && m_scrollHistory.Peek().time < Time.time - 0.1f)
 		{
 			m_scrollHistory.Dequeue();
@@ -171,19 +168,10 @@ public class CreditsScroller : MonoBehaviour
 		Vector3 zero = Vector3.zero;
 		float time = m_scrollHistory.Peek().time;
 		float num = 0f;
-		var enumerator = m_scrollHistory.GetEnumerator();
-		try
+		foreach (ScrollData item in m_scrollHistory)
 		{
-			while (enumerator.MoveNext())
-			{
-				ScrollData current = enumerator.Current;
-				zero += current.delta;
-				num = current.time - time;
-			}
-		}
-		finally
-		{
-			((IDisposable)enumerator/*cast due to constrained. prefix*/).Dispose();
+			zero += item.delta;
+			num = item.time - time;
 		}
 		if (num > 0f)
 		{
@@ -200,5 +188,20 @@ public class CreditsScroller : MonoBehaviour
 	public void LaunchPrivacyPolicy()
 	{
 		Singleton<URLManager>.Instance.OpenURL(URLManager.LinkType.Privacy);
+	}
+
+	public void LaunchDiscord()
+	{
+		Application.OpenURL("https://discord.gg/JYrbsXX");
+	}
+
+	public void LaunchReddit()
+	{
+		Application.OpenURL("https://www.reddit.com/r/bpmle");
+	}
+
+	public void LaunchYouTube()
+	{
+		Application.OpenURL("https://www.youtube.com/@BadPiggiesTBar");
 	}
 }

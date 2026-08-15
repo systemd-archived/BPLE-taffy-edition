@@ -5,8 +5,8 @@ public class ButtonGrid : MonoBehaviour
 {
 	private enum Action
 	{
-		Place,
-		DrawGizmos
+		Place = 0,
+		DrawGizmos = 1
 	}
 
 	public GameObject buttonPrefab;

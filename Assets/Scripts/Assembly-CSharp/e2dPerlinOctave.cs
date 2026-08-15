@@ -35,7 +35,7 @@ public class e2dPerlinOctave
 
 	private float InterpolateCosine(float a, float b, float x)
 	{
-		float f = x * (float)Math.PI;
+		float f = x * MathF.PI;
 		float num = (1f - Mathf.Cos(f)) * 0.5f;
 		return a * (1f - num) + b * num;
 	}

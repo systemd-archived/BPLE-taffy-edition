@@ -13,9 +13,9 @@ public class Glue : MonoBehaviour
 
 	public enum Type
 	{
-		None,
-		Regular,
-		Alien
+		None = 0,
+		Regular = 1,
+		Alien = 2
 	}
 
 	public int m_GlueDirectionMask;
@@ -146,7 +146,7 @@ public class Glue : MonoBehaviour
 						AddSuperGlueSprite(component, dir, type);
 					}
 				}
-				else if (IsPartTypeRequireGlue(anotherPart.m_partType) | flag3)
+				else if (IsPartTypeRequireGlue(anotherPart.m_partType) || flag3)
 				{
 					AddSuperGlueSprite(component, dir, type);
 				}

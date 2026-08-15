@@ -13,7 +13,7 @@ public static class MeshExtensions
 	public static void UpdateCircleMesh(this Mesh mesh, float radius, float halfWidth, float angle, int count)
 	{
 		mesh.Clear();
-		float num = (float)Math.PI / 180f * angle / (float)count;
+		float num = MathF.PI / 180f * angle / (float)count;
 		Vector3[] array = new Vector3[(count + 1) * 2];
 		int[] array2 = new int[count * 6];
 		for (int i = 0; i <= count; i++)

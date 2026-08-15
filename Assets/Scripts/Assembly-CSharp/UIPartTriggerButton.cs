@@ -6,10 +6,10 @@ public class UIPartTriggerButton : UIPartButton
 {
 	private enum TriggerButtonState
 	{
-		Disabled,
-		Highlighted,
-		Pressed,
-		Enabled
+		Disabled = 0,
+		Highlighted = 1,
+		Pressed = 2,
+		Enabled = 3
 	}
 
 	private UIButton m_button;

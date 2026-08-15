@@ -217,7 +217,7 @@ public class e2dTerrainCurveMesh : e2dTerrainMesh
 		int num = 0;
 		for (int j = 0; j < materialsNeededCount; j++)
 		{
-			sharedMaterials[j] = new Material(ShaderCache.Get("e2d/Curve"));
+			sharedMaterials[j] = new Material(Shader.Find("e2d/Curve"));
 			sharedMaterials[j].SetFloat("_ControlSize", ControlTextures[j].width);
 			sharedMaterials[j].SetFloat("_InvControlSize", 1f / (float)ControlTextures[j].width);
 			sharedMaterials[j].SetFloat("_InvControlSizeHalf", 0.5f / (float)ControlTextures[j].width);

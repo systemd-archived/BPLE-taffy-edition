@@ -6,11 +6,11 @@ public class RewardPigRescuePopup : MonoBehaviour
 	public enum RewardType
 	{
 		None = -1,
-		Turbo,
-		Glue,
-		Magnet,
-		Nightvision,
-		Supermechanic
+		Turbo = 0,
+		Glue = 1,
+		Magnet = 2,
+		Nightvision = 3,
+		Supermechanic = 4
 	}
 
 	public MeshRenderer[] rewardIcons;
@@ -51,7 +51,7 @@ public class RewardPigRescuePopup : MonoBehaviour
 
 	public static void ProcessReward(string rewardData)
 	{
-		string[] array = rewardData.Split(',');
+		string[] array = rewardData.Split(new char[1] { ',' });
 		if (array.Length == 2 && !string.IsNullOrEmpty(array[0]) && !string.IsNullOrEmpty(array[1]) && int.TryParse(array[0], out var result) && result >= 0 && result <= 4)
 		{
 			RewardType rewardType = (RewardType)result;

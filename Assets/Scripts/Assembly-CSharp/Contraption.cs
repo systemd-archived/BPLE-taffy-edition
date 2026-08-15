@@ -143,9 +143,9 @@ public class Contraption : WPFMonoBehaviour
 
 	public enum JointType
 	{
-		Common,
-		Separator,
-		Frame
+		Common = 0,
+		Separator = 1,
+		Frame = 2
 	}
 
 	public BasePart m_cameraTarget;
@@ -159,10 +159,6 @@ public class Contraption : WPFMonoBehaviour
 	protected Dictionary<int, BasePart> m_partMap = new Dictionary<int, BasePart>();
 
 	protected List<BasePart> m_integralParts = new List<BasePart>();
-
-	protected Dictionary<BasePart, int> m_partIndexMap;
-
-	protected int[] m_componentIndexArray;
 
 	protected Camera m_gameCamera;
 
@@ -199,10 +195,6 @@ public class Contraption : WPFMonoBehaviour
 	private int m_staticPartCount;
 
 	private ConnectionSearchState m_connectionSearchState = new ConnectionSearchState();
-
-	// GC优化：复用缓冲区
-	private DisjointSet m_reusableDisjointSet;
-	private int[] m_reusableComponentCounts;
 
 	[SerializeField]
 	[HideInInspector]
@@ -269,7 +261,6 @@ public class Contraption : WPFMonoBehaviour
 				return;
 			}
 			m_hasSuperMagnet = value;
-			GlobalSuperMagnetActive = value;
 			if (m_hasSuperMagnet)
 			{
 				Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.SuperMagnetApplied);
@@ -286,22 +277,6 @@ public class Contraption : WPFMonoBehaviour
 					else if (!m_hasSuperMagnet && component != null)
 					{
 						UnityEngine.Object.Destroy(component);
-					}
-				}
-			}
-			foreach (BasePart part2 in m_parts)
-			{
-				if (part2.m_partType == BasePart.PartType.WoodenFrame || part2.m_partType == BasePart.PartType.MetalFrame)
-				{
-					if (m_hasSuperMagnet)
-					{
-						part2.m_eightWay = true;
-						part2.m_autoAlign = BasePart.AutoAlignType.Rotate;
-					}
-					else
-					{
-						part2.m_eightWay = false;
-						part2.m_autoAlign = BasePart.AutoAlignType.None;
 					}
 				}
 			}
@@ -398,8 +373,6 @@ public class Contraption : WPFMonoBehaviour
 	public Dictionary<PartTypeInfo, (int, bool)> PartRotationMap => m_partRotationMap;
 
 	public static Contraption Instance { get; private set; }
-
-	public static bool GlobalSuperMagnetActive { get; private set; }
 
 	public event Action ConnectedComponentsChanged;
 
@@ -587,7 +560,7 @@ public class Contraption : WPFMonoBehaviour
 			float num = 0f;
 			if (powerConsumption > 1f)
 			{
-				num = enginePower / powerConsumption;
+				num = Mathf.Min(enginePower / powerConsumption, 10f * INSettings.GetFloat(INFeature.EnginePowerLimit));
 			}
 			else if (enginePower > 0f)
 			{
@@ -611,7 +584,7 @@ public class Contraption : WPFMonoBehaviour
 			}
 			if (num3 > 1f)
 			{
-				num2 = connectedComponent3.enginePower / num3;
+				num2 = Mathf.Min(connectedComponent3.enginePower / num3, 10f * INSettings.GetFloat(INFeature.EnginePowerLimit));
 			}
 			else if (connectedComponent3.enginePower > 0f)
 			{
@@ -636,7 +609,7 @@ public class Contraption : WPFMonoBehaviour
 		m_contraptionDataSet = new ContraptionDataset();
 		m_gameCamera = Camera.main;
 		m_droppedSandbagLayer = LayerMask.NameToLayer("DroppedSandbag");
-		nightVisionGogglesPrefab = ResourcesCache.Get<GameObject>("Prefabs/NightVisionGoggles");
+		nightVisionGogglesPrefab = Resources.Load<GameObject>("Prefabs/NightVisionGoggles");
 		PostAwake();
 		Initialize();
 	}
@@ -658,7 +631,7 @@ public class Contraption : WPFMonoBehaviour
 
 	public BasePart FindPig()
 	{
-		return m_pig;
+		return FindPart(BasePart.PartType.Pig);
 	}
 
 	public BasePart FindPart(BasePart.PartType type)
@@ -1042,7 +1015,7 @@ public class Contraption : WPFMonoBehaviour
 			if (part != null && part.ConnectedComponent == m_pig.ConnectedComponent)
 			{
 				zero += part.transform.position;
-				num++;
+				num += 1f;
 			}
 		}
 		if (num > 0f)
@@ -1347,27 +1320,8 @@ public class Contraption : WPFMonoBehaviour
 	{
 		List<BasePart> parts = m_parts;
 		int count = parts.Count;
-
-		// 复用 DisjointSet 和字典，减少 GC
-		if (m_reusableDisjointSet == null)
-		{
-			m_reusableDisjointSet = new DisjointSet(count);
-		}
-		else
-		{
-			m_reusableDisjointSet.Reset(count);
-		}
-		DisjointSet disjointSet = m_reusableDisjointSet;
-
-		if (m_partIndexMap == null)
-		{
-			m_partIndexMap = new Dictionary<BasePart, int>(count);
-		}
-		else
-		{
-			m_partIndexMap.Clear();
-		}
-		Dictionary<BasePart, int> dictionary = m_partIndexMap;
+		DisjointSet disjointSet = new DisjointSet(count);
+		Dictionary<BasePart, int> dictionary = new Dictionary<BasePart, int>(count);
 		for (int i = 0; i < count; i++)
 		{
 			dictionary[parts[i]] = i;
@@ -1397,16 +1351,7 @@ public class Contraption : WPFMonoBehaviour
 				}
 			}
 		}
-		int[] array;
-		if (m_componentIndexArray != null && m_componentIndexArray.Length >= count)
-		{
-			array = m_componentIndexArray;
-		}
-		else
-		{
-			m_componentIndexArray = new int[count];
-			array = m_componentIndexArray;
-		}
+		int[] array = new int[count];
 		disjointSet.GetComponentIndexes(array, out var componentCount);
 		for (int k = 0; k < count; k++)
 		{
@@ -1451,22 +1396,8 @@ public class Contraption : WPFMonoBehaviour
 		}
 		disjointSet.GetComponentIndexes(array, out componentCount);
 		m_connectedComponentCount = componentCount;
-
-		// 复用 m_connectedComponents 列表，仅追加/重置不足的项
-		int existingCount = m_connectedComponents.Count;
-		for (int n = 0; n < existingCount; n++)
-		{
-			ConnectedComponent cc = m_connectedComponents[n];
-			cc.partCount = 0;
-			cc.powerConsumption = 0f;
-			cc.enginePower = 0f;
-			cc.hasEngine = false;
-			cc.hasGearbox = false;
-			cc.gearbox = null;
-			cc.groundTouchTime = 0f;
-			cc.motorWheels.Clear();
-		}
-		for (int n = existingCount; n < componentCount; n++)
+		m_connectedComponents = new List<ConnectedComponent>(componentCount);
+		for (int n = 0; n < componentCount; n++)
 		{
 			m_connectedComponents.Add(new ConnectedComponent
 			{
@@ -1991,6 +1922,13 @@ public class Contraption : WPFMonoBehaviour
 			RefreshNeighboursVisual(part.m_coordX, part.m_coordY);
 			result = true;
 		}
+		else if (HasSuperMagnet)
+		{
+			part.Rotate45Clockwise();
+			part.ChangeVisualConnections();
+			RefreshNeighboursVisual(part.m_coordX, part.m_coordY);
+			result = true;
+		}
 		else if (part.m_autoAlign == BasePart.AutoAlignType.FlipVertically)
 		{
 			for (int i = 0; i < 3; i++)
@@ -2232,7 +2170,7 @@ public class Contraption : WPFMonoBehaviour
 					flag2 = true;
 				}
 			}
-			m_lastValidation = flag & flag2;
+			m_lastValidation = flag && flag2;
 			return m_lastValidation;
 		}
 		m_isValidationRequired = false;
@@ -2456,7 +2394,7 @@ public class Contraption : WPFMonoBehaviour
 			}
 			if (nightVisionGogglesPrefab == null)
 			{
-				nightVisionGogglesPrefab = ResourcesCache.Get<GameObject>("Prefabs/NightVisionGoggles");
+				nightVisionGogglesPrefab = Resources.Load<GameObject>("Prefabs/NightVisionGoggles");
 			}
 			if (m_hasNightVision && nightVisionGoggles == null)
 			{
@@ -2748,63 +2686,28 @@ public class Contraption : WPFMonoBehaviour
 	private void OnConnectedComponentsChanged()
 	{
 		UpdateConnectedParts();
-		ConnectedComponentsChanged?.Invoke();
+		this.ConnectedComponentsChanged?.Invoke();
 	}
 
 	private void UpdateConnectedParts()
 	{
 		int connectedComponentCount = m_connectedComponentCount;
 		List<BasePart> parts = m_parts;
-
-		// 复用计数数组
-		if (m_reusableComponentCounts == null || m_reusableComponentCounts.Length < connectedComponentCount)
-		{
-			m_reusableComponentCounts = new int[connectedComponentCount];
-		}
-		else
-		{
-			System.Array.Clear(m_reusableComponentCounts, 0, connectedComponentCount);
-		}
-		int[] counts = m_reusableComponentCounts;
-
+		int[] array = new int[connectedComponentCount];
 		foreach (BasePart item in parts)
 		{
-			counts[item.ConnectedComponent]++;
+			array[item.ConnectedComponent]++;
 		}
-
-		// 复用 m_connectedParts 数组，仅在大小不同或首次时重建
-		if (m_connectedParts == null || m_connectedParts.Length != connectedComponentCount)
+		List<BasePart>[] array2 = new List<BasePart>[connectedComponentCount];
+		for (int i = 0; i < connectedComponentCount; i++)
 		{
-			m_connectedParts = new List<BasePart>[connectedComponentCount];
-			for (int i = 0; i < connectedComponentCount; i++)
-			{
-				m_connectedParts[i] = new List<BasePart>(counts[i]);
-			}
+			array2[i] = new List<BasePart>(array[i]);
 		}
-		else
-		{
-			for (int i = 0; i < connectedComponentCount; i++)
-			{
-				List<BasePart> list = m_connectedParts[i];
-				if (list == null)
-				{
-					m_connectedParts[i] = new List<BasePart>(counts[i]);
-				}
-				else
-				{
-					list.Clear();
-					if (list.Capacity < counts[i])
-					{
-						list.Capacity = counts[i];
-					}
-				}
-			}
-		}
-
 		foreach (BasePart item2 in parts)
 		{
-			m_connectedParts[item2.ConnectedComponent].Add(item2);
+			array2[item2.ConnectedComponent].Add(item2);
 		}
+		m_connectedParts = array2;
 	}
 
 	public void CreateAndSaveContraption(string currentContraptionName)

@@ -289,7 +289,7 @@ public class Fan : WPFMonoBehaviour
 		Vector3 vector2 = Vector3.Project(position - vector, onNormal) + vector;
 		result.y = Mathf.Clamp01((vector - vector2).magnitude / boxCollider.size.y);
 		result.x = Mathf.Clamp01((position - vector2).magnitude / (boxCollider.size.x / 2f));
-		result.x = Mathf.Abs(--result.x);
+		result.x = Mathf.Abs(result.x -= 1f);
 		return result;
 	}
 

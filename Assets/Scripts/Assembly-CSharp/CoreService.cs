@@ -1,6 +1,6 @@
 using Innovation;
 
-public class CoreService : ICoreService
+internal class CoreService : ICoreService
 {
 	private bool m_feedback;
 

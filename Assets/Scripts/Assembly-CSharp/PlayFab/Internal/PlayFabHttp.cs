@@ -273,13 +273,13 @@ namespace PlayFab.Internal
 
 		protected internal static void SendErrorEvent(PlayFabRequestCommon request, PlayFabError error)
 		{
-			if (ApiProcessingErrorEventHandler == null)
+			if (PlayFabHttp.ApiProcessingErrorEventHandler == null)
 			{
 				return;
 			}
 			try
 			{
-				ApiProcessingErrorEventHandler(request, error);
+				PlayFabHttp.ApiProcessingErrorEventHandler(request, error);
 			}
 			catch (Exception)
 			{
@@ -288,13 +288,13 @@ namespace PlayFab.Internal
 
 		protected internal static void SendEvent(string apiEndpoint, PlayFabRequestCommon request, PlayFabResultCommon result, ApiProcessingEventType eventType)
 		{
-			if (ApiProcessingEventHandler == null)
+			if (PlayFabHttp.ApiProcessingEventHandler == null)
 			{
 				return;
 			}
 			try
 			{
-				ApiProcessingEventHandler(new ApiProcessingEventArgs
+				PlayFabHttp.ApiProcessingEventHandler(new ApiProcessingEventArgs
 				{
 					ApiEndpoint = apiEndpoint,
 					EventType = eventType,
@@ -309,8 +309,8 @@ namespace PlayFab.Internal
 
 		protected internal static void ClearAllEvents()
 		{
-			ApiProcessingEventHandler = null;
-			ApiProcessingErrorEventHandler = null;
+			PlayFabHttp.ApiProcessingEventHandler = null;
+			PlayFabHttp.ApiProcessingErrorEventHandler = null;
 		}
 	}
 }

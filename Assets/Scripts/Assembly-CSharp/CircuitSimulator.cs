@@ -367,11 +367,11 @@ public class CircuitSimulator
 
 	private enum BranchType
 	{
-		Unknown,
-		Common,
-		Cyclic,
-		Grounded,
-		Floating
+		Unknown = 0,
+		Common = 1,
+		Cyclic = 2,
+		Grounded = 3,
+		Floating = 4
 	}
 
 	private int m_frame;
@@ -426,7 +426,9 @@ public class CircuitSimulator
 			}
 		}
 		int num = 0;
-		int[] components = disjointSet.GetComponents(out var size, out var componentCount);
+		int[] size;
+		int componentCount;
+		int[] components = disjointSet.GetComponents(out size, out componentCount);
 		List<CircuitElement> list = new List<CircuitElement>();
 		for (int j = 0; j < componentCount; j++)
 		{
@@ -523,8 +525,8 @@ public class CircuitSimulator
 		ScanBranch(start, startElectrode, out var _, out var branch);
 		bool flag = circuitElement is Ground || circuitElement is Vcc;
 		bool flag2 = branch.Type == BranchType.Grounded;
-		start.IsGrounded = flag | flag2;
-		if (!flag & flag2)
+		start.IsGrounded = flag || flag2;
+		if (!flag && flag2)
 		{
 			start.Potential = 0.0 - branch.U;
 		}

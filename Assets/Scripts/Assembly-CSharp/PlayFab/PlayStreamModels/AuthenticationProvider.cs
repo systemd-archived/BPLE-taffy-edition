@@ -2,7 +2,7 @@ namespace PlayFab.PlayStreamModels
 {
 	public enum AuthenticationProvider
 	{
-		PlayFab,
-		SAML
+		PlayFab = 0,
+		SAML = 1
 	}
 }

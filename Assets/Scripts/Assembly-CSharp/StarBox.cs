@@ -70,13 +70,13 @@ public class StarBox : OneTimeCollectable
 				GameProgress.AddSandboxStar(Singleton<GameManager>.Instance.CurrentSceneName, base.NameKey);
 			}
 		}
-		if (onCollected != null)
+		if (StarBox.onCollected != null)
 		{
-			onCollected();
+			StarBox.onCollected();
 		}
-		if (onCollect != null)
+		if (this.onCollect != null)
 		{
-			onCollect();
+			this.onCollect();
 		}
 	}
 }

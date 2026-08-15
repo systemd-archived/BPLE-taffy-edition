@@ -4,11 +4,462 @@ using UnityEngine;
 
 public class WaterSystem : INBehaviour
 {
+	private class BuoyancyResolver
+	{
+		private WaterSystem m_system;
+
+		public BuoyancyResolver(WaterSystem system)
+		{
+			m_system = system;
+		}
+
+		public void Resolve()
+		{
+			List<BasePart> list = new List<BasePart>();
+			foreach (BasePart part in Contraption.Instance.Parts)
+			{
+				if ((part.m_enclosedInto == null || part.m_partType == BasePart.PartType.KingPig || part.m_partType == BasePart.PartType.GoldenPig) && part.rigidbody != null && !part.rigidbody.IsFixed())
+				{
+					list.Add(part);
+				}
+			}
+			int count = list.Count;
+			if (count != 0)
+			{
+				int num = count * 4;
+				Vector2[] array = new Vector2[num];
+				Dictionary<BasePart, int> dictionary = new Dictionary<BasePart, int>(count);
+				for (int i = 0; i < count; i++)
+				{
+					dictionary[list[i]] = i;
+				}
+				for (int j = 0; j < count; j++)
+				{
+					BasePart basePart = list[j];
+					Vector3 position = basePart.transform.position;
+					Vector3 right = basePart.transform.right;
+					INBounds bounds = INContraption.GetBounds(basePart.rigidbody);
+					Vector2 vector = new Vector2(position.x + bounds.X * right.x - bounds.Y * right.y, position.y + bounds.X * right.y + bounds.Y * right.x);
+					float num2 = bounds.A - 0.05f * Math.Min(bounds.A, 0.5f);
+					float num3 = bounds.B - 0.05f * Math.Min(bounds.B, 0.5f);
+					Vector2 vector2 = new Vector2(num2 * right.x, num2 * right.y);
+					Vector2 vector3 = new Vector2((0f - num3) * right.y, num3 * right.x);
+					array[j * 4] = vector + vector2 + vector3;
+					array[j * 4 + 1] = vector - vector2 + vector3;
+					array[j * 4 + 2] = vector - vector2 - vector3;
+					array[j * 4 + 3] = vector + vector2 - vector3;
+				}
+				float num4 = 0.05f * INSettings.GetFloat(INFeature.WatertightCoefficient);
+				float num5 = 0.1f + 0.1f * INSettings.GetFloat(INFeature.WatertightCoefficient);
+				int num6 = 0;
+				List<Vector2> list2 = new List<Vector2>();
+				HashSet<int> hashSet = new HashSet<int>();
+				List<(float, int)>[] array2 = new List<(float, int)>[num];
+				foreach (Contraption.JointConnection item8 in Contraption.Instance.JointMap)
+				{
+					if (!dictionary.TryGetValue(item8.partA, out var value) || !dictionary.TryGetValue(item8.partB, out var value2) || hashSet.Contains(value + value2 * count))
+					{
+						continue;
+					}
+					hashSet.Add(value + value2 * count);
+					hashSet.Add(value2 + value * count);
+					for (int k = 0; k < 4; k++)
+					{
+						for (int l = 0; l < 4; l++)
+						{
+							int num7 = value * 4 + k;
+							int num8 = value * 4 + (k + 1) % 4;
+							int num9 = value2 * 4 + l;
+							int num10 = value2 * 4 + (l + 1) % 4;
+							Vector2 vector4 = array[num7];
+							Vector2 vector5 = array[num8];
+							Vector2 vector6 = array[num9];
+							Vector2 vector7 = array[num10];
+							Vector2 vector8 = vector5 - vector4;
+							Vector2 right2 = vector7 - vector6;
+							float num11 = Vector.Cross2(vector8, right2);
+							if (Math.Abs(num11) < 0.01f)
+							{
+								continue;
+							}
+							float num12 = Vector.Cross2(vector6 - vector4, right2) / num11;
+							float num13 = Vector.Cross2(vector6 - vector4, vector8) / num11;
+							if (num13 > 0f - num5 && num13 < 1f + num5 && num12 > 0f - num5 && num12 < 1f + num5)
+							{
+								if (array2[num7] == null)
+								{
+									array2[num7] = new List<(float, int)>();
+								}
+								if (array2[num9] == null)
+								{
+									array2[num9] = new List<(float, int)>();
+								}
+								array2[num7].Add((num12, num + num6));
+								array2[num9].Add((num13, num + num6));
+								float x = vector6.x + num13 * (vector7.x - vector6.x);
+								float y = vector6.y + num13 * (vector7.y - vector6.y);
+								list2.Add(new Vector2(x, y));
+								num6++;
+							}
+						}
+					}
+				}
+				DisjointSet disjointSet = new DisjointSet(num + num6);
+				for (int m = 0; m < count; m++)
+				{
+					for (int n = 0; n < 4; n++)
+					{
+						int num14 = m * 4 + n;
+						int item = m * 4 + (n + 1) % 4;
+						List<(float, int)> list3 = array2[num14];
+						if (list3 == null)
+						{
+							continue;
+						}
+						list3.Add((0f, num14));
+						list3.Add((1f, item));
+						list3.Sort();
+						for (int num15 = 0; num15 < list3.Count - 1; num15++)
+						{
+							(float, int) tuple = list3[num15];
+							(float, int) tuple2 = list3[num15 + 1];
+							if (tuple2.Item1 - tuple.Item1 < num4)
+							{
+								disjointSet.Union(tuple.Item2, tuple2.Item2);
+							}
+						}
+					}
+				}
+				int componentCount;
+				int[] componentIndexes = disjointSet.GetComponentIndexes(out componentCount);
+				Vector2[] array3 = new Vector2[componentCount];
+				int[] array4 = new int[componentCount];
+				for (int num16 = 0; num16 < num + num6; num16++)
+				{
+					int num17 = componentIndexes[num16];
+					array3[num17] += ((num16 < num) ? array[num16] : list2[num16 - num]);
+					array4[num17]++;
+				}
+				for (int num18 = 0; num18 < componentCount; num18++)
+				{
+					int num19 = array4[num18];
+					if (num19 != 0)
+					{
+						array3[num18] /= (float)num19;
+					}
+				}
+				DisjointSet disjointSet2 = new DisjointSet(componentCount);
+				Graph<int> graph = new Graph<int>(componentCount);
+				for (int num20 = 0; num20 < count; num20++)
+				{
+					for (int num21 = 0; num21 < 4; num21++)
+					{
+						int num22 = num20 * 4 + num21;
+						int num23 = num20 * 4 + (num21 + 1) % 4;
+						List<(float, int)> list4 = array2[num22];
+						if (list4 == null)
+						{
+							int num24 = componentIndexes[num22];
+							int num25 = componentIndexes[num23];
+							if (num24 != num25)
+							{
+								graph.AddUndirectedEdge(num24, num25, num20);
+								disjointSet2.Union(num24, num25);
+							}
+							continue;
+						}
+						for (int num26 = 0; num26 < list4.Count - 1; num26++)
+						{
+							(float, int) tuple3 = list4[num26];
+							(float, int) tuple4 = list4[num26 + 1];
+							int num27 = componentIndexes[tuple3.Item2];
+							int num28 = componentIndexes[tuple4.Item2];
+							if (num27 != num28)
+							{
+								graph.AddUndirectedEdge(num27, num28, num20);
+								disjointSet2.Union(num27, num28);
+							}
+						}
+					}
+				}
+				bool[] array5 = new bool[componentCount];
+				for (int num29 = 0; num29 < componentCount; num29++)
+				{
+					List<Graph<int>.Edge> edges = graph.GetEdges(num29);
+					bool flag = true;
+					if (edges.Count > 0)
+					{
+						int to = edges[0].To;
+						foreach (Graph<int>.Edge item9 in edges)
+						{
+							if (item9.To != to)
+							{
+								flag = false;
+								break;
+							}
+						}
+					}
+					array5[num29] = flag;
+				}
+				int componentCount2;
+				int[] componentIndexes2 = disjointSet2.GetComponentIndexes(out componentCount2);
+				(int, int, float)[] array6 = new(int, int, float)[componentCount2];
+				Array.Fill(array6, (-1, 0, 0f));
+				List<(Vector2, int)>[] array7 = new List<(Vector2, int)>[componentCount2];
+				for (int num30 = 0; num30 < componentCount; num30++)
+				{
+					if (!array5[num30])
+					{
+						int num31 = componentIndexes2[num30];
+						float x2 = array3[num30].x;
+						ref(int, int, float) reference = ref array6[num31];
+						reference.Item2++;
+						if (reference.Item1 == -1 || x2 < reference.Item3)
+						{
+							reference.Item1 = num30;
+							reference.Item3 = x2;
+						}
+					}
+				}
+				for (int num32 = 0; num32 < componentCount2; num32++)
+				{
+					int item2 = array6[num32].Item1;
+					int item3 = array6[num32].Item2;
+					if (item2 == -1)
+					{
+						continue;
+					}
+					List<(Vector2, int)> list5 = new List<(Vector2, int)>();
+					int num33 = item2;
+					int num34 = -1;
+					Vector2 left = new Vector2(1f, 0f);
+					for (int num35 = 0; num35 < item3 * 2; num35++)
+					{
+						int item4 = -1;
+						Vector2 vector9 = array3[num33];
+						Vector2 item5 = default(Vector2);
+						Vector2 vector10 = default(Vector2);
+						float num36 = float.MaxValue;
+						foreach (Graph<int>.Edge edge in graph.GetEdges(num33))
+						{
+							int to2 = edge.To;
+							if (!array5[to2] && to2 != num33)
+							{
+								Vector2 vector11 = array3[to2];
+								Vector2 vector12 = vector11 - vector9;
+								float num37 = Vector.Dot2(left, vector12);
+								float num38 = Vector.Cross2(left, vector12);
+								float num39 = ((num38 == 0f && num37 < 0f) ? MathF.PI : MathF.Atan2(num38, num37));
+								if (num39 < num36)
+								{
+									num34 = to2;
+									item4 = edge.Value;
+									item5 = vector11;
+									vector10 = vector12;
+									num36 = num39;
+								}
+							}
+						}
+						if (num34 == -1)
+						{
+							list5.Add((vector9, item4));
+							break;
+						}
+						if (num34 == item2)
+						{
+							list5.Add((vector9, item4));
+							list5.Add((item5, item4));
+							break;
+						}
+						num33 = num34;
+						num34 = -1;
+						left = vector10;
+						list5.Add((vector9, item4));
+					}
+					array7[num32] = list5;
+				}
+				bool renderDisplacedArea = INUserSettings.Instance.PartSettings.RenderDisplacedArea;
+				if (m_system.m_borderGroup.activeSelf ^ renderDisplacedArea)
+				{
+					m_system.m_borderGroup.SetActive(renderDisplacedArea);
+				}
+				if (renderDisplacedArea)
+				{
+					m_system.RenderBorders(array7);
+				}
+				(Vector2, bool)[] array8 = new(Vector2, bool)[count];
+				(Vector2, int)[] array9 = new(Vector2, int)[Contraption.Instance.ConnectedComponentCount];
+				float height = m_system.m_height;
+				List<(Vector2, int)>[] array10 = array7;
+				foreach (List<(Vector2, int)> list6 in array10)
+				{
+					int num41 = 0;
+					int num42 = 0;
+					int num43 = list6.Count - 1;
+					int[] array11 = new int[num43];
+					List<(float, int)> list7 = new List<(float, int)>();
+					for (int num44 = 0; num44 < num43; num44++)
+					{
+						array11[num44] = -1;
+						(Vector2, int) tuple5 = list6[num44];
+						(Vector2, int) tuple6 = list6[num44 + 1];
+						var (vector13, _) = tuple5;
+						var (vector14, _) = tuple6;
+						if (vector13.y >= height && vector14.y >= height)
+						{
+							num41++;
+							continue;
+						}
+						if (vector13.y < height && vector14.y < height)
+						{
+							num42++;
+							continue;
+						}
+						float num45 = (height - vector13.y) / (vector14.y - vector13.y);
+						list7.Add((vector13.x * (1f - num45) + vector14.x * num45, num44));
+					}
+					if (num42 == 0 && list7.Count == 0)
+					{
+						continue;
+					}
+					if (num42 == num43)
+					{
+						for (int num46 = 0; num46 < num43; num46++)
+						{
+							(Vector2, int) tuple9 = list6[num46];
+							(Vector2, int) tuple10 = list6[num46 + 1];
+							Vector2 item6 = tuple9.Item1;
+							Vector2 item7 = tuple10.Item1;
+							Vector2 vector15 = item7 - item6;
+							float num47 = height - 0.5f * (item6.y + item7.y);
+							ref(Vector2, bool) reference2 = ref array8[tuple9.Item2];
+							reference2.Item1 += new Vector2((0f - num47) * vector15.y, num47 * vector15.x);
+							reference2.Item2 = true;
+						}
+					}
+					else
+					{
+						if (list7.Count <= 0)
+						{
+							continue;
+						}
+						list7.Sort();
+						for (int num48 = 0; num48 < list7.Count; num48++)
+						{
+							array11[list7[num48].Item2] = num48;
+						}
+						int num49 = list7[0].Item2;
+						for (int num50 = 0; num50 < num43; num50++)
+						{
+							(Vector2, int) tuple11 = list6[num49];
+							(Vector2, int) tuple12 = list6[num49 + 1];
+							Vector2 vector16 = tuple11.Item1;
+							Vector2 vector17 = tuple12.Item1;
+							bool flag2 = vector17.y >= height;
+							if (array11[num49] != -1)
+							{
+								Vector2 vector18 = new Vector2(list7[array11[num49]].Item1, height);
+								if (flag2)
+								{
+									vector17 = vector18;
+								}
+								else
+								{
+									vector16 = vector18;
+								}
+							}
+							Vector2 vector19 = vector17 - vector16;
+							float num51 = height - 0.5f * (vector16.y + vector17.y);
+							ref(Vector2, bool) reference3 = ref array8[tuple11.Item2];
+							reference3.Item1 += new Vector2((0f - num51) * vector19.y, num51 * vector19.x);
+							reference3.Item2 = true;
+							if (array11[num49] >= 0 && flag2)
+							{
+								if (array11[num49] == list7.Count - 1)
+								{
+									break;
+								}
+								num49 = list7[array11[num49] + 1].Item2;
+							}
+							else
+							{
+								num49 = (num49 + 1) % num43;
+							}
+						}
+					}
+				}
+				float num52 = Math.Abs(Physics.gravity.y) * INSettings.GetFloat(INFeature.BuoyancyCoefficient) * INUserSettings.Instance.PartSettings.BuoyancyCoefficient;
+				float num53 = INSettings.GetFloat(INFeature.HydraulicCoefficient);
+				for (int num54 = 0; num54 < count; num54++)
+				{
+					(Vector2, bool) tuple13 = array8[num54];
+					if (tuple13.Item2)
+					{
+						ref(Vector2, int) reference4 = ref array9[list[num54].ConnectedComponent];
+						reference4.Item1 += tuple13.Item1;
+						reference4.Item2++;
+					}
+				}
+				for (int num55 = 0; num55 < count; num55++)
+				{
+					(Vector2, bool) tuple14 = array8[num55];
+					BasePart basePart2 = list[num55];
+					if (tuple14.Item2 && basePart2.rigidbody.useGravity)
+					{
+						(Vector2, int) tuple15 = array9[basePart2.ConnectedComponent];
+						Vector2 vector20 = num52 * num53 * tuple14.Item1;
+						Vector2 vector21 = num52 * (1f - num53) / (float)tuple15.Item2 * tuple15.Item1;
+						basePart2.rigidbody.AddForce(vector20 + vector21);
+					}
+				}
+				foreach (BasePart part2 in Contraption.Instance.Parts)
+				{
+					if (part2.transform.position.y < height)
+					{
+						part2.rigidbody.AddForce(-0.5f * part2.rigidbody.velocity);
+					}
+				}
+			}
+			float num56 = Math.Abs(Physics.gravity.y) * INSettings.GetFloat(INFeature.BuoyancyCoefficient) * INUserSettings.Instance.PartSettings.BuoyancyCoefficient;
+			Rigidbody[] components = INContraption.Instance.GetComponents<Rigidbody>();
+			foreach (Rigidbody rigidbody in components)
+			{
+				if (rigidbody.IsFixed() || !(rigidbody.GetComponent<BasePart>() == null))
+				{
+					continue;
+				}
+				Vector3 position2 = rigidbody.transform.position;
+				Vector3 right3 = rigidbody.transform.right;
+				INBounds bounds2 = INContraption.GetBounds(rigidbody);
+				float num57 = position2.y + bounds2.X * right3.y + bounds2.Y * right3.x;
+				float num58 = Math.Max(bounds2.A, bounds2.B) * 2f;
+				float num59 = m_system.m_height - (num57 - num58 * 0.5f);
+				if (num59 > 0f)
+				{
+					float y2 = num56 * num58 * Math.Min(num58, num59);
+					Vector3 vector22 = new Vector3(0f, y2);
+					if (rigidbody.useGravity)
+					{
+						rigidbody.AddForce(vector22 - rigidbody.velocity * 0.5f);
+					}
+					else
+					{
+						rigidbody.AddForce(-rigidbody.velocity * 0.5f);
+					}
+				}
+			}
+		}
+	}
+
 	private bool m_enabled;
 
 	private float m_height;
 
 	private GameObject m_water;
+
+	private GameObject m_borderGroup;
+
+	private BuoyancyResolver m_resolver;
 
 	private Dictionary<MeshRenderer, (Color, Color)> m_rendererTable;
 
@@ -23,16 +474,19 @@ public class WaterSystem : INBehaviour
 	{
 		INContraption.Instance.AddBehaviour(this);
 		m_enabled = false;
+		m_resolver = new BuoyancyResolver(this);
 		m_rendererTable = new Dictionary<MeshRenderer, (Color, Color)>();
 	}
 
-	private GameObject CreateWater()
+	private void CreateWater()
 	{
 		GameObject gameObject = new GameObject("INWater");
 		gameObject.transform.parent = Contraption.Instance.transform;
+		GameObject gameObject2 = new GameObject("BorderGroup");
+		gameObject2.transform.parent = gameObject.transform;
 		LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
 		Color color = new Color(0.32f, 0.56f, 0.8f, 0.5f);
-		lineRenderer.material = new Material(ShaderCache.Get("GUI/Text Shader"));
+		lineRenderer.material = new Material(Shader.Find("GUI/Text Shader"));
 		lineRenderer.material.color = color;
 		lineRenderer.startWidth = 0.5f;
 		lineRenderer.endWidth = 0.5f;
@@ -40,446 +494,73 @@ public class WaterSystem : INBehaviour
 		lineRenderer.endColor = color;
 		lineRenderer.positionCount = 2;
 		gameObject.AddComponent<MeshFilter>().sharedMesh = INUnity.QuadMesh;
-		Material sharedMaterial = new Material(INUnity.ColorTransparentShader)
+		Material material = new Material(INUnity.ColorTransparentShader);
+		material.color = new Color(0.28f, 0.49f, 0.7f, 0.3f);
+		gameObject.AddComponent<MeshRenderer>().sharedMaterial = material;
+		m_water = gameObject;
+		m_borderGroup = gameObject2;
+	}
+
+	private void RenderBorders(List<(Vector2, int)>[] borders)
+	{
+		for (int i = 0; i < m_borderGroup.transform.childCount; i++)
 		{
-			color = new Color(0.28f, 0.49f, 0.7f, 0.3f)
-		};
-		gameObject.AddComponent<MeshRenderer>().sharedMaterial = sharedMaterial;
-		return gameObject;
+			Transform child = m_borderGroup.transform.GetChild(i);
+			if (child.name.StartsWith("Border"))
+			{
+				int num = int.Parse(child.name.Substring(7));
+				if (num >= borders.Length || borders[num].Count == 0)
+				{
+					child.gameObject.SetActive(value: false);
+				}
+			}
+		}
+		for (int j = 0; j < borders.Length; j++)
+		{
+			if (borders[j].Count != 0)
+			{
+				List<(Vector2, int)> border = borders[j];
+				RenderBorder(j, border);
+			}
+		}
+	}
+
+	private void RenderBorder(int index, List<(Vector2, int)> border)
+	{
+		string text = "Border_" + index;
+		GameObject gameObject = m_borderGroup.transform.Find(text)?.gameObject;
+		LineRenderer component;
+		if (gameObject == null)
+		{
+			gameObject = new GameObject(text, typeof(LineRenderer));
+			gameObject.transform.parent = m_borderGroup.transform;
+			component = gameObject.GetComponent<LineRenderer>();
+			component.material = new Material(Shader.Find("GUI/Text Shader"));
+			Color white = Color.white;
+			component.material.color = white;
+			component.startWidth = 0.05f;
+			component.endWidth = 0.05f;
+			component.startColor = white;
+			component.endColor = white;
+		}
+		else
+		{
+			component = gameObject.GetComponent<LineRenderer>();
+			gameObject.SetActive(value: true);
+		}
+		int num = (component.positionCount = border.Count);
+		for (int i = 0; i < num; i++)
+		{
+			Vector2 item = border[i].Item1;
+			component.SetPosition(i, new Vector3(item.x, item.y, -1f));
+		}
 	}
 
 	public override void FixedUpdate()
 	{
 		if (m_enabled)
 		{
-			ResolveBuoyancy();
-		}
-	}
-
-	private void ResolveBuoyancy()
-	{
-		List<BasePart> list = new List<BasePart>();
-		foreach (BasePart part in Contraption.Instance.Parts)
-		{
-			if ((part.m_enclosedInto == null || part.m_partType == BasePart.PartType.KingPig || part.m_partType == BasePart.PartType.GoldenPig) && part.rigidbody != null && !part.rigidbody.IsFixed())
-			{
-				list.Add(part);
-			}
-		}
-		int count = list.Count;
-		if (count != 0)
-		{
-			int num = count * 4;
-			int num2 = 0;
-			Vector2[] array = new Vector2[num];
-			List<Vector2> list2 = new List<Vector2>();
-			Graph<int> graph = new Graph<int>(num);
-			DisjointSet disjointSet = new DisjointSet(num);
-			DisjointSet disjointSet2 = new DisjointSet(num);
-			Dictionary<BasePart, int> dictionary = new Dictionary<BasePart, int>(count);
-			for (int i = 0; i < count; i++)
-			{
-				dictionary[list[i]] = i;
-			}
-			for (int j = 0; j < count; j++)
-			{
-				BasePart basePart = list[j];
-				Vector3 position = basePart.transform.position;
-				Vector3 right = basePart.transform.right;
-				INBounds bounds = INContraption.GetBounds(basePart.rigidbody);
-				float num3 = position.x + bounds.X * right.x - bounds.Y * right.y;
-				float num4 = position.y + bounds.X * right.y + bounds.Y * right.x;
-				array[j * 4] = new Vector2(num3 + bounds.A * right.x - bounds.B * right.y, num4 + bounds.A * right.y + bounds.B * right.x);
-				array[j * 4 + 1] = new Vector2(num3 - bounds.A * right.x - bounds.B * right.y, num4 - bounds.A * right.y + bounds.B * right.x);
-				array[j * 4 + 2] = new Vector2(num3 - bounds.A * right.x + bounds.B * right.y, num4 - bounds.A * right.y - bounds.B * right.x);
-				array[j * 4 + 3] = new Vector2(num3 + bounds.A * right.x + bounds.B * right.y, num4 + bounds.A * right.y - bounds.B * right.x);
-			}
-			for (int k = 0; k < count; k++)
-			{
-				BasePart enclosedPart = list[k].m_enclosedPart;
-				if (!(enclosedPart != null) || !dictionary.TryGetValue(enclosedPart, out var value))
-				{
-					continue;
-				}
-				for (int l = 0; l < 4; l++)
-				{
-					for (int m = 0; m < 4; m++)
-					{
-						Vector2 vector = array[k * 4 + l];
-						Vector2 vector2 = array[value * 4 + m];
-						if ((vector.x - vector2.x) * (vector.x - vector2.x) + (vector.y - vector2.y) * (vector.y - vector2.y) < 0.01f)
-						{
-							disjointSet.Union(k * 4 + l, value * 4 + m);
-							disjointSet2.Union(k * 4 + l, value * 4 + m);
-						}
-					}
-				}
-			}
-			float num5 = 0.05f * INSettings.GetFloat(INFeature.WatertightCoefficient);
-			float num6 = 0.05f * INSettings.GetFloat(INFeature.WatertightCoefficient);
-			HashSet<int> hashSet = new HashSet<int>();
-			List<(float, int)>[] array2 = new List<(float, int)>[num];
-			foreach (Contraption.JointConnection item4 in Contraption.Instance.JointMap)
-			{
-				if (!dictionary.TryGetValue(item4.partA, out var value2) || !dictionary.TryGetValue(item4.partB, out var value3) || hashSet.Contains(value2 + value3 * count))
-				{
-					continue;
-				}
-				hashSet.Add(value2 + value3 * count);
-				hashSet.Add(value3 + value2 * count);
-				for (int n = 0; n < 4; n++)
-				{
-					for (int num7 = 0; num7 < 4; num7++)
-					{
-						int num8 = value2 * 4 + n;
-						int num9 = value2 * 4 + (n + 1) % 4;
-						int num10 = value3 * 4 + num7;
-						int num11 = value3 * 4 + (num7 + 1) % 4;
-						Vector2 vector3 = array[num8];
-						Vector2 vector4 = array[num9];
-						Vector2 vector5 = array[num10];
-						Vector2 vector6 = array[num11];
-						float num12 = MathF.Sqrt((vector4.x - vector3.x) * (vector4.x - vector3.x) + (vector4.y - vector3.y) * (vector4.y - vector3.y));
-						float num13 = MathF.Sqrt((vector6.x - vector5.x) * (vector6.x - vector5.x) + (vector6.y - vector5.y) * (vector6.y - vector5.y));
-						float num14 = ((vector5.x - vector3.x) * (vector4.y - vector3.y) - (vector5.y - vector3.y) * (vector4.x - vector3.x)) / num12;
-						float num15 = ((vector6.x - vector3.x) * (vector4.y - vector3.y) - (vector6.y - vector3.y) * (vector4.x - vector3.x)) / num12;
-						float num16 = ((vector3.x - vector5.x) * (vector6.y - vector5.y) - (vector3.y - vector5.y) * (vector6.x - vector5.x)) / num13;
-						float num17 = ((vector4.x - vector5.x) * (vector6.y - vector5.y) - (vector4.y - vector5.y) * (vector6.x - vector5.x)) / num13;
-						float num18 = num14 / (num14 - num15);
-						float num19 = num16 / (num16 - num17);
-						if (Math.Abs(num14 - num15) < 0.01f || Math.Abs(num16 - num17) < 0.01f || !(num18 > 0f - num6) || !(num18 < 1f + num6) || !(num19 > 0f - num6) || !(num19 < 1f + num6))
-						{
-							continue;
-						}
-						if (num18 > 0f - num5 && num18 < num5 && num19 > 0f - num5 && num19 < num5)
-						{
-							disjointSet.Union(num8, num10);
-							disjointSet2.Union(num8, num10);
-							continue;
-						}
-						if (num18 > 0f - num5 && num18 < num5 && num19 > 1f - num5 && num19 < 1f + num5)
-						{
-							disjointSet.Union(num9, num10);
-							disjointSet2.Union(num9, num10);
-							continue;
-						}
-						if (num18 > 1f - num5 && num18 < 1f + num5 && num19 > 0f - num5 && num19 < num5)
-						{
-							disjointSet.Union(num8, num11);
-							disjointSet2.Union(num8, num11);
-							continue;
-						}
-						if (num18 > 1f - num5 && num18 < 1f + num5 && num19 > 1f - num5 && num19 < 1f + num5)
-						{
-							disjointSet.Union(num9, num11);
-							disjointSet2.Union(num9, num11);
-							continue;
-						}
-						if (array2[num8] == null)
-						{
-							array2[num8] = new List<(float, int)>();
-						}
-						if (array2[num10] == null)
-						{
-							array2[num10] = new List<(float, int)>();
-						}
-						array2[num8].Add((num19, num + num2));
-						array2[num10].Add((num18, num + num2));
-						float x = vector5.x + num18 * (vector6.x - vector5.x);
-						float y = vector5.y + num18 * (vector6.y - vector5.y);
-						disjointSet.Union(num8, num10);
-						list2.Add(new Vector2(x, y));
-						num2++;
-					}
-				}
-			}
-			Graph<int> graph2 = new Graph<int>(num2);
-			for (int num20 = 0; num20 < count; num20++)
-			{
-				for (int num21 = 0; num21 < 4; num21++)
-				{
-					int num22 = num20 * 4 + num21;
-					int num23 = num20 * 4 + ((num21 < 3) ? (num21 + 1) : 0);
-					List<(float, int)> list3 = array2[num22];
-					if (list3 == null)
-					{
-						disjointSet.Union(num22, num23);
-						graph.AddUndirectedEdge(num22, num23, num20);
-						continue;
-					}
-					list3.Add((0f, num22));
-					list3.Add((1f, num23));
-					list3.Sort();
-					for (int num24 = 0; num24 < list3.Count - 1; num24++)
-					{
-						(float, int) tuple = list3[num24];
-						(float, int) tuple2 = list3[num24 + 1];
-						if (tuple.Item2 < num && tuple2.Item2 < num)
-						{
-							disjointSet.Union(tuple.Item2, tuple2.Item2);
-						}
-						if (tuple.Item2 < num)
-						{
-							graph.AddDirectedEdge(tuple.Item2, tuple2.Item2, num20);
-						}
-						else
-						{
-							graph2.AddDirectedEdge(tuple.Item2 - num, tuple2.Item2, num20);
-						}
-						if (tuple2.Item2 < num)
-						{
-							graph.AddDirectedEdge(tuple2.Item2, tuple.Item2, num20);
-						}
-						else
-						{
-							graph2.AddDirectedEdge(tuple2.Item2 - num, tuple.Item2, num20);
-						}
-					}
-				}
-			}
-			int[] array3 = disjointSet2.ToArray();
-			Vector2[] array4 = new Vector2[num];
-			List<int>[] array5 = new List<int>[num];
-			for (int num25 = 0; num25 < num; num25++)
-			{
-				int num26 = array3[num25];
-				if (array5[num26] == null)
-				{
-					array5[num26] = new List<int>();
-				}
-				array4[num26] += array[num25];
-				array5[num26].Add(num25);
-			}
-			for (int num27 = 0; num27 < num; num27++)
-			{
-				if (array5[num27] != null)
-				{
-					array4[num27] /= (float)array5[num27].Count;
-				}
-			}
-			int[] components = disjointSet.GetComponents(out var size, out var componentCount);
-			List<(int, Vector2, Vector2)>[] array6 = new List<(int, Vector2, Vector2)>[componentCount];
-			int num28 = 0;
-			for (int num29 = 0; num29 < componentCount; num29++)
-			{
-				int num30 = -1;
-				float num31 = float.MaxValue;
-				for (int num32 = 0; num32 < size[num29]; num32++)
-				{
-					int num33 = components[num28 + num32];
-					float x2 = array[num33].x;
-					if (x2 < num31)
-					{
-						num30 = num33;
-						num31 = x2;
-					}
-				}
-				num28 += size[num29];
-				if (num30 == -1)
-				{
-					continue;
-				}
-				List<(int, Vector2, Vector2)> list4 = new List<(int, Vector2, Vector2)>();
-				List<int> list5 = new List<int>();
-				List<int> list6 = array5[array3[num30]];
-				Vector2 vector7 = new Vector2(1f, 0f);
-				for (int num34 = 0; num34 < num + num2; num34++)
-				{
-					int num35 = -1;
-					int item = -1;
-					float num36 = float.MaxValue;
-					Vector2 vector8 = default(Vector2);
-					Vector2 item2 = default(Vector2);
-					Vector2 item3 = default(Vector2);
-					foreach (int item5 in list6)
-					{
-						foreach (Graph<int>.Edge item6 in (item5 < num) ? graph.GetEdges(item5) : graph2.GetEdges(item5 - num))
-						{
-							int to = item6.To;
-							if (!list5.Contains(to) && !list6.Contains(to))
-							{
-								Vector2 vector9 = ((item5 < num) ? array4[array3[item5]] : list2[item5 - num]);
-								Vector2 vector10 = ((to < num) ? array4[array3[to]] : list2[to - num]);
-								Vector2 vector11 = vector10 - vector9;
-								vector11 /= Mathf.Sqrt(vector11.x * vector11.x + vector11.y * vector11.y);
-								float num37 = Mathf.Atan2(vector11.y * vector7.x - vector11.x * vector7.y, vector11.x * vector7.x + vector11.y * vector7.y);
-								if (num37 < num36)
-								{
-									num35 = to;
-									item = item6.Value;
-									num36 = num37;
-									vector8 = vector11;
-									item2 = vector9;
-									item3 = vector10;
-								}
-							}
-						}
-					}
-					if (num35 == -1)
-					{
-						break;
-					}
-					list5 = list6;
-					list6 = ((num35 < num) ? array5[array3[num35]] : new List<int>(new int[1] { num35 }));
-					vector7 = vector8;
-					list4.Add((item, item2, item3));
-					if (list6.Contains(num30))
-					{
-						break;
-					}
-				}
-				array6[num29] = list4;
-			}
-			(Vector2, bool)[] array7 = new(Vector2, bool)[count];
-			(Vector2, int)[] array8 = new(Vector2, int)[Contraption.Instance.ConnectedComponentCount];
-			float num38 = INSettings.GetFloat(INFeature.BuoyancyCoefficient) * INUserSettings.Instance.PartSettings.BuoyancyCoefficient;
-			float num39 = INSettings.GetFloat(INFeature.HydraulicCoefficient);
-			List<(int, Vector2, Vector2)>[] array9 = array6;
-			foreach (List<(int, Vector2, Vector2)> list7 in array9)
-			{
-				int num41 = 0;
-				int num42 = 0;
-				int[] array10 = new int[list7.Count];
-				List<(float, int)> list8 = new List<(float, int)>();
-				for (int num43 = 0; num43 < list7.Count; num43++)
-				{
-					array10[num43] = -1;
-					(int, Vector2, Vector2) tuple3 = list7[num43];
-					if (tuple3.Item2.y >= m_height && tuple3.Item3.y >= m_height)
-					{
-						num41++;
-						continue;
-					}
-					if (tuple3.Item2.y < m_height && tuple3.Item3.y < m_height)
-					{
-						num42++;
-						continue;
-					}
-					float num44 = (m_height - tuple3.Item2.y) / (tuple3.Item3.y - tuple3.Item2.y);
-					if (!float.IsNaN(num44))
-					{
-						list8.Add((tuple3.Item2.x * (1f - num44) + tuple3.Item3.x * num44, num43));
-					}
-				}
-				if (num42 == 0 && list8.Count == 0)
-				{
-					continue;
-				}
-				if (num42 == list7.Count)
-				{
-					for (int num45 = 0; num45 < list7.Count; num45++)
-					{
-						(int, Vector2, Vector2) tuple4 = list7[num45];
-						Vector2 vector12 = tuple4.Item3 - tuple4.Item2;
-						float num46 = m_height - (tuple4.Item2.y + tuple4.Item3.y) * 0.5f;
-						float num47 = 9.81f * num46 * num38;
-						ref(Vector2, bool) reference = ref array7[tuple4.Item1];
-						reference.Item1 += new Vector2((0f - vector12.y) * num47, vector12.x * num47);
-						reference.Item2 = true;
-					}
-				}
-				else
-				{
-					if (list8.Count <= 0)
-					{
-						continue;
-					}
-					list8.Sort();
-					for (int num48 = 0; num48 < list8.Count; num48++)
-					{
-						array10[list8[num48].Item2] = num48;
-					}
-					int num49 = list8[0].Item2;
-					for (int num50 = 0; num50 < list7.Count; num50++)
-					{
-						(int, Vector2, Vector2) tuple5 = list7[num49];
-						bool flag = tuple5.Item3.y >= m_height;
-						if (array10[num49] >= 0)
-						{
-							if (flag)
-							{
-								tuple5.Item3 = new Vector2(list8[array10[num49]].Item1, m_height);
-							}
-							else
-							{
-								tuple5.Item2 = new Vector2(list8[array10[num49]].Item1, m_height);
-							}
-						}
-						Vector2 vector13 = tuple5.Item3 - tuple5.Item2;
-						float num51 = m_height - (tuple5.Item2.y + tuple5.Item3.y) * 0.5f;
-						float num52 = 9.81f * num51 * num38;
-						ref(Vector2, bool) reference2 = ref array7[tuple5.Item1];
-						reference2.Item1 += new Vector2((0f - vector13.y) * num52, vector13.x * num52);
-						reference2.Item2 = true;
-						if ((array10[num49] >= 0) & flag)
-						{
-							if (array10[num49] == list8.Count - 1)
-							{
-								break;
-							}
-							num49 = list8[array10[num49] + 1].Item2;
-						}
-						else
-						{
-							num49 = (num49 + 1) % list7.Count;
-						}
-					}
-				}
-			}
-			for (int num53 = 0; num53 < count; num53++)
-			{
-				(Vector2, bool) tuple6 = array7[num53];
-				if (tuple6.Item2)
-				{
-					ref(Vector2, int) reference3 = ref array8[list[num53].ConnectedComponent];
-					reference3.Item1 += tuple6.Item1;
-					reference3.Item2++;
-				}
-			}
-			for (int num54 = 0; num54 < count; num54++)
-			{
-				(Vector2, bool) tuple7 = array7[num54];
-				BasePart basePart2 = list[num54];
-				if (tuple7.Item2 && basePart2.rigidbody.useGravity)
-				{
-					(Vector2, int) tuple8 = array8[basePart2.ConnectedComponent];
-					basePart2.rigidbody.AddForce(tuple7.Item1 * num39 + tuple8.Item1 / tuple8.Item2 * (1f - num39));
-				}
-			}
-			foreach (BasePart part2 in Contraption.Instance.Parts)
-			{
-				if (part2.transform.position.y < m_height)
-				{
-					part2.rigidbody.AddForce(-part2.rigidbody.velocity * 0.5f);
-				}
-			}
-		}
-		Rigidbody[] components2 = INContraption.Instance.GetComponents<Rigidbody>();
-		foreach (Rigidbody rigidbody in components2)
-		{
-			if (rigidbody.IsFixed() || !(rigidbody.GetComponent<BasePart>() == null))
-			{
-				continue;
-			}
-			Vector3 position2 = rigidbody.transform.position;
-			Vector3 right2 = rigidbody.transform.right;
-			INBounds bounds2 = INContraption.GetBounds(rigidbody);
-			float num55 = position2.y + bounds2.X * right2.y + bounds2.Y * right2.x;
-			float num56 = ((bounds2.A > bounds2.B) ? bounds2.A : bounds2.B) * 2f;
-			float num57 = m_height - (num55 - num56 * 0.5f);
-			if (num57 > 0f)
-			{
-				float y2 = 9.81f * num56 * ((num57 > num56) ? num56 : num57) * INSettings.GetFloat(INFeature.BuoyancyCoefficient) * INUserSettings.Instance.PartSettings.BuoyancyCoefficient;
-				Vector3 vector14 = new Vector3(0f, y2);
-				if (rigidbody.useGravity)
-				{
-					rigidbody.AddForce(vector14 - rigidbody.velocity * 0.5f);
-				}
-				else
-				{
-					rigidbody.AddForce(-rigidbody.velocity * 0.5f);
-				}
-			}
+			m_resolver.Resolve();
 		}
 	}
 
@@ -537,7 +618,8 @@ public class WaterSystem : INBehaviour
 				if (num < 0f)
 				{
 					Color color = meshRenderer.material.color;
-					Color item = ((m_rendererTable.TryGetValue(meshRenderer, out var value) && ColorEquals(color, value.Item2)) ? value.Item1 : color);
+					(Color, Color) value;
+					Color item = ((m_rendererTable.TryGetValue(meshRenderer, out value) && ColorEquals(color, value.Item2)) ? value.Item1 : color);
 					float num2 = 0.7f / (1f - num / 64f) + 0.3f;
 					Color color2 = new Color((num2 - 0.1f) * 0.8f * item.r, (num2 - 0.05f) * 0.9f * item.g, num2 * item.b, num2 * item.a);
 					dictionary.Add(meshRenderer, (item, color2));
@@ -571,7 +653,7 @@ public class WaterSystem : INBehaviour
 		{
 			if (m_water == null)
 			{
-				m_water = CreateWater();
+				CreateWater();
 			}
 			m_water.SetActive(value: true);
 			UpdateWaterPosition();

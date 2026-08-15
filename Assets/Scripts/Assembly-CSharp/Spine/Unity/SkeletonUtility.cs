@@ -179,9 +179,9 @@ namespace Spine.Unity
 
 		private void HandleRendererReset(SkeletonRenderer r)
 		{
-			if (OnReset != null)
+			if (this.OnReset != null)
 			{
-				OnReset();
+				this.OnReset();
 			}
 			CollectBones();
 		}

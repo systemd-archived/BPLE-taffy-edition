@@ -19,13 +19,13 @@ public class FuelSystem : PartManager
 
 	public struct FuelComponentData
 	{
-		public int JetEngineCount;
+		public int FuelConsumerCount;
 
-		public int FuelBoxCount;
+		public int FuelContainerCount;
 
 		public float RequiredFuelAmount;
 
-		public float MaxSupplyFuelAmount;
+		public float ExpectedSupplyFuelAmount;
 
 		public float RealSupplyFuelAmount;
 	}
@@ -77,7 +77,7 @@ public class FuelSystem : PartManager
 		List<BasePart> list = new List<BasePart>();
 		foreach (BasePart part in Contraption.Instance.Parts)
 		{
-			if (part is JetEngine || part is FuelTube || part is FuelBox)
+			if (part is IFuelConsumer || part is IFuelContainer || part is FuelTube)
 			{
 				list.Add(part);
 			}
@@ -99,11 +99,11 @@ public class FuelSystem : PartManager
 			}
 			else
 			{
-				if (!(basePart is FuelBox fuelBox))
+				if (!(basePart is IFuelContainer fuelContainer))
 				{
 					continue;
 				}
-				connectedParts = fuelBox.GetConnectedParts();
+				connectedParts = fuelContainer.GetConnectedParts();
 			}
 			foreach (BasePart item in connectedParts)
 			{
@@ -113,21 +113,23 @@ public class FuelSystem : PartManager
 				}
 			}
 		}
-		int[] componentIndexes = disjointSet.GetComponentIndexes(out var componentCount);
+		int componentCount;
+		int[] componentIndexes = disjointSet.GetComponentIndexes(out componentCount);
 		m_fuelComponentCount = componentCount;
 		m_fuelParts = new List<FuelPartData>(count);
 		m_fuelComponents = new FuelComponentData[componentCount];
 		for (int k = 0; k < count; k++)
 		{
 			int num = componentIndexes[k];
-			if (list[k] is JetEngine jetEngine)
+			if (list[k] is IFuelConsumer fuelConsumer)
 			{
-				jetEngine.FuelComponentIndex = num;
-				m_fuelComponents[num].JetEngineCount++;
+				fuelConsumer.FuelComponentIndex = num;
+				m_fuelComponents[num].FuelConsumerCount++;
 			}
-			else if (list[k] is FuelBox)
+			else if (list[k] is IFuelContainer fuelContainer2)
 			{
-				m_fuelComponents[num].FuelBoxCount++;
+				fuelContainer2.FuelComponentIndex = componentCount;
+				m_fuelComponents[num].FuelContainerCount++;
 			}
 			m_fuelParts.Add(new FuelPartData(list[k], num));
 		}
@@ -153,25 +155,25 @@ public class FuelSystem : PartManager
 		{
 			BasePart part = fuelPart.Part;
 			ref FuelComponentData reference = ref m_fuelComponents[fuelPart.FuelComponentIndex];
-			if (part is JetEngine jetEngine)
+			if (part is IFuelConsumer fuelConsumer)
 			{
-				reference.JetEngineCount++;
-				reference.RequiredFuelAmount += jetEngine.RequiredFuelAmount;
+				reference.FuelConsumerCount++;
+				reference.RequiredFuelAmount += fuelConsumer.RequiredFuelAmount;
 			}
-			else if (part is FuelBox fuelBox)
+			else if (part is IFuelContainer fuelContainer)
 			{
-				reference.FuelBoxCount++;
-				reference.MaxSupplyFuelAmount += fuelBox.MaxSupplyFuelAmount;
+				reference.FuelContainerCount++;
+				reference.ExpectedSupplyFuelAmount += fuelContainer.SupplyFuelAmount;
 			}
 		}
 		foreach (FuelPartData fuelPart2 in m_fuelParts)
 		{
 			BasePart part2 = fuelPart2.Part;
 			ref FuelComponentData reference2 = ref m_fuelComponents[fuelPart2.FuelComponentIndex];
-			if (part2 is JetEngine jetEngine2 && jetEngine2.IsEnabled())
+			if (part2 is IFuelConsumer fuelConsumer2 && part2.IsEnabled())
 			{
-				float num = Math.Min(reference2.MaxSupplyFuelAmount / reference2.RequiredFuelAmount, 1f) * jetEngine2.RequiredFuelAmount;
-				jetEngine2.SupplyFuel(num);
+				float num = Math.Min(reference2.ExpectedSupplyFuelAmount / reference2.RequiredFuelAmount, 1f) * fuelConsumer2.RequiredFuelAmount;
+				fuelConsumer2.ConsumeFuel(num);
 				reference2.RealSupplyFuelAmount += num;
 			}
 		}
@@ -179,9 +181,9 @@ public class FuelSystem : PartManager
 		{
 			BasePart part3 = fuelPart3.Part;
 			FuelComponentData fuelComponentData = m_fuelComponents[fuelPart3.FuelComponentIndex];
-			if (part3 is FuelBox fuelBox2)
+			if (part3 is IFuelContainer fuelContainer2)
 			{
-				fuelBox2.SetFuelAmount(fuelBox2.FuelAmount - fuelComponentData.RealSupplyFuelAmount * fuelBox2.MaxSupplyFuelAmount / fuelComponentData.MaxSupplyFuelAmount);
+				fuelContainer2.SupplyFuel(fuelComponentData.RealSupplyFuelAmount * fuelContainer2.SupplyFuelAmount / fuelComponentData.ExpectedSupplyFuelAmount);
 			}
 		}
 		int connectedComponentCount = Contraption.Instance.ConnectedComponentCount;
@@ -193,7 +195,7 @@ public class FuelSystem : PartManager
 			{
 				array2[part5.ConnectedComponent] += 0.2f * Time.fixedDeltaTime;
 			}
-			else if (part5 is FuelBox)
+			else if (part5 is IFuelContainer)
 			{
 				array[part5.ConnectedComponent]++;
 			}
@@ -201,10 +203,10 @@ public class FuelSystem : PartManager
 		foreach (FuelPartData fuelPart4 in m_fuelParts)
 		{
 			BasePart part4 = fuelPart4.Part;
-			if (part4 is FuelBox fuelBox3)
+			if (part4 is IFuelContainer fuelContainer3)
 			{
 				int connectedComponent = part4.ConnectedComponent;
-				fuelBox3.SetFuelAmount(fuelBox3.FuelAmount + array2[connectedComponent] / (float)array[connectedComponent]);
+				fuelContainer3.Refuel(array2[connectedComponent] / (float)array[connectedComponent]);
 			}
 		}
 	}

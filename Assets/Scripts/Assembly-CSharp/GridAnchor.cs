@@ -5,10 +5,10 @@ public class GridAnchor : MonoBehaviour
 {
 	public enum SnapSide
 	{
-		Top,
-		Bottom,
-		Left,
-		Right
+		Top = 0,
+		Bottom = 1,
+		Left = 2,
+		Right = 3
 	}
 
 	[SerializeField]

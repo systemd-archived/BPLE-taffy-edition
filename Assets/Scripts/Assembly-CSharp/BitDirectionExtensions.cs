@@ -13,7 +13,7 @@ public static class BitDirectionExtensions
 
 	public static BitDirection Reverse(this BitDirection direction)
 	{
-		return (BitDirection)(((int)(direction & (BitDirection)3) << 2) | ((int)(direction & (BitDirection)0xC) >> 2));
+		return (BitDirection)(((int)(direction & (BitDirection)3) << 2) | ((int)(direction & (BitDirection)12) >> 2));
 	}
 
 	public static int BitCount(this BitDirection direction)

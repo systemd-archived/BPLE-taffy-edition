@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,53 +18,54 @@ public static class UIExtensions
 		return result;
 	}
 
-	public static IEnumerator PlayFadeInAnimation(this CanvasRenderer canvasRenderer, float time)
+	public static UniTask PlayFadeInAnimation(this CanvasRenderer canvasRenderer, float duration, bool ignoreTimeScale)
 	{
-		yield return canvasRenderer.PlayAlphaAnimation(time, 0f, 1f);
+		return canvasRenderer.PlayAlphaAnimation(0f, 1f, duration, ignoreTimeScale);
 	}
 
-	public static IEnumerator PlayFadeInAnimation(this CanvasGroup canvasGroup, float time)
+	public static UniTask PlayFadeInAnimation(this CanvasGroup canvasGroup, float duration, bool ignoreTimeScale)
 	{
-		yield return canvasGroup.PlayAlphaAnimation(time, 0f, 1f);
+		return canvasGroup.PlayAlphaAnimation(0f, 1f, duration, ignoreTimeScale);
 	}
 
-	public static IEnumerator PlayFadeOutAnimation(this CanvasRenderer canvasRenderer, float time)
+	public static UniTask PlayFadeOutAnimation(this CanvasRenderer canvasRenderer, float duration, bool ignoreTimeScale)
 	{
-		yield return canvasRenderer.PlayAlphaAnimation(time, 1f, 0f);
+		return canvasRenderer.PlayAlphaAnimation(1f, 0f, duration, ignoreTimeScale);
 	}
 
-	public static IEnumerator PlayFadeOutAnimation(this CanvasGroup canvasGroup, float time)
+	public static UniTask PlayFadeOutAnimation(this CanvasGroup canvasGroup, float duration, bool ignoreTimeScale)
 	{
-		yield return canvasGroup.PlayAlphaAnimation(time, 1f, 0f);
+		return canvasGroup.PlayAlphaAnimation(1f, 0f, duration, ignoreTimeScale);
 	}
 
-	public static IEnumerator PlayAlphaAnimation(this CanvasRenderer canvasRenderer, float time, float alpha0, float alpha1)
+	public static UniTask PlayAlphaAnimation(this CanvasRenderer canvasRenderer, float alpha0, float alpha1, float duration, bool ignoreTimeScale)
 	{
-		Action<float> setAlpha = delegate(float alpha2)
+		Action<float> setter = delegate(float alpha2)
 		{
 			canvasRenderer.SetAlpha(alpha2);
 		};
-		yield return PlayAlphaAnimationInternal(time, alpha0, alpha1, setAlpha);
+		return PlayLinearAnimation(alpha0, alpha1, duration, ignoreTimeScale, setter);
 	}
 
-	public static IEnumerator PlayAlphaAnimation(this CanvasGroup canvasGroup, float time, float alpha0, float alpha1)
+	public static UniTask PlayAlphaAnimation(this CanvasGroup canvasGroup, float alpha0, float alpha1, float duration, bool ignoreTimeScale)
 	{
-		Action<float> setAlpha = delegate(float alpha2)
+		Action<float> setter = delegate(float alpha2)
 		{
 			canvasGroup.alpha = alpha2;
 		};
-		yield return PlayAlphaAnimationInternal(time, alpha0, alpha1, setAlpha);
+		return PlayLinearAnimation(alpha0, alpha1, duration, ignoreTimeScale, setter);
 	}
 
-	private static IEnumerator PlayAlphaAnimationInternal(float time, float alpha0, float alpha1, Action<float> setAlpha)
+	public static async UniTask PlayLinearAnimation(float from, float to, float duration, bool ignoreTimeScale, Action<float> setter)
 	{
-		int frameCount = (int)(time / Time.deltaTime);
-		for (int i = 0; i < frameCount; i++)
+		float deltaTime = (ignoreTimeScale ? Time.unscaledDeltaTime : Time.deltaTime);
+		for (float time = 0f; time < duration; time += deltaTime)
 		{
-			float num = (float)i / (float)(frameCount - 1);
-			float obj = alpha0 * (1f - num) + alpha1 * num;
-			setAlpha(obj);
-			yield return null;
+			float num = time / duration;
+			float obj = from * (1f - num) + to * num;
+			setter(obj);
+			await UniTask.NextFrame();
 		}
+		setter(to);
 	}
 }

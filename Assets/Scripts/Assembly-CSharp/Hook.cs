@@ -4,9 +4,9 @@ public class Hook : MonoBehaviour
 {
 	public enum AttachType
 	{
-		None,
-		Static,
-		Dynamic
+		None = 0,
+		Static = 1,
+		Dynamic = 2
 	}
 
 	private Vector3 m_lockedPosition;

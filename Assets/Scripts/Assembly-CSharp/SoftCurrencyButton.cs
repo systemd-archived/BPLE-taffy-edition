@@ -5,9 +5,9 @@ public class SoftCurrencyButton : MonoBehaviour, ICurrencyParticleEffectTarget
 {
 	public enum Position
 	{
-		None,
-		Top,
-		Bottom
+		None = 0,
+		Top = 1,
+		Bottom = 2
 	}
 
 	[SerializeField]

@@ -23,17 +23,12 @@ public class EffectManager : MonoBehaviour
 
 		public void Update()
 		{
-			// 使用 while 循环确保所有已停止的粒子系统都能被回收
-			while (m_playing.Count > 0)
+			if (m_playing.Count > 0)
 			{
 				ParticleSystem particleSystem = m_playing.Peek();
-				if (particleSystem != null && particleSystem.isPlaying)
+				if (!particleSystem.isPlaying)
 				{
-					break;
-				}
-				m_playing.Dequeue();
-				if (particleSystem != null)
-				{
+					m_playing.Dequeue();
 					m_stopped.Enqueue(particleSystem);
 				}
 			}

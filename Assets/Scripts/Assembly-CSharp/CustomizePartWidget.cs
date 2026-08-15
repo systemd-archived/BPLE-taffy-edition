@@ -24,7 +24,7 @@ public class CustomizePartWidget : Widget
 
 	private void Start()
 	{
-		constructionUI = WPFMonoBehaviour.FindSceneObjectOfType<ConstructionUI>();
+		constructionUI = UnityEngine.Object.FindObjectOfType<ConstructionUI>();
 		EventManager.Connect<PartSelectedEvent>(OnPartSelected);
 		EventManager.Connect<LootCrateOpenDialog.LootCrateDelivered>(OnLootCrateDelivered);
 		CreatePartListing();
@@ -49,7 +49,7 @@ public class CustomizePartWidget : Widget
 
 	private void OnPartsUnlocked()
 	{
-		CreatePartScope(WPFMonoBehaviour.levelManager);
+		CreatePartScope(UnityEngine.Object.FindObjectOfType<LevelManager>());
 		partListing.SetPartScope(scope);
 	}
 
@@ -92,7 +92,7 @@ public class CustomizePartWidget : Widget
 		{
 			CreatePartListing();
 		}
-		LevelManager levelManager = WPFMonoBehaviour.levelManager;
+		LevelManager levelManager = UnityEngine.Object.FindObjectOfType<LevelManager>();
 		LevelManager.GameState previousState = LevelManager.GameState.Building;
 		if (levelManager != null)
 		{
@@ -127,7 +127,7 @@ public class CustomizePartWidget : Widget
 			partListing.Close();
 			if (scope == null)
 			{
-				CreatePartScope(WPFMonoBehaviour.levelManager);
+				CreatePartScope(UnityEngine.Object.FindObjectOfType<LevelManager>());
 			}
 			partListing.SetPartScope(scope);
 		}

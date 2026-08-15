@@ -2,8 +2,8 @@ namespace PlayFab.ClientModels
 {
 	public enum CloudScriptRevisionOption
 	{
-		Live,
-		Latest,
-		Specific
+		Live = 0,
+		Latest = 1,
+		Specific = 2
 	}
 }

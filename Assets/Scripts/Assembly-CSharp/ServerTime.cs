@@ -5,8 +5,8 @@ public class ServerTime
 {
 	public enum Status
 	{
-		STATUS_OK,
-		STATUS_NOK
+		STATUS_OK = 0,
+		STATUS_NOK = 1
 	}
 
 	private const string TAG = "LOG - ServerTime, ";
@@ -24,7 +24,7 @@ public class ServerTime
 
 	public void Destroy()
 	{
-		StatusChanged = null;
+		this.StatusChanged = null;
 	}
 
 	public Status GetStatus()
@@ -50,9 +50,9 @@ public class ServerTime
 		int obj = (int)currentTime;
 		mPendingRequest = false;
 		mStatus = Status.STATUS_OK;
-		if (StatusChanged != null)
+		if (this.StatusChanged != null)
 		{
-			StatusChanged(obj);
+			this.StatusChanged(obj);
 		}
 	}
 

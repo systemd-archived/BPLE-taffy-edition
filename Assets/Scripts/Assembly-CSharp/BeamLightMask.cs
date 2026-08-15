@@ -73,9 +73,9 @@ public class BeamLightMask : PointLightMask
 			num2++;
 			num++;
 		}
-		float num3 = angle * ((float)Math.PI / 180f);
-		float f = (float)Math.PI / 2f - num3 / 2f;
-		float f2 = (float)Math.PI / 2f + num3 / 2f;
+		float num3 = angle * (MathF.PI / 180f);
+		float f = MathF.PI / 2f - num3 / 2f;
+		float f2 = MathF.PI / 2f + num3 / 2f;
 		float num4 = cutHeight / Mathf.Cos(num3 / 2f);
 		Vector3 vector = new Vector3(radius * Mathf.Cos(f2), radius * Mathf.Sin(f2));
 		Vector3 vector2 = new Vector3(radius * Mathf.Cos(f), radius * Mathf.Sin(f));
@@ -93,14 +93,14 @@ public class BeamLightMask : PointLightMask
 		float[] array = new float[vertexCount];
 		float num7 = num3 / 2f;
 		array[0] = 0f - num7;
-		array[^1] = (float)Math.PI + num7;
-		float num8 = ((float)Math.PI + 2f * num7) / (float)(vertexCount - 1);
+		array[^1] = MathF.PI + num7;
+		float num8 = (MathF.PI + 2f * num7) / (float)(vertexCount - 1);
 		for (int l = 1; l < array.Length - 1; l++)
 		{
 			array[l] = array[0] + (float)l * num8;
 		}
 		float num9 = num3 / 2f;
-		float f3 = (float)Math.PI / 2f - num9;
+		float f3 = MathF.PI / 2f - num9;
 		Vector3 vector6 = new Vector3((vector.x + vector2.x) / 2f, (vector.y + vector2.y) / 2f);
 		float num10 = (vector2 - vector6).magnitude / Mathf.Tan(f3);
 		arcCenter = new Vector3(vector6.x, vector6.y + num10);
@@ -120,8 +120,8 @@ public class BeamLightMask : PointLightMask
 		}
 		if (border != null)
 		{
-			vector3 = new Vector3(vector3.x - borderWidth * Mathf.Sin((float)Math.PI / 4f), vector3.y - borderWidth * Mathf.Cos((float)Math.PI / 4f));
-			vector4 = new Vector3(vector4.x + borderWidth * Mathf.Sin((float)Math.PI / 4f), vector4.y - borderWidth * Mathf.Cos((float)Math.PI / 4f));
+			vector3 = new Vector3(vector3.x - borderWidth * Mathf.Sin(MathF.PI / 4f), vector3.y - borderWidth * Mathf.Cos(MathF.PI / 4f));
+			vector4 = new Vector3(vector4.x + borderWidth * Mathf.Sin(MathF.PI / 4f), vector4.y - borderWidth * Mathf.Cos(MathF.PI / 4f));
 			vector5 = vector4 - vector3;
 			num5 = Vector3.Distance(vector4, vector3) / (float)(vertexCount - 1);
 			num6 = 0;
@@ -135,8 +135,8 @@ public class BeamLightMask : PointLightMask
 			array = new float[vertexCount];
 			num7 = num3 / 2f;
 			array[0] = 0f - num7;
-			array[^1] = (float)Math.PI + num7;
-			num8 = ((float)Math.PI + 2f * num7) / (float)(vertexCount - 1);
+			array[^1] = MathF.PI + num7;
+			num8 = (MathF.PI + 2f * num7) / (float)(vertexCount - 1);
 			for (int num13 = 1; num13 < array.Length - 1; num13++)
 			{
 				array[num13] = array[0] + (float)num13 * num8;

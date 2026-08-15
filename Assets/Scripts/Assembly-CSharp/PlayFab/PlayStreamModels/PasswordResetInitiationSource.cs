@@ -2,7 +2,7 @@ namespace PlayFab.PlayStreamModels
 {
 	public enum PasswordResetInitiationSource
 	{
-		Self,
-		Admin
+		Self = 0,
+		Admin = 1
 	}
 }

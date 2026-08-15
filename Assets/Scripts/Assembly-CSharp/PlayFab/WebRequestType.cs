@@ -2,9 +2,9 @@ namespace PlayFab
 {
 	public enum WebRequestType
 	{
-		UnityWww,
-		HttpWebRequest,
-		UnityWebRequest,
-		CustomHttp
+		UnityWww = 0,
+		HttpWebRequest = 1,
+		UnityWebRequest = 2,
+		CustomHttp = 3
 	}
 }

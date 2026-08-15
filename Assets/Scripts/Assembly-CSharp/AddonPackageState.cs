@@ -1,6 +1,7 @@
 public enum AddonPackageState
 {
-	Failed,
-	Disabled,
-	Enabled
+	Loading = 0,
+	Failed = 1,
+	Disabled = 2,
+	Enabled = 3
 }

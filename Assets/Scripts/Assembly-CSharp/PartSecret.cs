@@ -75,9 +75,7 @@ public class PartSecret : MonoBehaviour
 	public void SetSecret()
 	{
 		GameProgress.SetBool(key, value: true);
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 		Debug.Log(key + " set");
-#endif
 		Collect();
 	}
 

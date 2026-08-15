@@ -285,7 +285,8 @@ namespace Pathfinding.Serialization.JsonFx
 			{
 				foreach (object key in value.Keys)
 				{
-					Type memberInfo = GetMemberInfo(memberMap, key as string, out var memberInfo2);
+					MemberInfo memberInfo2;
+					Type memberInfo = GetMemberInfo(memberMap, key as string, out memberInfo2);
 					SetMemberValue(result, memberInfo, memberInfo2, value[key]);
 				}
 			}

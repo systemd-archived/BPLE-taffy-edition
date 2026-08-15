@@ -7,12 +7,12 @@ public class IngameCamera : WPFMonoBehaviour
 {
 	public enum CameraState
 	{
-		Follow,
-		Pan,
-		Zoom,
-		Wait,
-		Building,
-		Preview
+		Follow = 0,
+		Pan = 1,
+		Zoom = 2,
+		Wait = 3,
+		Building = 4,
+		Preview = 5
 	}
 
 	private class PanningData
@@ -249,15 +249,12 @@ public class IngameCamera : WPFMonoBehaviour
 		}
 		if (WPFMonoBehaviour.levelManager.gameState == LevelManager.GameState.Building)
 		{
-			if (!DeviceInfo.UsesTouchInput)
+			if (Input.GetAxis("Mouse ScrollWheel") + m_keyZoomDelta < 0f && !WPFMonoBehaviour.levelManager.ConstructionUI.IsDragging())
 			{
-				if (Input.GetAxis("Mouse ScrollWheel") + m_keyZoomDelta < 0f && !WPFMonoBehaviour.levelManager.ConstructionUI.IsDragging())
-				{
-					WPFMonoBehaviour.levelManager.SetGameState(LevelManager.GameState.PreviewWhileBuilding);
-					Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.cameraZoomOut);
-				}
+				WPFMonoBehaviour.levelManager.SetGameState(LevelManager.GameState.PreviewWhileBuilding);
+				Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.cameraZoomOut);
 			}
-			else if (Input.touchCount == 2)
+			if (Input.touchCount == 2)
 			{
 				Touch touch = Input.GetTouch(0);
 				Touch touch2 = Input.GetTouch(1);
@@ -281,14 +278,11 @@ public class IngameCamera : WPFMonoBehaviour
 		{
 			return;
 		}
-		if (!DeviceInfo.UsesTouchInput)
+		if (currentFOV <= (INSettings.GetBool(INFeature.NewCamera) ? Mathf.Min(m_cameraMinZoom, m_cameraBuildZoom) : 9f) && Input.GetAxis("Mouse ScrollWheel") + m_keyZoomDelta > 0f)
 		{
-			if (currentFOV <= (INSettings.GetBool(INFeature.NewCamera) ? Mathf.Min(m_cameraMinZoom, m_cameraBuildZoom) : 9f) && Input.GetAxis("Mouse ScrollWheel") + m_keyZoomDelta > 0f)
-			{
-				StopTransitionToPreview();
-				WPFMonoBehaviour.levelManager.SetGameState(LevelManager.GameState.Building);
-				Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.cameraZoomIn);
-			}
+			StopTransitionToPreview();
+			WPFMonoBehaviour.levelManager.SetGameState(LevelManager.GameState.Building);
+			Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.cameraZoomIn);
 		}
 		else if (Input.touchCount == 2 && currentFOV <= (INSettings.GetBool(INFeature.NewCamera) ? Mathf.Min(m_cameraMinZoom, m_cameraBuildZoom) : 10f))
 		{
@@ -894,7 +888,7 @@ public class IngameCamera : WPFMonoBehaviour
 		{
 			return Vector3.zero;
 		}
-		if (!DeviceInfo.UsesTouchInput)
+		if (Input.touchCount == 0)
 		{
 			Vector3 vector = WPFMonoBehaviour.ScreenToZ0(m_panStartPosition) - WPFMonoBehaviour.ScreenToZ0(Input.mousePosition);
 			m_panStartPosition = Input.mousePosition;
@@ -918,8 +912,6 @@ public class IngameCamera : WPFMonoBehaviour
 
 	private void CalculatePanningSpeed(Vector3 newDelta)
 	{
-		//IL_0072: Unknown result type (might be due to invalid IL or missing references)
-		//IL_0077: Unknown result type (might be due to invalid IL or missing references)
 		while (m_panningHistory.Count > 0 && m_panningHistory.Peek().time < Time.time - 0.1f)
 		{
 			m_panningHistory.Dequeue();
@@ -928,19 +920,10 @@ public class IngameCamera : WPFMonoBehaviour
 		Vector3 zero = Vector3.zero;
 		float time = m_panningHistory.Peek().time;
 		float num = 0f;
-		var enumerator = m_panningHistory.GetEnumerator();
-		try
+		foreach (PanningData item in m_panningHistory)
 		{
-			while (enumerator.MoveNext())
-			{
-				PanningData current = enumerator.Current;
-				zero += current.delta;
-				num = current.time - time;
-			}
-		}
-		finally
-		{
-			((IDisposable)enumerator/*cast due to constrained. prefix*/).Dispose();
+			zero += item.delta;
+			num = item.time - time;
 		}
 		if (num > 0f)
 		{
@@ -969,7 +952,7 @@ public class IngameCamera : WPFMonoBehaviour
 		{
 			return 0f;
 		}
-		if (DeviceInfo.UsesTouchInput)
+		if (Input.touchCount != 0)
 		{
 			if (Input.touchCount != 2)
 			{
@@ -1027,7 +1010,7 @@ public class IngameCamera : WPFMonoBehaviour
 
 	private void DoPanning()
 	{
-		if (DeviceInfo.UsesTouchInput)
+		if (Input.touchCount != 0)
 		{
 			if (Input.touchCount == 1)
 			{

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Spine.Unity;
 using UnityEngine;
 
@@ -17,10 +18,10 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private enum NextButtonState
 	{
-		NextLevelButton,
-		CutsceneButton,
-		UnlockNextLevelButton,
-		None
+		NextLevelButton = 0,
+		CutsceneButton = 1,
+		UnlockNextLevelButton = 2,
+		None = 3
 	}
 
 	private const string RACELEVEL_BUNDLE = "Episode_Race_Levels";
@@ -99,37 +100,6 @@ public class LevelComplete : WPFMonoBehaviour
 	[SerializeField]
 	private GameObject[] episodeTitles;
 
-	private GameObject m_rewardsRoot;
-
-	private Animation m_rewardsAnimation;
-
-	private GameObject m_pigLevelComplete;
-
-	private Animation m_pigLevelCompleteAnim;
-
-	private GameObject m_pigShadow;
-
-	private Animation m_pigShadowAnim;
-
-	private void CacheReferences()
-	{
-		m_rewardsRoot = GameObject.Find("Rewards");
-		if (m_rewardsRoot != null)
-		{
-			m_rewardsAnimation = m_rewardsRoot.GetComponent<Animation>();
-		}
-		m_pigLevelComplete = GameObject.Find("PigLevelComplete");
-		if (m_pigLevelComplete != null)
-		{
-			m_pigLevelCompleteAnim = m_pigLevelComplete.GetComponent<Animation>();
-		}
-		m_pigShadow = GameObject.Find("Pig_Shadow");
-		if (m_pigShadow != null)
-		{
-			m_pigShadowAnim = m_pigShadow.GetComponent<Animation>();
-		}
-	}
-
 	[SerializeField]
 	private GameObject roadHogsTitle;
 
@@ -172,7 +142,7 @@ public class LevelComplete : WPFMonoBehaviour
 
 	public void OpenObjectiveTutorial(string slot)
 	{
-		int num = int.Parse(slot) - 2;
+		int num = int.Parse(slot, CultureInfo.InvariantCulture) - 2;
 		if (num >= 0 && num <= 1)
 		{
 			WPFMonoBehaviour.levelManager.m_levelCompleteTutorialBookPagePrefab = m_challenges[num].m_tutorialBookPage;
@@ -229,7 +199,6 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private void Awake()
 	{
-		CacheReferences();
 		doubleRewardButton.LevelComplete = this;
 	}
 
@@ -409,7 +378,7 @@ public class LevelComplete : WPFMonoBehaviour
 		if (flag2)
 		{
 			bool snoutCoinsCollected = true;
-			if ((flag7 && !flag5) & flag6)
+			if (flag7 && !flag5 && flag6)
 			{
 				if (num6 <= 0)
 				{
@@ -457,7 +426,7 @@ public class LevelComplete : WPFMonoBehaviour
 		else if (flag7)
 		{
 			bool snoutCoinsCollected2 = true;
-			if (!flag5 & flag6)
+			if (!flag5 && flag6)
 			{
 				if (num6 <= 0)
 				{
@@ -507,7 +476,7 @@ public class LevelComplete : WPFMonoBehaviour
 		if (flag3)
 		{
 			bool snoutCoinsCollected3 = true;
-			if ((flag8 && !flag6) & flag7)
+			if (flag8 && !flag6 && flag7)
 			{
 				if (num6 <= 0)
 				{
@@ -554,7 +523,7 @@ public class LevelComplete : WPFMonoBehaviour
 		else if (flag8)
 		{
 			bool snoutCoinsCollected4 = true;
-			if (!flag6 & flag7)
+			if (!flag6 && flag7)
 			{
 				if (num6 <= 0)
 				{
@@ -597,7 +566,7 @@ public class LevelComplete : WPFMonoBehaviour
 		}
 		else
 		{
-			m_objectiveThree.ShowSnoutReward(show: true, ((!flag5 && !flag7) & flag8) ? num5 : num6);
+			m_objectiveThree.ShowSnoutReward(show: true, (!flag5 && !flag7 && flag8) ? num5 : num6);
 		}
 		GameProgress.AddSnoutCoins(num8);
 		bool num17 = LevelInfo.IsStarLevel(Singleton<GameManager>.Instance.CurrentEpisodeIndex, Singleton<GameManager>.Instance.CurrentLevel);
@@ -612,28 +581,28 @@ public class LevelComplete : WPFMonoBehaviour
 			int count = Singleton<PlayerProgress>.Instance.AddExperience(experienceType);
 			AddExperienceParticles(m_starOne, count, num7 + num3);
 		}
-		if ((flag2 | flag7 | flag3 | flag8) && GameProgress.ExperienceGiven(experienceType2, currentSceneName2) == 0)
+		if ((flag2 || flag7 || flag3 || flag8) && GameProgress.ExperienceGiven(experienceType2, currentSceneName2) == 0)
 		{
 			GameProgress.ReportExperienceGiven(experienceType2, currentSceneName2);
 			PlayerProgressBar.Instance.DelayUpdate();
 			int count2 = Singleton<PlayerProgress>.Instance.AddExperience(experienceType2);
 			AddExperienceParticles(m_starTwo, count2, num13 + num3);
 		}
-		if ((flag7 & flag3) && GameProgress.ExperienceGiven(experienceType3, currentSceneName2) == 0)
+		if (flag7 && flag3 && GameProgress.ExperienceGiven(experienceType3, currentSceneName2) == 0)
 		{
 			GameProgress.ReportExperienceGiven(experienceType3, currentSceneName2);
 			PlayerProgressBar.Instance.DelayUpdate();
 			int count3 = Singleton<PlayerProgress>.Instance.AddExperience(experienceType3);
 			AddExperienceParticles(m_starTwo, count3, num13 + num3);
 		}
-		else if ((flag7 & flag3) && GameProgress.ExperienceGiven(experienceType3, currentSceneName2) == 0)
+		else if (flag7 && flag3 && GameProgress.ExperienceGiven(experienceType3, currentSceneName2) == 0)
 		{
 			GameProgress.ReportExperienceGiven(experienceType3, currentSceneName2);
 			PlayerProgressBar.Instance.DelayUpdate();
 			int count4 = Singleton<PlayerProgress>.Instance.AddExperience(experienceType3);
 			AddExperienceParticles(m_starThree, count4, delay + num3);
 		}
-		else if ((flag2 | flag7) && (flag3 | flag8) && GameProgress.ExperienceGiven(experienceType3, currentSceneName2) == 0)
+		else if ((flag2 || flag7) && (flag3 || flag8) && GameProgress.ExperienceGiven(experienceType3, currentSceneName2) == 0)
 		{
 			GameProgress.ReportExperienceGiven(experienceType3, currentSceneName2);
 			PlayerProgressBar.Instance.DelayUpdate();
@@ -702,7 +671,7 @@ public class LevelComplete : WPFMonoBehaviour
 		{
 			CheckLevelEndAchievements();
 		}
-		if ((flag7 | flag2) && m_challenges[0].Type == Challenge.ChallengeType.Time)
+		if ((flag7 || flag2) && m_challenges[0].Type == Challenge.ChallengeType.Time)
 		{
 			if ((bool)rewardVideoButton)
 			{
@@ -713,7 +682,7 @@ public class LevelComplete : WPFMonoBehaviour
 				extraCoinsRewardButton.gameObject.SetActive(value: true);
 			}
 		}
-		else if ((flag8 | flag3) && m_challenges[1].Type == Challenge.ChallengeType.Time)
+		else if ((flag8 || flag3) && m_challenges[1].Type == Challenge.ChallengeType.Time)
 		{
 			if ((bool)rewardVideoButton)
 			{
@@ -1014,18 +983,18 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private IEnumerator ShowUnlockedLevel(float delay, string rewardBonusLevelName)
 	{
-		yield return WaitForSecondsCache.Get(delay);
+		yield return new WaitForSeconds(delay);
 		Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.jokerLevelUnlocked);
-				GameObject.Find("Rewards").transform.Find("UnlockPart").GetComponent<RewardView>().Hide();
-		RewardView reward = 		GameObject.Find("Rewards").transform.Find(rewardBonusLevelName).GetComponent<RewardView>();
+		GameObject.Find("Rewards").transform.Find("UnlockPart").GetComponent<RewardView>().Hide();
+		RewardView reward = GameObject.Find("Rewards").transform.Find(rewardBonusLevelName).GetComponent<RewardView>();
 		if (reward.HasLocked())
 		{
 			reward.ShowLocked();
 			GameObject.Find("Rewards").GetComponent<Animation>().Play("RewardAnimation");
-			yield return WaitForSecondsCache.Get(0.75f);
+			yield return new WaitForSeconds(0.75f);
 		}
 		reward.transform.FindChildRecursively("JokerLevelButton").transform.Find("Lock").GetComponent<Animation>().Play("LevelCompleteLockAnimation");
-		yield return WaitForSecondsCache.Get(0.75f);
+		yield return new WaitForSeconds(0.75f);
 		ParticleSystem[] componentsInChildren = GameObject.Find(rewardBonusLevelName).transform.Find("Open").GetComponentsInChildren<ParticleSystem>();
 		for (int i = 0; i < componentsInChildren.Length; i++)
 		{
@@ -1058,7 +1027,7 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private IEnumerator ShowLonelyPig(float delay, int stars, bool bPlayRewardAnim = true)
 	{
-		yield return WaitForSecondsCache.Get(delay);
+		yield return new WaitForSeconds(delay);
 		Transform lonePig = base.transform.Find("Rewards/Pig/LonePig");
 		Transform lp = base.transform.Find("Rewards/Pig/LonePig/LonePig1Star");
 		Transform lp2 = base.transform.Find("Rewards/Pig/LonePig/LonePig2Star");
@@ -1071,7 +1040,7 @@ public class LevelComplete : WPFMonoBehaviour
 		if (bPlayRewardAnim)
 		{
 			base.transform.Find("Rewards").GetComponent<Animation>().Play("RewardAnimation");
-			yield return WaitForSecondsCache.Get(0.65f);
+			yield return new WaitForSeconds(0.65f);
 		}
 		if (stars >= 2)
 		{
@@ -1081,7 +1050,7 @@ public class LevelComplete : WPFMonoBehaviour
 				array[i].Play();
 			}
 		}
-		yield return WaitForSecondsCache.Get(0.1f);
+		yield return new WaitForSeconds(0.1f);
 		switch (stars)
 		{
 		case 1:
@@ -1093,7 +1062,7 @@ public class LevelComplete : WPFMonoBehaviour
 		}
 		lonePig.GetComponent<Animation>().Play("PigLevelCompleteAnimation");
 		lp3.GetComponent<Animation>().Play("LevelCompleteLonePig1Star");
-		yield return WaitForSecondsCache.Get(0.73f);
+		yield return new WaitForSeconds(0.73f);
 		while (true)
 		{
 			ParticleSystem[] array = ps;
@@ -1101,7 +1070,7 @@ public class LevelComplete : WPFMonoBehaviour
 			{
 				array[i].Play();
 			}
-			yield return WaitForSecondsCache.Get(0.7f);
+			yield return new WaitForSeconds(0.7f);
 		}
 	}
 
@@ -1117,18 +1086,18 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private IEnumerator ShowUnlockedSandbox(float delay)
 	{
-		yield return WaitForSecondsCache.Get(delay);
+		yield return new WaitForSeconds(delay);
 		Singleton<AudioManager>.Instance.Play2dEffect(WPFMonoBehaviour.gameData.commonAudioCollection.sandboxLevelUnlocked);
-				GameObject.Find("Rewards").transform.Find("UnlockPart").GetComponent<RewardView>().Hide();
-		RewardView reward = 		GameObject.Find("Rewards").transform.Find("SandboxUnlock").GetComponent<RewardView>();
+		GameObject.Find("Rewards").transform.Find("UnlockPart").GetComponent<RewardView>().Hide();
+		RewardView reward = GameObject.Find("Rewards").transform.Find("SandboxUnlock").GetComponent<RewardView>();
 		if (reward.HasLocked())
 		{
 			reward.ShowLocked();
 			GameObject.Find("Rewards").GetComponent<Animation>().Play("RewardAnimation");
-			yield return WaitForSecondsCache.Get(0.75f);
+			yield return new WaitForSeconds(0.75f);
 		}
 		GameObject.Find("Sandbox").transform.Find("Lock").GetComponent<Animation>().Play("LevelCompleteLockAnimation");
-		yield return WaitForSecondsCache.Get(0.6f);
+		yield return new WaitForSeconds(0.6f);
 		ParticleSystem[] componentsInChildren = GameObject.Find("SandboxUnlock").transform.Find("Open").GetComponentsInChildren<ParticleSystem>();
 		for (int i = 0; i < componentsInChildren.Length; i++)
 		{
@@ -1143,8 +1112,8 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private IEnumerator ShowUnlockedPart(float delay)
 	{
-		yield return WaitForSecondsCache.Get(delay);
-		RewardView component = 		GameObject.Find("Rewards").transform.Find("UnlockPart").GetComponent<RewardView>();
+		yield return new WaitForSeconds(delay);
+		RewardView component = GameObject.Find("Rewards").transform.Find("UnlockPart").GetComponent<RewardView>();
 		component.ShowOpen();
 		component.SetPart(m_unlockedPart);
 		GameObject.Find("Rewards").GetComponent<Animation>().Play("RewardAnimation");
@@ -1156,8 +1125,8 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private IEnumerator ShowUnlockedRaceLevelPart(float delay)
 	{
-		yield return WaitForSecondsCache.Get(delay);
-		RewardView component = 		GameObject.Find("Rewards").transform.Find("UnlockRaceLevelPart").GetComponent<RewardView>();
+		yield return new WaitForSeconds(delay);
+		RewardView component = GameObject.Find("Rewards").transform.Find("UnlockRaceLevelPart").GetComponent<RewardView>();
 		component.ShowOpen();
 		component.SetPart(m_unlockedRaceLevelPart);
 		if (m_raceLevelNumber != null)
@@ -1174,7 +1143,7 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private IEnumerator ShowStarPanel(float delay)
 	{
-		yield return WaitForSecondsCache.Get(delay);
+		yield return new WaitForSeconds(delay);
 		float t = 0f;
 		while (t < 1f)
 		{
@@ -1186,7 +1155,7 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private IEnumerator ShowBackground(float delay1, float delay2)
 	{
-		yield return WaitForSecondsCache.Get(delay1);
+		yield return new WaitForSeconds(delay1);
 		if (!WPFMonoBehaviour.levelManager || WPFMonoBehaviour.levelManager.m_raceLevel)
 		{
 			m_backgroundPosition.y -= 1.6f;
@@ -1202,7 +1171,7 @@ public class LevelComplete : WPFMonoBehaviour
 		{
 			m_backgroundPosition.y += 1.6f;
 		}
-		yield return WaitForSecondsCache.Get(delay2);
+		yield return new WaitForSeconds(delay2);
 		m_backgroundHidePosition = m_backgroundPosition;
 		m_backgroundPosition.y -= 12.5f;
 		t = 0f;
@@ -1217,7 +1186,7 @@ public class LevelComplete : WPFMonoBehaviour
 	private IEnumerator ShowControls(float delay)
 	{
 		SetNextLevelButtons();
-		yield return WaitForSecondsCache.Get(delay);
+		yield return new WaitForSeconds(delay);
 		float t = 0f;
 		while (t < 1f)
 		{
@@ -1252,7 +1221,7 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private IEnumerator ShowEpisodeThreeStarred(float delay)
 	{
-		yield return WaitForSecondsCache.Get(delay);
+		yield return new WaitForSeconds(delay);
 		string currentEpisode = Singleton<GameManager>.Instance.CurrentEpisode;
 		int currentEpisodeIndex = Singleton<GameManager>.Instance.CurrentEpisodeIndex;
 		if (currentEpisode != string.Empty && Singleton<GameManager>.Instance.CurrentEpisodeThreeStarred() && !GameProgress.IsEpisodeThreeStarred(currentEpisode))
@@ -1268,7 +1237,7 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private IEnumerator PlayStarEffects(ObjectiveSlot objective, GameObject star, Challenge challenge, float delay, AudioSource starAudio, string anim)
 	{
-		yield return WaitForSecondsCache.Get(delay);
+		yield return new WaitForSeconds(delay);
 		StartCoroutine(PlayStarEffects(objective, star, 0.25f, starAudio, anim));
 	}
 
@@ -1289,10 +1258,10 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private IEnumerator PlayStarEffects(ObjectiveSlot objective, GameObject star, float delay, AudioSource starAudio, string anim)
 	{
-		yield return WaitForSecondsCache.Get(delay);
+		yield return new WaitForSeconds(delay);
 		star.SetActive(value: true);
 		star.GetComponent<Animation>().Play(anim);
-		yield return WaitForSecondsCache.Get(0.5f);
+		yield return new WaitForSeconds(0.5f);
 		Singleton<AudioManager>.Instance.Play2dEffect(starAudio);
 		StartCoroutine(ShakeCamera(16f));
 		ParticleSystem[] componentsInChildren = star.GetComponentsInChildren<ParticleSystem>();
@@ -1300,9 +1269,9 @@ public class LevelComplete : WPFMonoBehaviour
 		{
 			componentsInChildren[i].Play();
 		}
-		yield return WaitForSecondsCache.Get(0.1f);
+		yield return new WaitForSeconds(0.1f);
 		objective.SetSucceeded();
-		yield return WaitForSecondsCache.Get(0.2f);
+		yield return new WaitForSeconds(0.2f);
 		bShakeCamera = false;
 	}
 
@@ -1310,10 +1279,10 @@ public class LevelComplete : WPFMonoBehaviour
 	{
 		if (completedInThisRun)
 		{
-			yield return WaitForSecondsCache.Get(delay);
+			yield return new WaitForSeconds(delay);
 			star.SetActive(value: true);
 			star.GetComponent<Animation>().Play(anim);
-			yield return WaitForSecondsCache.Get(0.5f);
+			yield return new WaitForSeconds(0.5f);
 			if ((bool)starAudio)
 			{
 				Singleton<AudioManager>.Instance.Play2dEffect(starAudio);
@@ -1324,9 +1293,9 @@ public class LevelComplete : WPFMonoBehaviour
 			{
 				componentsInChildren[i].Play();
 			}
-			yield return WaitForSecondsCache.Get(0.1f);
+			yield return new WaitForSeconds(0.1f);
 			objective.SetSucceeded();
-			yield return WaitForSecondsCache.Get(0.2f);
+			yield return new WaitForSeconds(0.2f);
 			bShakeCamera = false;
 		}
 		else
@@ -1337,7 +1306,7 @@ public class LevelComplete : WPFMonoBehaviour
 
 	private IEnumerator StartMusic(float delay, AudioSource music)
 	{
-		yield return WaitForSecondsCache.Get(delay);
+		yield return new WaitForSeconds(delay);
 		WPFMonoBehaviour.levelManager.StopAmbient();
 		m_music = Singleton<AudioManager>.Instance.SpawnLoopingEffect(music, base.transform);
 	}

@@ -2,11 +2,11 @@ public class Achievements : WPFMonoBehaviour
 {
 	public enum AchievementType
 	{
-		Time,
-		CoolPilot,
-		CrazyPilot,
-		SavedParts,
-		Eggs
+		Time = 0,
+		CoolPilot = 1,
+		CrazyPilot = 2,
+		SavedParts = 3,
+		Eggs = 4
 	}
 
 	public static bool GetAchievementStatus(AchievementType achievement)

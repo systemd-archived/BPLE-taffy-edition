@@ -37,7 +37,7 @@ internal class AddonService : IAddonService, IResourceResolver
 
 	public Texture2D LoadTextureFromFile(string path, string name)
 	{
-		return INAddonManager.LoadTexture(path, name);
+		return INAddonManager.LoadTextureFromFile(path, name);
 	}
 
 	public AudioClip LoadAudio(byte[] data, string name)
@@ -47,7 +47,7 @@ internal class AddonService : IAddonService, IResourceResolver
 
 	public AudioClip LoadAudioFromFile(string path, string name)
 	{
-		return INAddonManager.LoadAudioWithNLayer(path, name);
+		return INAddonManager.LoadAudioFromFileWithNLayer(path, name);
 	}
 
 	public IContraptionData LoadContraptionData(string text)
@@ -77,6 +77,11 @@ internal class AddonService : IAddonService, IResourceResolver
 		return INAddonManager.Instance.PackageManager.FindPackage(id);
 	}
 
+	public AddonPackage FindCurrentPackage()
+	{
+		return INAddonManager.Instance.PackageManager.CurrentPackage;
+	}
+
 	public AddonComponent FindAddonComponent(string name)
 	{
 		return INAddonManager.Instance.FindAddonComponent(name);
@@ -104,11 +109,21 @@ internal class AddonService : IAddonService, IResourceResolver
 
 	public IBasePart CreateCustomPart(CustomPartTemplate template, IResourceResolver resolver)
 	{
-		BasePart basePart = ((template.UnderlyingPartType != PartTypeCode.Unknown) ? Singleton<INRuntimeGameData>.Instance.GetCustomPart(((SortedPartType)template.UnderlyingPartType).ToPartType(), template.UnderlyingPartIndex) : Object.Instantiate(INUnity.LoadScriptableObject<PartListData>("PartListData").CustomPartPrefab).AddOrGetComponent<BasePart>());
+		BasePart basePart;
+		if (template.UnderlyingPartType == PartTypeCode.Unknown)
+		{
+			basePart = Object.Instantiate(INUnity.LoadScriptableObject<PartListData>("PartListData").CustomPartPrefab).AddOrGetComponent<BasePart>();
+		}
+		else
+		{
+			BasePart.PartType partType = ((SortedPartType)template.UnderlyingPartType).ToPartType();
+			int underlyingPartIndex = template.UnderlyingPartIndex;
+			basePart = Object.Instantiate(Singleton<INPartFactoryManager>.Instance.FindCustomPart(partType, underlyingPartIndex));
+		}
 		TemplateFactory.ApplyTemplate(basePart.gameObject, template, resolver ?? this);
 		basePart.ApplyTemplate(template, resolver ?? this);
-		Singleton<INRuntimeGameData>.Instance.SetParent(basePart);
-		Singleton<INRuntimeGameData>.Instance.AddPart(basePart);
+		Singleton<INPartFactoryManager>.Instance.SetParent(basePart);
+		Singleton<INPartFactoryManager>.Instance.AddExtraPart(basePart);
 		return basePart;
 	}
 
@@ -124,6 +139,6 @@ internal class AddonService : IAddonService, IResourceResolver
 
 	Shader IResourceResolver.ResolveShader(string path)
 	{
-		return ShaderCache.Get(path);
+		return Shader.Find(path);
 	}
 }

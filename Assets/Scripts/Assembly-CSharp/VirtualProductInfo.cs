@@ -1,15 +1,16 @@
 using System;
 using System.Collections;
+using System.Globalization;
 
 public class VirtualProductInfo
 {
 	public enum RewardType
 	{
-		Magnet,
-		Turbo,
-		Glue,
-		Nightvision,
-		Blueprint
+		Magnet = 0,
+		Turbo = 1,
+		Glue = 2,
+		Nightvision = 3,
+		Blueprint = 4
 	}
 
 	public string productID;
@@ -35,7 +36,7 @@ public class VirtualProductInfo
 	{
 		productID = (string)hash["productID"];
 		localizationKey = (string)hash["localizationKey"];
-		price = int.Parse((string)hash["price"]);
+		price = int.Parse((string)hash["price"], CultureInfo.InvariantCulture);
 		rewards = (Hashtable)hash["rewards"];
 		if (Enum.IsDefined(typeof(IapManager.CurrencyType), (string)hash["currencyType"]))
 		{

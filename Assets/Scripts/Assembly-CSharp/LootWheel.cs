@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
@@ -7,13 +8,13 @@ public class LootWheel : WPFMonoBehaviour
 {
 	public enum WheelSlotType
 	{
-		Part,
-		Scrap1,
-		Scrap2,
-		Dessert1,
-		Dessert2,
-		Dessert3,
-		Powerup
+		Part = 0,
+		Scrap1 = 1,
+		Scrap2 = 2,
+		Dessert1 = 3,
+		Dessert2 = 4,
+		Dessert3 = 5,
+		Powerup = 6
 	}
 
 	[Serializable]
@@ -169,7 +170,7 @@ public class LootWheel : WPFMonoBehaviour
 			{
 				if (CustomizationManager.IsPartUnlocked(m_rewards[i].PartReward))
 				{
-					int amount = int.Parse(config[m_rewards[i].PartReward.m_partTier.ToString()]);
+					int amount = int.Parse(config[m_rewards[i].PartReward.m_partTier.ToString()], CultureInfo.InvariantCulture);
 					m_rewards[i] = new LootWheelRewards.LootWheelReward(amount, m_rewards[i].SingleValue, LootWheelRewards.RewardType.Scrap);
 				}
 			}

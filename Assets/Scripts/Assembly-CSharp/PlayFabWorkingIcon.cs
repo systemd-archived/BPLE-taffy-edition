@@ -79,7 +79,7 @@ public class PlayFabWorkingIcon : MonoBehaviour
 			spinTime += GameTime.RealTimeDelta;
 			if (spinTime > 1f)
 			{
-				spinTime--;
+				spinTime -= 1f;
 			}
 			spinner.Rotate(Vector3.back, GameTime.RealTimeDelta * spinningSpeed.Evaluate(spinTime) * speedMultiplier, Space.Self);
 		}

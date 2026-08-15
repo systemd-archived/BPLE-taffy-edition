@@ -309,7 +309,7 @@ public class LevelRigidbody : WPFMonoBehaviour
 			if (m_normalColliders[j] is SphereCollider)
 			{
 				SphereCollider sphereCollider = m_iceColliders[j].GetComponent<Collider>() as SphereCollider;
-				if ((sphereCollider == null) | flag)
+				if (sphereCollider == null || flag)
 				{
 					sphereCollider = m_iceColliders[j].gameObject.AddComponent<SphereCollider>();
 					sphereCollider.radius = ((!(m_normalColliders[j] as SphereCollider == null)) ? (m_normalColliders[j] as SphereCollider).radius : 0.5f);
@@ -323,7 +323,7 @@ public class LevelRigidbody : WPFMonoBehaviour
 			else if (m_normalColliders[j] is BoxCollider)
 			{
 				BoxCollider boxCollider = m_iceColliders[j].GetComponent<Collider>() as BoxCollider;
-				if ((boxCollider == null) | flag)
+				if (boxCollider == null || flag)
 				{
 					boxCollider = m_iceColliders[j].gameObject.AddComponent<BoxCollider>();
 					boxCollider.size = (m_normalColliders[j] as BoxCollider).size;
@@ -337,7 +337,7 @@ public class LevelRigidbody : WPFMonoBehaviour
 			else if (m_normalColliders[j] is CapsuleCollider)
 			{
 				CapsuleCollider capsuleCollider = m_iceColliders[j].GetComponent<Collider>() as CapsuleCollider;
-				if ((capsuleCollider == null) | flag)
+				if (capsuleCollider == null || flag)
 				{
 					capsuleCollider = m_iceColliders[j].gameObject.AddComponent<CapsuleCollider>();
 					capsuleCollider.center = (m_normalColliders[j] as CapsuleCollider).center;

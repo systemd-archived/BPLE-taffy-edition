@@ -58,7 +58,6 @@ public class TNT : BasePart
 			m_bottomAttachment = transform4.gameObject;
 			m_bottomAttachment.SetActive(value: false);
 		}
-		m_triggerSpeed = 500f;
 	}
 
 	public override Direction EffectDirection()
@@ -114,6 +113,11 @@ public class TNT : BasePart
 		Gizmos.DrawWireSphere(base.transform.position, m_explosionRadius);
 	}
 
+	protected override void OnTouch()
+	{
+		Explode();
+	}
+
 	public override void PrePlaced()
 	{
 		base.PrePlaced();
@@ -131,31 +135,23 @@ public class TNT : BasePart
 		}
 		m_triggered = true;
 		base.contraption.ChangeOneShotPartAmount(m_partType, EffectDirection(), -1);
-		Vector3 center = base.transform.position + base.transform.right * 12f;
-		Vector3 halfExtents = new Vector3(12f, 0.3f, 0.3f);
-		Quaternion rotation = base.transform.rotation;
-		Collider[] array = Physics.OverlapBox(center, halfExtents, rotation);
+		Collider[] array = Physics.OverlapSphere(base.transform.position, m_explosionRadius * INSettings.GetFloat(INFeature.TNTExplosionRadius));
 		foreach (Collider collider in array)
 		{
 			GameObject gameObject = FindParentWithRigidBody(collider.gameObject);
 			if (gameObject != null)
 			{
-				CountChildColliders(gameObject, 0);
-				AddExplosionForce(gameObject, 40f);
+				int num = CountChildColliders(gameObject, 0);
+				AddExplosionForce(gameObject, INSettings.GetFloat(INFeature.TNTExplosionForce) / (float)num);
 			}
 			BasePart component = collider.GetComponent<BasePart>();
-			TNT tNT = component as TNT;
-			if (tNT != null && !(component is AlienTNT) && !component.HasGeneratorRef)
+			if (component is TNT tNT && !(component is AlienTNT) && !component.HasGeneratorRef)
 			{
 				tNT.Explode();
 			}
-			if (INSettings.GetBool(INFeature.BlasterTNT))
+			if (INSettings.GetBool(INFeature.BlasterTNT) && component is BlasterTNT blasterTNT && !component.HasGeneratorRef && Vector.DistanceSquared2(base.transform.position, component.transform.position) < 4f)
 			{
-				BlasterTNT blasterTNT = component as BlasterTNT;
-				if (blasterTNT != null && !component.HasGeneratorRef && Vector.DistanceSquared2(base.transform.position, component.transform.position) < 4f)
-				{
-					blasterTNT.ExplodeSpecial();
-				}
+				blasterTNT.ExplodeSpecial();
 			}
 		}
 		Singleton<AudioManager>.Instance.SpawnOneShotEffect(WPFMonoBehaviour.gameData.commonAudioCollection.tntExplosion, base.transform.position);
@@ -172,7 +168,7 @@ public class TNT : BasePart
 			foreach (Joint item in list)
 			{
 				bool flag = item.gameObject == this || item.connectedBody == this;
-				if (!float.IsInfinity(item.breakForce) | flag)
+				if (!float.IsInfinity(item.breakForce) || flag)
 				{
 					UnityEngine.Object.Destroy(item);
 				}
@@ -214,14 +210,25 @@ public class TNT : BasePart
 
 	protected void AddExplosionForce(GameObject target, float forceFactor)
 	{
+		Vector3 vector = target.transform.position - base.transform.position;
+		float f = Mathf.Max(vector.magnitude, 1f);
+		float num = forceFactor * m_explosionImpulse / Mathf.Pow(f, 1.5f);
 		Rigidbody component = target.GetComponent<Rigidbody>();
-		if (!(component == null))
+		if (component.mass < 0.1f)
 		{
-			float num = Mathf.Max((target.transform.position - base.transform.position).magnitude, 1f);
-			float num2 = ((num <= 20f) ? (1f - 0.5f * (num / 20f)) : ((!(num <= 24f)) ? 0f : (0.5f * (1f - (num - 20f) / 4f))));
-			float num3 = forceFactor * m_explosionImpulse * num2 - 500f;
-			component.AddForce(num3 * base.transform.right, ForceMode.Impulse);
+			num *= component.mass;
 		}
+		else if (component.mass < 0.4f)
+		{
+			num *= component.mass / 0.4f;
+		}
+		Pig component2 = target.GetComponent<Pig>();
+		if ((bool)component2)
+		{
+			component2.PrepareForTNT(base.transform.position, num);
+			num *= 1.15f;
+		}
+		component.AddForce(num * vector.normalized, ForceMode.Impulse);
 	}
 
 	public void CheckForTNTAchievement()
@@ -265,6 +272,14 @@ public class TNT : BasePart
 		else
 		{
 			UnityEngine.Object.Destroy(base.gameObject);
+		}
+	}
+
+	public override void OnLightEnter(EntityLightCollision collision)
+	{
+		if (INSettings.GetBool(INFeature.CanLightTriggerExplosion))
+		{
+			Explode();
 		}
 	}
 }

@@ -2,7 +2,7 @@ namespace PlayFab.PlayStreamModels
 {
 	public enum PaymentType
 	{
-		Purchase,
-		ReceiptValidation
+		Purchase = 0,
+		ReceiptValidation = 1
 	}
 }

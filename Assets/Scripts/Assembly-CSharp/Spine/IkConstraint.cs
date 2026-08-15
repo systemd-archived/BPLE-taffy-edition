@@ -109,7 +109,7 @@ namespace Spine
 			float num2 = targetX - parent.worldX;
 			float num3 = targetY - parent.worldY;
 			float x = (num2 * parent.d - num3 * parent.b) * num - bone.x;
-			float num4 = MathUtils.Atan2((num3 * parent.a - num2 * parent.c) * num - bone.y, x) * (180f / (float)Math.PI) - bone.shearX - bone.rotation;
+			float num4 = MathUtils.Atan2((num3 * parent.a - num2 * parent.c) * num - bone.y, x) * (180f / MathF.PI) - bone.shearX - bone.rotation;
 			if (bone.scaleX < 0f)
 			{
 				num4 += 180f;
@@ -272,7 +272,7 @@ namespace Spine
 				d = num12 * num12;
 				if (d < num34)
 				{
-					num33 = (float)Math.PI;
+					num33 = MathF.PI;
 					num34 = d;
 					x3 = num12;
 				}
@@ -309,7 +309,7 @@ namespace Spine
 			IL_04b4:
 			float num40 = MathUtils.Atan2(num8, x2) * (float)num5;
 			float rotation = parent.rotation;
-			num22 = (num22 - num40) * (180f / (float)Math.PI) + (float)num4 - rotation;
+			num22 = (num22 - num40) * (180f / MathF.PI) + (float)num4 - rotation;
 			if (num22 > 180f)
 			{
 				num22 -= 360f;
@@ -320,7 +320,7 @@ namespace Spine
 			}
 			parent.UpdateWorldTransform(x, y, rotation + num22 * alpha, parent.scaleX, parent.scaleY, 0f, 0f);
 			rotation = child.rotation;
-			num21 = ((num21 + num40) * (180f / (float)Math.PI) - child.shearX) * (float)num5 + (float)num6 - rotation;
+			num21 = ((num21 + num40) * (180f / MathF.PI) - child.shearX) * (float)num5 + (float)num6 - rotation;
 			if (num21 > 180f)
 			{
 				num21 -= 360f;

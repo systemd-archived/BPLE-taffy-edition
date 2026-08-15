@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class INVersionSelector : MonoBehaviour
@@ -10,18 +11,13 @@ public class INVersionSelector : MonoBehaviour
 
 	private void Awake()
 	{
-		try
-		{
-			m_version = 3;
-			m_canvas = base.transform.Find("Canvas")?.GetComponent<Canvas>();
-			m_buttons = GetComponentsInChildren<INVersionButton>(includeInactive: true);
-			base.gameObject.SetActive(false);
-			EnterVersion();
-		}
-		catch (System.Exception e)
-		{
-			Debug.LogError($"[INVersionSelector] Awake failed: {e.Message}");
-		}
+		m_version = -1;
+		m_canvas = base.transform.Find("Canvas").GetComponent<Canvas>();
+		m_buttons = GetComponentsInChildren<INVersionButton>(includeInactive: true);
+		m_canvas.planeDistance = 9f;
+		m_canvas.worldCamera = Object.FindObjectOfType<Camera>();
+		base.transform.Find("Canvas").GetComponent<CanvasGroup>().PlayFadeInAnimation(0.5f, ignoreTimeScale: true)
+			.Forget();
 	}
 
 	private void Update()
@@ -36,12 +32,24 @@ public class INVersionSelector : MonoBehaviour
 			if (Input.GetKeyDown((KeyCode)(49 + i)))
 			{
 				SelectVersion(i);
+				if (i < m_buttons.Length)
+				{
+					m_buttons[i].Select();
+				}
 				EnterVersion();
 				return;
 			}
 		}
-		if (m_version != -1 && Input.GetKeyDown(KeyCode.Return))
+		if (Input.GetKeyDown(KeyCode.Return))
 		{
+			if (m_version == -1)
+			{
+				SelectVersion(0);
+				if (m_buttons.Length > 0)
+				{
+					m_buttons[0].Select();
+				}
+			}
 			EnterVersion();
 			return;
 		}
@@ -69,5 +77,9 @@ public class INVersionSelector : MonoBehaviour
 	public void EnterVersion()
 	{
 		INSettings.Initialize(m_version);
+		foreach (INVersionButton button in m_buttons)
+		{
+			button.interactable = false;
+		}
 	}
 }

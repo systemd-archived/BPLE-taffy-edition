@@ -5,10 +5,10 @@ public class PlayerProgressBar : MonoBehaviour, ICurrencyParticleEffectTarget
 {
 	private enum State
 	{
-		None,
-		Regular,
-		WaitingLevelActive,
-		WaitingLevelInactive
+		None = 0,
+		Regular = 1,
+		WaitingLevelActive = 2,
+		WaitingLevelInactive = 3
 	}
 
 	private static PlayerProgressBar instance;

@@ -6,15 +6,15 @@ public class AdReward : IDisposable
 {
 	private enum State
 	{
-		Loading,
-		WaitingFail,
-		Failed,
-		Ready,
-		Finished,
-		Stalled,
-		Cancelled,
-		WaitingConfirmation,
-		ConfirmationFailed
+		Loading = 0,
+		WaitingFail = 1,
+		Failed = 2,
+		Ready = 3,
+		Finished = 4,
+		Stalled = 5,
+		Cancelled = 6,
+		WaitingConfirmation = 7,
+		ConfirmationFailed = 8
 	}
 
 	public Action OnFailed;

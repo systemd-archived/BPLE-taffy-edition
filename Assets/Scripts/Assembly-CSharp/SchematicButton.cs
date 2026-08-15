@@ -71,7 +71,7 @@ public class SchematicButton : SliderButton
 				Button component = obj.GetComponent<Button>();
 				TextMesh component2 = obj.transform.Find("Number").GetComponent<TextMesh>();
 				string relativePath = (obj.name = "Slot" + i.ToString("00"));
-				component.EventToSend.GetParameters()[0].stringValue = ((UIEvent.Type)(68 + (i - SLOT_COUNT - 1))/*cast due to constrained. prefix*/).ToString();
+				component.EventToSend.GetParameters()[0].stringValue = ((UIEvent.Type)(68 + (i - SLOT_COUNT - 1))/*cast due to .constrained prefix*/).ToString();
 				component2.text = i.ToString();
 				clip.SetCurve(relativePath, typeof(Transform), "localPosition.x", AnimationCurve.Linear(0f, 0f, 0.25f, 0.5f + 2.5f * (float)i));
 				clip.SetCurve(relativePath, typeof(Transform), "localEulerAngles.z", AnimationCurve.Linear(0f, -180f, 0.25f, 0f));

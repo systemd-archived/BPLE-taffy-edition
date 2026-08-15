@@ -199,7 +199,7 @@ public class InGameFlightMenu : WPFMonoBehaviour
 			SetGadgetButtonOrder(WPFMonoBehaviour.levelManager.ContraptionRunning.PartPlacements);
 		}
 		bool flag = WPFMonoBehaviour.levelManager.CurrentGameMode is CakeRaceMode;
-		if ((!Singleton<BuildCustomizationLoader>.Instance.CheatsEnabled || WPFMonoBehaviour.levelManager.m_sandbox) | flag)
+		if (!Singleton<BuildCustomizationLoader>.Instance.CheatsEnabled || WPFMonoBehaviour.levelManager.m_sandbox || flag)
 		{
 			cheatButton1Star.SetActive(value: false);
 			cheatButton3Stars.SetActive(value: false);

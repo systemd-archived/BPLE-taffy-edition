@@ -26,7 +26,7 @@ public class CreditsCluster : MonoBehaviour
 		string[] array = names;
 		foreach (string textContent in array)
 		{
-			num--;
+			num -= 1f;
 			CreateCreditsLine(textContent, new Vector3(0f, num, 0f), localize: false);
 		}
 		return num - 0.5f;

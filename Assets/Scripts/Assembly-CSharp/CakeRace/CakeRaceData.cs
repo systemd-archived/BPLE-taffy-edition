@@ -51,9 +51,9 @@ namespace CakeRace
 			{
 				return false;
 			}
-			string[] array = uniqueIdentifier.Split('_');
+			string[] array = uniqueIdentifier.Split(new char[1] { '_' });
 			string text = array[0];
-			string[] array2 = text.Split('-');
+			string[] array2 = text.Split(new char[1] { '-' });
 			int result = -1;
 			int result2 = -1;
 			int result3 = -1;

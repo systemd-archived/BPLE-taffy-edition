@@ -4,8 +4,8 @@ public class ScreenPlacement : MonoBehaviour
 {
 	public enum Anchor
 	{
-		Left,
-		Right
+		Left = 0,
+		Right = 1
 	}
 
 	public Anchor m_anchor;

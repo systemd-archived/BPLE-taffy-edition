@@ -7,13 +7,13 @@ public class LevelLoadedNotifier : MonoBehaviour
 
 	private void Start()
 	{
-		OnLevelLoaded();
+		LevelLoadedNotifier.OnLevelLoaded();
 		UnityEngine.Object.Destroy(base.gameObject);
 	}
 
 	static LevelLoadedNotifier()
 	{
-		OnLevelLoaded = delegate
+		LevelLoadedNotifier.OnLevelLoaded = delegate
 		{
 		};
 	}

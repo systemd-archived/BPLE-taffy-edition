@@ -2,7 +2,7 @@ namespace Ionic.Zlib
 {
 	public enum CompressionMode
 	{
-		Compress,
-		Decompress
+		Compress = 0,
+		Decompress = 1
 	}
 }

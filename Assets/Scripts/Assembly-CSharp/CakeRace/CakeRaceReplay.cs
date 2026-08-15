@@ -131,7 +131,7 @@ namespace CakeRace
 			string result = "guest";
 			if (!string.IsNullOrEmpty(playerName))
 			{
-				result = ((!playerName.Contains("|")) ? playerName : PlayerName.Split('|')[0]);
+				result = ((!playerName.Contains("|")) ? playerName : PlayerName.Split(new char[1] { '|' })[0]);
 			}
 			return result;
 		}

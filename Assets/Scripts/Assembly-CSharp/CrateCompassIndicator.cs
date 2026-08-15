@@ -92,11 +92,11 @@ public class CrateCompassIndicator : WPFMonoBehaviour
 
 	private void DrawMeter(float ratio)
 	{
-		int num = (int)(ratio * 2f * (float)Math.PI / ((float)Math.PI / 36f)) + 1;
+		int num = (int)(ratio * 2f * MathF.PI / (MathF.PI / 36f)) + 1;
 		m_meter.SetVertexCount(num);
 		for (int i = 0; i < num; i++)
 		{
-			float f = (float)Math.PI / 2f - (float)i * ((float)Math.PI / 36f);
+			float f = MathF.PI / 2f - (float)i * (MathF.PI / 36f);
 			float x = 0.9f * Mathf.Cos(f);
 			float y = 0.9f * Mathf.Sin(f);
 			m_meter.SetPosition(i, new Vector3(x, y));

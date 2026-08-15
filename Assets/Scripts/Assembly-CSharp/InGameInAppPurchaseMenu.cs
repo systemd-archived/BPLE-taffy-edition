@@ -23,19 +23,19 @@ public class InGameInAppPurchaseMenu : MonoBehaviour
 
 	private void OnCloseFbLikeDialog()
 	{
-		if (onClose != null)
+		if (this.onClose != null)
 		{
-			onClose();
-			onClose = null;
+			this.onClose();
+			this.onClose = null;
 		}
 	}
 
 	private void OnCloseDialog()
 	{
-		if (onClose != null)
+		if (this.onClose != null)
 		{
-			onClose();
-			onClose = null;
+			this.onClose();
+			this.onClose = null;
 		}
 	}
 
@@ -119,10 +119,10 @@ public class InGameInAppPurchaseMenu : MonoBehaviour
 		{
 			m_dialog.Close();
 		}
-		if (!visible && onClose != null)
+		if (!visible && this.onClose != null)
 		{
-			onClose();
-			onClose = null;
+			this.onClose();
+			this.onClose = null;
 		}
 	}
 }

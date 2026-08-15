@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Innovation;
 using Newtonsoft.Json;
+using UnityEngine;
 
 [Serializable]
 public class INUserSettings

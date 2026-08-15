@@ -145,7 +145,7 @@ namespace Spine.Unity
 			add
 			{
 				generateMeshOverride += value;
-				if (disableRenderingOnOverride && generateMeshOverride != null)
+				if (disableRenderingOnOverride && this.generateMeshOverride != null)
 				{
 					Initialize(overwrite: false);
 					meshRenderer.enabled = false;
@@ -154,7 +154,7 @@ namespace Spine.Unity
 			remove
 			{
 				generateMeshOverride -= value;
-				if (disableRenderingOnOverride && generateMeshOverride == null)
+				if (disableRenderingOnOverride && this.generateMeshOverride == null)
 				{
 					Initialize(overwrite: false);
 					meshRenderer.enabled = true;
@@ -240,7 +240,7 @@ namespace Spine.Unity
 
 		public virtual void LateUpdate()
 		{
-			if (!valid || (!meshRenderer.enabled && generateMeshOverride == null))
+			if (!valid || (!meshRenderer.enabled && this.generateMeshOverride == null))
 			{
 				return;
 			}
@@ -299,7 +299,7 @@ namespace Spine.Unity
 					value = (Material)((AtlasRegion)rendererObject).page.rendererObject;
 				}
 				bool flag3 = separatorSlots.Count > 0 && separatorSlots.Contains(slot);
-				if (num > 0 && ((material.GetInstanceID() != value.GetInstanceID()) | flag3))
+				if (num > 0 && (material.GetInstanceID() != value.GetInstanceID() || flag3))
 				{
 					submeshInstructions.Add(new SubmeshInstruction
 					{
@@ -350,9 +350,9 @@ namespace Spine.Unity
 					}
 				}
 			}
-			if (generateMeshOverride != null)
+			if (this.generateMeshOverride != null)
 			{
-				generateMeshOverride(instruction);
+				this.generateMeshOverride(instruction);
 				if (disableRenderingOnOverride)
 				{
 					return;

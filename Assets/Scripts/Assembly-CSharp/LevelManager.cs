@@ -31,30 +31,30 @@ public sealed class LevelManager : WPFMonoBehaviour
 
 	public enum GameState
 	{
-		Undefined,
-		Building,
-		Preview,
-		PreviewMoving,
-		PreviewWhileBuilding,
-		PreviewWhileRunning,
-		Running,
-		Continue,
-		Completed,
-		PausedWhileRunning,
-		PausedWhileBuilding,
-		IngamePurchase,
-		AutoBuilding,
-		TutorialBook,
-		ShowingUnlockedParts,
-		Purchasing,
-		Snapshot,
-		MechanicInfoScreen,
-		MechanicGiftScreen,
-		SuperAutoBuilding,
-		CustomizingPart,
-		LootCrateOpening,
-		CakeRaceExploding,
-		CakeRaceCompleted
+		Undefined = 0,
+		Building = 1,
+		Preview = 2,
+		PreviewMoving = 3,
+		PreviewWhileBuilding = 4,
+		PreviewWhileRunning = 5,
+		Running = 6,
+		Continue = 7,
+		Completed = 8,
+		PausedWhileRunning = 9,
+		PausedWhileBuilding = 10,
+		IngamePurchase = 11,
+		AutoBuilding = 12,
+		TutorialBook = 13,
+		ShowingUnlockedParts = 14,
+		Purchasing = 15,
+		Snapshot = 16,
+		MechanicInfoScreen = 17,
+		MechanicGiftScreen = 18,
+		SuperAutoBuilding = 19,
+		CustomizingPart = 20,
+		LootCrateOpening = 21,
+		CakeRaceExploding = 22,
+		CakeRaceCompleted = 23
 	}
 
 	private struct DessertPlacePair
@@ -1175,7 +1175,7 @@ public sealed class LevelManager : WPFMonoBehaviour
 		{
 			return false;
 		}
-		string[] array = text.Split(';');
+		string[] array = text.Split(new char[1] { ';' });
 		if (array == null || array.Length == 0)
 		{
 			return false;
@@ -1368,7 +1368,7 @@ public sealed class LevelManager : WPFMonoBehaviour
 			constructionOffset.z = 0f;
 			Vector3 center = levelStart.transform.position + constructionOffset;
 			float num = 1.3333334f;
-			float num2 = Mathf.Tan(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().fieldOfView * ((float)Math.PI / 180f)) * Mathf.Abs(m_constructionOffset.z);
+			float num2 = Mathf.Tan(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().fieldOfView * (MathF.PI / 180f)) * Mathf.Abs(m_constructionOffset.z);
 			Vector3 size = new Vector3(num2, num2 / num, 0f);
 			Gizmos.DrawWireCube(center, size);
 		}
@@ -1379,7 +1379,7 @@ public sealed class LevelManager : WPFMonoBehaviour
 			previewOffset.z = 0f;
 			Vector3 center2 = goalPosition.transform.position + previewOffset;
 			float num3 = 1.3333334f;
-			float num4 = Mathf.Tan(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().fieldOfView * ((float)Math.PI / 180f)) * Mathf.Abs(m_previewOffset.z);
+			float num4 = Mathf.Tan(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().fieldOfView * (MathF.PI / 180f)) * Mathf.Abs(m_previewOffset.z);
 			Vector3 size2 = new Vector3(num4, num4 / num3, 0f);
 			Gizmos.DrawWireCube(center2, size2);
 		}
@@ -1417,7 +1417,7 @@ public sealed class LevelManager : WPFMonoBehaviour
 	{
 		m_previewTime += Time.deltaTime * m_previewSpeed;
 		bool flag = Input.touchCount > 0 || Input.GetMouseButtonDown(0);
-		if ((m_previewTime > m_previewWaitTime) | flag)
+		if (m_previewTime > m_previewWaitTime || flag)
 		{
 			SetGameState(GameState.PreviewMoving);
 		}

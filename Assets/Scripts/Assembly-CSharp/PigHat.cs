@@ -6,9 +6,9 @@ public class PigHat : MonoBehaviour
 {
 	private enum State
 	{
-		Inactive,
-		Moving,
-		Detaching
+		Inactive = 0,
+		Moving = 1,
+		Detaching = 2
 	}
 
 	public float m_speedThreshold = 1f;

@@ -9,9 +9,9 @@ namespace Spine.Unity
 	{
 		public enum MixMode
 		{
-			AlwaysMix,
-			MixNext,
-			SpineStyle
+			AlwaysMix = 0,
+			MixNext = 1,
+			SpineStyle = 2
 		}
 
 		public MixMode[] layerMixModes = new MixMode[0];
@@ -200,19 +200,19 @@ namespace Spine.Unity
 					}
 				}
 			}
-			if (_UpdateLocal != null)
+			if (this._UpdateLocal != null)
 			{
-				_UpdateLocal(this);
+				this._UpdateLocal(this);
 			}
 			skeleton.UpdateWorldTransform();
-			if (_UpdateWorld != null)
+			if (this._UpdateWorld != null)
 			{
-				_UpdateWorld(this);
+				this._UpdateWorld(this);
 				skeleton.UpdateWorldTransform();
 			}
-			if (_UpdateComplete != null)
+			if (this._UpdateComplete != null)
 			{
-				_UpdateComplete(this);
+				this._UpdateComplete(this);
 			}
 			lastTime = Time.time;
 		}

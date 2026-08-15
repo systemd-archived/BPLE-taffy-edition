@@ -6,8 +6,8 @@ namespace TMPro.Examples
 	{
 		public enum objectType
 		{
-			TextMeshPro,
-			TextMeshProUGUI
+			TextMeshPro = 0,
+			TextMeshProUGUI = 1
 		}
 
 		public objectType ObjectType;

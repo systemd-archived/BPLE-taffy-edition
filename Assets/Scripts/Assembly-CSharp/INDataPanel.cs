@@ -13,23 +13,18 @@ public class INDataPanel : MonoBehaviour
 
 		public UITextLocale GroupNameLocale { get; private set; }
 
-		public List<DataElement> Elements { get; private set; }
+		public List<DataItem> Items { get; private set; }
 
 		public DataGroup(GameObject gameObject)
-			: this(gameObject, new List<DataElement>())
-		{
-		}
-
-		public DataGroup(GameObject gameObject, List<DataElement> elements)
 		{
 			GameObject = gameObject;
 			GroupName = gameObject.transform.Find("GroupName").GetComponent<Text>();
 			GroupNameLocale = GroupName.GetComponent<UITextLocale>();
-			Elements = elements;
+			Items = new List<DataItem>();
 		}
 	}
 
-	private class DataElement
+	private class DataItem
 	{
 		public GameObject GameObject { get; private set; }
 
@@ -41,7 +36,7 @@ public class INDataPanel : MonoBehaviour
 
 		public Func<string> Getter { get; private set; }
 
-		public DataElement(GameObject gameObject, Func<string> getter)
+		public DataItem(GameObject gameObject, Func<string> getter)
 		{
 			GameObject = gameObject;
 			Name = gameObject.transform.Find("Name").GetComponent<Text>();
@@ -63,7 +58,7 @@ public class INDataPanel : MonoBehaviour
 	private GameObject m_content;
 
 	[SerializeField]
-	private GameObject m_dataElementTemplate;
+	private GameObject m_dataItemTemplate;
 
 	[SerializeField]
 	private GameObject m_dataGroupTemplate;
@@ -79,31 +74,34 @@ public class INDataPanel : MonoBehaviour
 		Instance = this;
 		m_dataGroups = new List<DataGroup>();
 		m_detector = UnityEngine.Object.Instantiate(INUnity.LoadGameObject("INDataDetector")).GetComponent<INDataDetector>();
+	}
+
+	private void Start()
+	{
 		DataGroup dataGroup = GenerateDataGroup(0, "DataPanel_TimeData");
-		GenerateDataElement(dataGroup, 0, "DataPanel_Time", () => DateTime.Now.ToString("s"));
-		GenerateDataElement(dataGroup, 1, "DataPanel_RunningTime", () => Time.realtimeSinceStartup.ToString("F2"));
+		GenerateDataItem(dataGroup, 0, "DataPanel_Time", () => DateTime.Now.ToString("s"));
+		GenerateDataItem(dataGroup, 1, "DataPanel_RunningTime", () => Time.realtimeSinceStartup.ToString("F2"));
 		DataGroup dataGroup2 = GenerateDataGroup(1, "DataPanel_PerformanceData");
-		GenerateDataElement(dataGroup2, 0, "DataPanel_FPS", () => m_detector.FPS.ToString("F2"));
-		GenerateDataElement(dataGroup2, 1, "DataPanel_FixedFPS", () => m_detector.FixedFPS.ToString("F2"));
-		GenerateDataElement(dataGroup2, 2, "DataPanel_AllocatedManagedHeapSize", () => m_detector.AllocatedManagedHeapSize.ToString("F2") + " MB");
-		GenerateDataElement(dataGroup2, 3, "DataPanel_ReservedManagedHeapSize", () => m_detector.ReservedManagedHeapSize.ToString("F2") + " MB");
-		GenerateDataElement(dataGroup2, 4, "DataPanel_TotalAllocatedMemorySize", () => m_detector.TotalAllocatedMemorySize.ToString("F2") + " MB");
-		GenerateDataElement(dataGroup2, 5, "DataPanel_TotalReservedMemorySize", () => m_detector.TotalReservedMemorySize.ToString("F2") + " MB");
+		GenerateDataItem(dataGroup2, 0, "DataPanel_FPS", () => m_detector.FPS.ToString("F2"));
+		GenerateDataItem(dataGroup2, 1, "DataPanel_FixedFPS", () => m_detector.FixedFPS.ToString("F2"));
+		GenerateDataItem(dataGroup2, 2, "DataPanel_AllocatedManagedHeapSize", () => m_detector.AllocatedManagedHeapSize.ToString("F2") + " MB");
+		GenerateDataItem(dataGroup2, 3, "DataPanel_ReservedManagedHeapSize", () => m_detector.ReservedManagedHeapSize.ToString("F2") + " MB");
+		GenerateDataItem(dataGroup2, 4, "DataPanel_TotalAllocatedMemorySize", () => m_detector.TotalAllocatedMemorySize.ToString("F2") + " MB");
+		GenerateDataItem(dataGroup2, 5, "DataPanel_TotalReservedMemorySize", () => m_detector.TotalReservedMemorySize.ToString("F2") + " MB");
 		DataGroup dataGroup3 = GenerateDataGroup(2, "DataPanel_DeviceData");
-		GenerateDataElement(dataGroup3, 0, "DataPanel_DeviceModel", () => SystemInfo.deviceModel);
-		GenerateDataElement(dataGroup3, 1, "DataPanel_DeviceName", () => SystemInfo.deviceName);
-		GenerateDataElement(dataGroup3, 2, "DataPanel_DeviceType", () => SystemInfo.deviceType.ToString());
-		GenerateDataElement(dataGroup3, 3, "DataPanel_OperatingSystem", () => SystemInfo.operatingSystem);
-		GenerateDataElement(dataGroup3, 4, "DataPanel_ProcessorType", () => SystemInfo.processorType);
-		GenerateDataElement(dataGroup3, 5, "DataPanel_ProcessorFrequency", () => SystemInfo.processorFrequency + " MHz");
-		GenerateDataElement(dataGroup3, 6, "DataPanel_ProcessorCount", () => SystemInfo.processorCount.ToString());
-		GenerateDataElement(dataGroup3, 7, "DataPanel_GraphicsDeviceName", () => SystemInfo.graphicsDeviceName);
-		GenerateDataElement(dataGroup3, 8, "DataPanel_GraphicsDeviceType", () => SystemInfo.graphicsDeviceType.ToString());
-		GenerateDataElement(dataGroup3, 9, "DataPanel_GraphicsMemorySize", () => SystemInfo.graphicsMemorySize + " MB");
-		GenerateDataElement(dataGroup3, 10, "DataPanel_SystemMemorySize", () => SystemInfo.systemMemorySize + " MB");
-		GenerateDataElement(dataGroup3, 11, "DataPanel_BatteryLevel", () => SystemInfo.batteryLevel.ToString("P"));
-		GenerateDataElement(dataGroup3, 12, "DataPanel_BatteryStatus", () => SystemInfo.batteryStatus.ToString());
-		SetLayout();
+		GenerateDataItem(dataGroup3, 0, "DataPanel_DeviceModel", () => SystemInfo.deviceModel);
+		GenerateDataItem(dataGroup3, 1, "DataPanel_DeviceName", () => SystemInfo.deviceName);
+		GenerateDataItem(dataGroup3, 2, "DataPanel_DeviceType", () => SystemInfo.deviceType.ToString());
+		GenerateDataItem(dataGroup3, 3, "DataPanel_OperatingSystem", () => SystemInfo.operatingSystem);
+		GenerateDataItem(dataGroup3, 4, "DataPanel_ProcessorType", () => SystemInfo.processorType);
+		GenerateDataItem(dataGroup3, 5, "DataPanel_ProcessorFrequency", () => SystemInfo.processorFrequency + " MHz");
+		GenerateDataItem(dataGroup3, 6, "DataPanel_ProcessorCount", () => SystemInfo.processorCount.ToString());
+		GenerateDataItem(dataGroup3, 7, "DataPanel_GraphicsDeviceName", () => SystemInfo.graphicsDeviceName);
+		GenerateDataItem(dataGroup3, 8, "DataPanel_GraphicsDeviceType", () => SystemInfo.graphicsDeviceType.ToString());
+		GenerateDataItem(dataGroup3, 9, "DataPanel_GraphicsMemorySize", () => SystemInfo.graphicsMemorySize + " MB");
+		GenerateDataItem(dataGroup3, 10, "DataPanel_SystemMemorySize", () => SystemInfo.systemMemorySize + " MB");
+		GenerateDataItem(dataGroup3, 11, "DataPanel_BatteryLevel", () => SystemInfo.batteryLevel.ToString("P"));
+		GenerateDataItem(dataGroup3, 12, "DataPanel_BatteryStatus", () => SystemInfo.batteryStatus.ToString());
 	}
 
 	private DataGroup GenerateDataGroup(int index, string groupName)
@@ -119,50 +117,27 @@ public class INDataPanel : MonoBehaviour
 		return dataGroup;
 	}
 
-	private DataElement GenerateDataElement(DataGroup dataGroup, int index, string name, Func<string> getter)
+	private DataItem GenerateDataItem(DataGroup dataGroup, int index, string name, Func<string> getter)
 	{
-		GameObject obj = UnityEngine.Object.Instantiate(m_dataElementTemplate);
+		GameObject obj = UnityEngine.Object.Instantiate(m_dataItemTemplate);
 		obj.SetActive(value: true);
-		obj.name = "DataElement_" + index;
+		obj.name = "DataItem_" + index;
 		obj.transform.SetParent(dataGroup.GameObject.transform, worldPositionStays: false);
-		DataElement dataElement = new DataElement(obj, getter);
-		dataElement.NameLocale.ID = name;
-		dataElement.NameLocale.UpdateText();
-		dataElement.Value.text = getter();
-		dataGroup.Elements.Add(dataElement);
-		return dataElement;
-	}
-
-	private void SetLayout()
-	{
-		float num = 100f;
-		foreach (DataGroup dataGroup in m_dataGroups)
-		{
-			float num2 = 0f;
-			RectTransform obj = (RectTransform)dataGroup.GameObject.transform;
-			obj.anchoredPosition = new Vector2(obj.anchoredPosition.x, 0f - num);
-			num += 100f;
-			num2 += 100f;
-			foreach (DataElement element in dataGroup.Elements)
-			{
-				RectTransform obj2 = (RectTransform)element.GameObject.transform;
-				obj2.anchoredPosition = new Vector2(obj2.anchoredPosition.x, 0f - num2);
-				num += 100f;
-				num2 += 100f;
-			}
-		}
-		RectTransform rectTransform = (RectTransform)m_content.transform;
-		Vector2 sizeDelta = new Vector2(rectTransform.sizeDelta.x, num);
-		rectTransform.sizeDelta = sizeDelta;
+		DataItem dataItem = new DataItem(obj, getter);
+		dataItem.NameLocale.ID = name;
+		dataItem.NameLocale.UpdateText();
+		dataItem.Value.text = getter();
+		dataGroup.Items.Add(dataItem);
+		return dataItem;
 	}
 
 	private void Update()
 	{
 		foreach (DataGroup dataGroup in m_dataGroups)
 		{
-			foreach (DataElement element in dataGroup.Elements)
+			foreach (DataItem item in dataGroup.Items)
 			{
-				element.UpdateValue();
+				item.UpdateValue();
 			}
 		}
 	}

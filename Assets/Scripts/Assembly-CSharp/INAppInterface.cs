@@ -70,13 +70,18 @@ public class INAppInterface : MonoBehaviour
 			GameObject obj = UnityEngine.Object.Instantiate(element);
 			obj.name = element.name;
 			obj.transform.SetParent(m_main.transform, worldPositionStays: false);
-			obj.SetActive(value: false);
+			obj.SetChildrenActive(active: false);
 			RectTransform obj2 = (RectTransform)obj.transform;
 			obj2.anchorMin = new Vector2(0f, 0f);
 			obj2.anchorMax = new Vector2(1f, 1f);
 			obj2.anchoredPosition = Vector2.zero;
 			obj2.sizeDelta = Vector2.zero;
 		}
+	}
+
+	private void Start()
+	{
+		m_panel.gameObject.SetActive(value: false);
 	}
 
 	public GameObject FindElement(string name)
@@ -129,7 +134,7 @@ public class INAppInterface : MonoBehaviour
 		if (m_enabled)
 		{
 			INContraption.Instance?.OnInterfaceEnabled();
-			AppInterfaceEnabled?.Invoke();
+			this.AppInterfaceEnabled?.Invoke();
 			m_paused = GameTime.IsPaused();
 			if (!m_paused)
 			{
@@ -139,7 +144,7 @@ public class INAppInterface : MonoBehaviour
 		else
 		{
 			INContraption.Instance?.OnInterfaceDisabled();
-			AppInterfaceDisabled?.Invoke();
+			this.AppInterfaceDisabled?.Invoke();
 			if (!m_paused)
 			{
 				GameTime.Pause(pause: false);

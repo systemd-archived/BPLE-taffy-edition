@@ -28,7 +28,7 @@ public class WeldJoint : JointBase
 		m_anchor = anchor;
 		m_localAnchorA = Vector.InvTransform2(anchor - (Vector2)bodyA.position, bodyA.rotation.ToDirection());
 		m_localAnchorB = Vector.InvTransform2(anchor - (Vector2)bodyB.position, bodyB.rotation.ToDirection());
-		m_angle = (float)Math.PI / 180f * (bodyB.rotation.eulerAngles.z - bodyA.rotation.eulerAngles.z);
+		m_angle = MathF.PI / 180f * (bodyB.rotation.eulerAngles.z - bodyA.rotation.eulerAngles.z);
 	}
 
 	public void Initialize()
@@ -125,11 +125,11 @@ public class WeldJoint : JointBase
 		m_matrix.M33 = invIA + invIB;
 		Vector2 vector6 = m_bodyA.position;
 		Vector2 vector7 = m_bodyB.position;
-		Vector3 vector8 = (float)Math.PI / 180f * m_bodyA.rotation.eulerAngles;
-		Vector3 vector9 = (float)Math.PI / 180f * m_bodyB.rotation.eulerAngles;
+		Vector3 vector8 = MathF.PI / 180f * m_bodyA.rotation.eulerAngles;
+		Vector3 vector9 = MathF.PI / 180f * m_bodyB.rotation.eulerAngles;
 		Vector3 vector10 = vector7 + vector2 - (vector6 + vector);
 		vector10.z = vector9.z - vector8.z - m_angle;
-		vector10.z = ((vector10.z >= (float)Math.PI) ? (vector10.z - (float)Math.PI * 2f) : ((vector10.z <= -(float)Math.PI) ? (vector10.z + (float)Math.PI * 2f) : vector10.z));
+		vector10.z = ((vector10.z >= MathF.PI) ? (vector10.z - MathF.PI * 2f) : ((vector10.z <= -MathF.PI) ? (vector10.z + MathF.PI * 2f) : vector10.z));
 		Vector3 vector11 = Matrix3x3.Solve(m_matrix, -vector10);
 		Vector2 vector12 = vector11;
 		if (!m_bodyA.IsFixed())

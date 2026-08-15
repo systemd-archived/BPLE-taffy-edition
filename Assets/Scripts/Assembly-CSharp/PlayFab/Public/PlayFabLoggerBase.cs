@@ -37,10 +37,10 @@ namespace PlayFab.Public
 
 		protected PlayFabLoggerBase()
 		{
-			string text = new PlayFabDataGatherer().GenerateReport();
+			string item = new PlayFabDataGatherer().GenerateReport();
 			lock (LogMessageQueue)
 			{
-				LogMessageQueue.Enqueue(text);
+				LogMessageQueue.Enqueue(item);
 			}
 		}
 
@@ -131,7 +131,7 @@ namespace PlayFab.Public
 				{
 					_threadKillTime = DateTime.UtcNow + _threadKillTimeout;
 				}
-				Queue<string> val = new Queue<string>();
+				Queue<string> queue = new Queue<string>();
 				bool flag;
 				do
 				{
@@ -140,13 +140,13 @@ namespace PlayFab.Public
 						_pendingLogsCount = LogMessageQueue.Count;
 						while (LogMessageQueue.Count > 0)
 						{
-							val.Enqueue(LogMessageQueue.Dequeue());
+							queue.Enqueue(LogMessageQueue.Dequeue());
 						}
 					}
 					BeginUploadLog();
-					while (val.Count > 0)
+					while (queue.Count > 0)
 					{
-						UploadLog(val.Dequeue());
+						UploadLog(queue.Dequeue());
 					}
 					EndUploadLog();
 					lock (_threadLock)

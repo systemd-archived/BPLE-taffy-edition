@@ -2,8 +2,8 @@ namespace Spine
 {
 	public enum RotateMode
 	{
-		Tangent,
-		Chain,
-		ChainScale
+		Tangent = 0,
+		Chain = 1,
+		ChainScale = 2
 	}
 }

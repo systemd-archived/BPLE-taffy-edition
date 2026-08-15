@@ -80,12 +80,6 @@ public class GuiManager : Singleton<GuiManager>
 
 	private int m_originalResolutionHeight;
 
-	private int m_originalResolutionWidthDescktop;
-
-	private int m_originalResolutionHeightDescktop;
-
-	private bool m_startedInFullScreen;
-
 	public static int PointerCount => Singleton<GuiManager>.instance.m_pointers.Count;
 
 	public static int TouchCount => Singleton<GuiManager>.instance.m_touchCount;
@@ -182,19 +176,6 @@ public class GuiManager : Singleton<GuiManager>
 			m_touchIds.Add(-1);
 			m_focusData.Add(new FocusData());
 			m_pointers.Add(new Pointer());
-		}
-		m_originalResolutionWidth = Screen.width;
-		m_originalResolutionHeight = Screen.height;
-		m_startedInFullScreen = Screen.fullScreen;
-		if (DeviceInfo.ActiveDeviceFamily == DeviceInfo.DeviceFamily.Pc)
-		{
-			m_originalResolutionHeightDescktop = Screen.resolutions[Screen.resolutions.Length - 1].height;
-			m_originalResolutionWidthDescktop = Screen.resolutions[Screen.resolutions.Length - 1].width;
-		}
-		else
-		{
-			m_originalResolutionHeightDescktop = Screen.currentResolution.height;
-			m_originalResolutionWidthDescktop = Screen.currentResolution.width;
 		}
 	}
 
@@ -313,26 +294,9 @@ public class GuiManager : Singleton<GuiManager>
 		{
 			return;
 		}
-		if (DeviceInfo.UsesTouchInput)
-		{
-			TouchInput();
-		}
-		else
-		{
-			MouseInput();
-		}
+		TouchInput();
+		MouseInput();
 		HandleDoubleClick();
-		if (DeviceInfo.ActiveDeviceFamily == DeviceInfo.DeviceFamily.Pc)
-		{
-			if (!Screen.fullScreen && (Screen.height != m_originalResolutionHeight || Screen.width != m_originalResolutionWidth))
-			{
-				Screen.SetResolution(m_originalResolutionWidth, m_originalResolutionHeight, fullscreen: false);
-			}
-			if (Screen.fullScreen && (Screen.height != m_originalResolutionHeightDescktop || Screen.width != m_originalResolutionWidthDescktop))
-			{
-				Screen.SetResolution(m_originalResolutionWidthDescktop, m_originalResolutionHeightDescktop, fullscreen: true);
-			}
-		}
 	}
 
 	private void HandleDoubleClick()
@@ -391,7 +355,7 @@ public class GuiManager : Singleton<GuiManager>
 		}
 		pointer.widget = widget;
 		pointer.doubleClick = false;
-		if ((bool)widget & pointerDown)
+		if ((bool)widget && pointerDown)
 		{
 			pointer.touchUsed = true;
 		}
@@ -517,7 +481,7 @@ public class GuiManager : Singleton<GuiManager>
 
 	private void HandleKeyListenerkeyPressed(KeyCode obj)
 	{
-		if (!INSettings.GetBool(INFeature.InputSettings) && DeviceInfo.IsDesktop && obj == KeyCode.F)
+		if (!INSettings.GetBool(INFeature.InputSettings) && obj == KeyCode.F)
 		{
 			SetFullscreen();
 		}
@@ -529,28 +493,13 @@ public class GuiManager : Singleton<GuiManager>
 		{
 			return;
 		}
-		if (!Screen.fullScreen)
-		{
-			if (m_startedInFullScreen)
-			{
-				Screen.SetResolution(m_originalResolutionWidth, m_originalResolutionHeight, fullscreen: true);
-			}
-			else
-			{
-				Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, fullscreen: true);
-			}
-		}
-		else
+		if (Screen.fullScreen)
 		{
 			Screen.SetResolution(m_originalResolutionWidth, m_originalResolutionHeight, fullscreen: false);
+			return;
 		}
-	}
-
-	private void OnApplicationFocus(bool focus)
-	{
-		if (((Application.platform == RuntimePlatform.OSXPlayer) & focus) && Screen.fullScreen && (Screen.currentResolution.width != Screen.width || Screen.currentResolution.height != Screen.height))
-		{
-			Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, fullscreen: true);
-		}
+		Resolution currentResolution = Screen.currentResolution;
+		(m_originalResolutionWidth, m_originalResolutionHeight) = (Screen.width, Screen.height);
+		Screen.SetResolution(currentResolution.width, currentResolution.height, fullscreen: true);
 	}
 }

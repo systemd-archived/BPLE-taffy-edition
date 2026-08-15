@@ -9,11 +9,11 @@ public class CakeRaceHUD : WPFMonoBehaviour
 {
 	public enum TimerMode
 	{
-		Intro,
-		Normal,
-		Intermediate,
-		Critical,
-		TimesUp
+		Intro = 0,
+		Normal = 1,
+		Intermediate = 2,
+		Critical = 3,
+		TimesUp = 4
 	}
 
 	[Serializable]
@@ -149,7 +149,7 @@ public class CakeRaceHUD : WPFMonoBehaviour
 		string result = "guest";
 		if (!string.IsNullOrEmpty(playerName))
 		{
-			result = ((!playerName.Contains("|")) ? playerName : HatchManager.CurrentPlayer.PlayFabDisplayName.Split('|')[0]);
+			result = ((!playerName.Contains("|")) ? playerName : HatchManager.CurrentPlayer.PlayFabDisplayName.Split(new char[1] { '|' })[0]);
 		}
 		return result;
 	}

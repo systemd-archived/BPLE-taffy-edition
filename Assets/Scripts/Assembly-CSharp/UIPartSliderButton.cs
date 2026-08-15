@@ -30,7 +30,7 @@ public class UIPartSliderButton : UIPartButton
 			TimeInterval = timeInterval;
 		}
 
-		public bool IsInRange(float value)
+		public bool Contains(float value)
 		{
 			if (value >= Min)
 			{
@@ -65,9 +65,9 @@ public class UIPartSliderButton : UIPartButton
 
 	private enum SubButtonType
 	{
-		Up,
-		Down,
-		Reset
+		Up = 0,
+		Down = 1,
+		Reset = 2
 	}
 
 	private UIButton m_upButton;
@@ -212,8 +212,8 @@ public class UIPartSliderButton : UIPartButton
 	{
 		m_range.Value = value;
 		m_text.text = m_range.Value.ToString("0.##");
-		float num = (m_range.Value - m_range.Min) / (m_range.Max - m_range.Min);
-		((RectTransform)m_verticalFill.transform).sizeDelta = new Vector2(m_fillSize.x, m_fillSize.y * Math.Clamp(num, 0f, 1f));
+		float value2 = (m_range.Value - m_range.Min) / (m_range.Max - m_range.Min);
+		((RectTransform)m_verticalFill.transform).sizeDelta = new Vector2(m_fillSize.x, m_fillSize.y * Math.Clamp(value2, 0f, 1f));
 	}
 
 	public void SetExpanded(bool expanded)
@@ -267,12 +267,12 @@ public class UIPartSliderButton : UIPartButton
 		if (!(Math.Abs(m_range.Step) < 1E-05f))
 		{
 			int num = (int)MathF.Round(m_range.Value / m_range.Step);
-			int num2 = (int)MathF.Ceiling(m_range.Min / m_range.Step);
-			int num3 = (int)MathF.Floor(m_range.Max / m_range.Step);
-			float num4 = (float)Math.Clamp(num + times, num2, num3) * m_range.Step;
-			if (num4 != m_range.Value)
+			int min = (int)MathF.Ceiling(m_range.Min / m_range.Step);
+			int max = (int)MathF.Floor(m_range.Max / m_range.Step);
+			float num2 = (float)Math.Clamp(num + times, min, max) * m_range.Step;
+			if (num2 != m_range.Value)
 			{
-				SetValue(num4);
+				SetValue(num2);
 				OnTriggered();
 			}
 		}

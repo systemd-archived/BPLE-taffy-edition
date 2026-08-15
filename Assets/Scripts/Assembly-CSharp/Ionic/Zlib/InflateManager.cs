@@ -4,20 +4,20 @@ namespace Ionic.Zlib
 	{
 		private enum InflateManagerMode
 		{
-			METHOD,
-			FLAG,
-			DICT4,
-			DICT3,
-			DICT2,
-			DICT1,
-			DICT0,
-			BLOCKS,
-			CHECK4,
-			CHECK3,
-			CHECK2,
-			CHECK1,
-			DONE,
-			BAD
+			METHOD = 0,
+			FLAG = 1,
+			DICT4 = 2,
+			DICT3 = 3,
+			DICT2 = 4,
+			DICT1 = 5,
+			DICT0 = 6,
+			BLOCKS = 7,
+			CHECK4 = 8,
+			CHECK3 = 9,
+			CHECK2 = 10,
+			CHECK1 = 11,
+			DONE = 12,
+			BAD = 13
 		}
 
 		private const int PRESET_DICT = 32;

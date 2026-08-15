@@ -128,7 +128,7 @@ public class TextMeshHelper : MonoBehaviour
 						flag = false;
 					}
 				}
-				if (text2.Contains("/><quad") & flag2)
+				if (text2.Contains("/><quad") && flag2)
 				{
 					stringBuilder.Append(text2.Replace("><", ">\n<"));
 					flag2 = false;

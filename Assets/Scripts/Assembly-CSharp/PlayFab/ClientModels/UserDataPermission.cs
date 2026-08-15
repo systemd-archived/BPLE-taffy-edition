@@ -2,7 +2,7 @@ namespace PlayFab.ClientModels
 {
 	public enum UserDataPermission
 	{
-		Private,
-		Public
+		Private = 0,
+		Public = 1
 	}
 }

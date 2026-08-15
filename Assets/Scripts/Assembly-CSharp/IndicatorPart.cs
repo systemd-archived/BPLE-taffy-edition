@@ -5,8 +5,8 @@ public class IndicatorPart : ElectricalPart
 {
 	private enum IndicatorType
 	{
-		Ammeter,
-		Voltmeter
+		Ammeter = 0,
+		Voltmeter = 1
 	}
 
 	[SerializeField]

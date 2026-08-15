@@ -8,9 +8,9 @@ public class AudioManager : Singleton<AudioManager>
 
 	public enum AudioMaterial
 	{
-		None,
-		Wood,
-		Metal
+		None = 0,
+		Wood = 1,
+		Metal = 2
 	}
 
 	private class CombinedLoopingEffect
@@ -20,10 +20,6 @@ public class AudioManager : Singleton<AudioManager>
 		public List<GameObject> sources = new List<GameObject>();
 
 		public GameObject activeSound;
-
-		private Transform m_cameraTransform;
-
-		private bool m_cameraCached;
 
 		public CombinedLoopingEffect(AudioSource prefab)
 		{
@@ -47,30 +43,16 @@ public class AudioManager : Singleton<AudioManager>
 			Update();
 		}
 
-		private void EnsureCameraCached()
-		{
-			if (!m_cameraCached || m_cameraTransform == null)
-			{
-				GameObject go = GameObject.FindGameObjectWithTag("MainCamera");
-				if (go != null)
-				{
-					m_cameraTransform = go.transform;
-				}
-				m_cameraCached = true;
-			}
-		}
-
 		public void Update()
 		{
-			EnsureCameraCached();
-			if (m_cameraTransform == null)
-			{
-				m_cameraCached = false;
-				return;
-			}
 			GameObject gameObject = null;
 			float num = 10000f;
-			Vector3 position = m_cameraTransform.position;
+			GameObject gameObject2 = GameObject.FindGameObjectWithTag("MainCamera");
+			if (gameObject2 == null)
+			{
+				return;
+			}
+			Vector3 position = gameObject2.transform.position;
 			bool flag = false;
 			for (int i = 0; i < sources.Count; i++)
 			{
@@ -564,9 +546,9 @@ public class AudioManager : Singleton<AudioManager>
 		MuteSounds(active3dOneShotSounds, audioMuted);
 		MuteSounds(m_activeMusic, audioMuted);
 		SaveAudioParams();
-		if (onAudioMuted != null)
+		if (AudioManager.onAudioMuted != null)
 		{
-			onAudioMuted(audioMuted);
+			AudioManager.onAudioMuted(audioMuted);
 		}
 	}
 

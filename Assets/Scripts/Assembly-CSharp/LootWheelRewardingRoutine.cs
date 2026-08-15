@@ -9,10 +9,10 @@ public class LootWheelRewardingRoutine : WPFMonoBehaviour
 {
 	public enum BackgroundType
 	{
-		Epic,
-		Rare,
-		Common,
-		Regular
+		Epic = 0,
+		Rare = 1,
+		Common = 2,
+		Regular = 3
 	}
 
 	[SerializeField]

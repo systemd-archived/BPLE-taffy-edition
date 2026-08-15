@@ -13,8 +13,6 @@ public class MainMenuPromoPopup : MonoBehaviour
 
 	private Camera m_hudCamera;
 
-	private MainMenu m_mainMenu;
-
 	private void Awake()
 	{
 		Debug.LogWarning("MainMenuPromoPopup::Awake");
@@ -141,9 +139,8 @@ public class MainMenuPromoPopup : MonoBehaviour
 	private bool IsAllowedToShow()
 	{
 		GameManager.GameState gameState = Singleton<GameManager>.Instance.GetGameState();
-		if (m_mainMenu == null)
-			m_mainMenu = WPFMonoBehaviour.FindSceneObjectOfType<MainMenu>();
-		if ((gameState != GameManager.GameState.MainMenu || !(m_mainMenu != null) || !m_mainMenu.IsUserInMainMenu()) && gameState != GameManager.GameState.RaceLevelSelection && gameState != GameManager.GameState.SandboxLevelSelection)
+		MainMenu mainMenu = Object.FindObjectOfType(typeof(MainMenu)) as MainMenu;
+		if ((gameState != GameManager.GameState.MainMenu || !(mainMenu != null) || !mainMenu.IsUserInMainMenu()) && gameState != GameManager.GameState.RaceLevelSelection && gameState != GameManager.GameState.SandboxLevelSelection)
 		{
 			return gameState == GameManager.GameState.LevelSelection;
 		}

@@ -123,7 +123,7 @@ namespace Spine.Unity.MeshGeneration
 				}
 				Material material2 = (Material)((AtlasRegion)rendererObject).page.rendererObject;
 				bool flag = count2 > 0 && separators.Contains(slot);
-				if ((num > 0 && material.GetInstanceID() != material2.GetInstanceID()) | flag)
+				if ((num > 0 && material.GetInstanceID() != material2.GetInstanceID()) || flag)
 				{
 					submeshInstructions.Add(new SubmeshInstruction
 					{
@@ -198,7 +198,7 @@ namespace Spine.Unity.MeshGeneration
 					boundsMax.z = 0f;
 				}
 			}
-			bool flag2 = (num | flag) || next.StructureDoesntMatch(meshInstructions);
+			bool flag2 = num || flag || next.StructureDoesntMatch(meshInstructions);
 			int vertexIndex = 0;
 			for (int i = 0; i < count; i++)
 			{

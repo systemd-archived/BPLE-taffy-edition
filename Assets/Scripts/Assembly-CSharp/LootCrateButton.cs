@@ -265,7 +265,7 @@ public class LootCrateButton : Widget
 		gameObject.transform.localPosition = Vector3.zero;
 		gameObject.transform.localScale = lootRewardPrefabs[lootRewardPrefabIndex].transform.localScale;
 		LootRewardElement component = gameObject.GetComponent<LootRewardElement>();
-		if ((component != null) & addToRewardsList)
+		if (component != null && addToRewardsList)
 		{
 			component.IsDuplicatePart = isDuplicatePart;
 			component.InitElement(this);

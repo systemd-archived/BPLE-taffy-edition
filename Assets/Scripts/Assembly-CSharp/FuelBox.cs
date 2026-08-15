@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Innovation;
 using UnityEngine;
 
-public class FuelBox : BasePart
+public class FuelBox : BasePart, IFuelContainer, IBasePart
 {
 	public GameObject m_smokeCloud;
 
@@ -20,11 +21,13 @@ public class FuelBox : BasePart
 
 	private bool m_triggered;
 
+	public int FuelComponentIndex { get; set; }
+
 	public float FuelAmount => m_fuelAmount;
 
-	public float MaxSupplyFuelAmount => 1000f;
+	public float SupplyFuelAmount => Math.Min(m_fuelAmount, 1f * Time.fixedDeltaTime);
 
-	public float MaxRefuelingAmount => 0.5f * Time.fixedDeltaTime;
+	public float RefuelingAmount => 0.5f * Time.fixedDeltaTime;
 
 	public IEnumerable<BasePart> GetConnectedParts()
 	{
@@ -38,8 +41,30 @@ public class FuelBox : BasePart
 		}
 	}
 
-	public void SetFuelAmount(float fuelAmount)
+	public void SupplyFuel(float amount)
 	{
+		SetFuelAmount(m_fuelAmount - amount);
+	}
+
+	public void Refuel(float amount)
+	{
+		SetFuelAmount(m_fuelAmount + amount);
+	}
+
+	private void SetFuelAmount(float fuelAmount)
+	{
+		if (!float.IsNaN(fuelAmount))
+		{
+			fuelAmount = Math.Clamp(fuelAmount, 0f, m_maxFuelAmount);
+			fuelAmount = Math.Clamp(fuelAmount, m_fuelAmount - SupplyFuelAmount, m_fuelAmount + RefuelingAmount);
+			m_fuelAmount = fuelAmount;
+			base.rigidbody.mass = 2f + fuelAmount;
+			float num = fuelAmount / m_maxFuelAmount;
+			Vector3 localPosition = m_fuelSprite.transform.localPosition;
+			localPosition.y = -0.26f * (1f - num);
+			m_fuelSprite.transform.localPosition = localPosition;
+			m_fuelSprite.transform.localScale = new Vector3(1f, num, 1f);
+		}
 	}
 
 	public override void Awake()
@@ -53,7 +78,6 @@ public class FuelBox : BasePart
 	public override void Initialize()
 	{
 		base.Initialize();
-		m_mass = 3f;
 		m_maxFuelAmount = 4f;
 		m_fuelAmount = m_maxFuelAmount;
 		SetFuelAmount(m_maxFuelAmount);
@@ -132,7 +156,7 @@ public class FuelBox : BasePart
 			for (int j = 0; j < list.Count; j++)
 			{
 				bool flag = list[j].gameObject == this || list[j].connectedBody == this;
-				if (!float.IsInfinity(list[j].breakForce) | flag)
+				if (!float.IsInfinity(list[j].breakForce) || flag)
 				{
 					UnityEngine.Object.Destroy(list[j]);
 				}

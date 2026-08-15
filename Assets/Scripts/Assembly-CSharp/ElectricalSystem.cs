@@ -275,10 +275,10 @@ public class ElectricalSystem : PartManager
 				double[] currents = wirePartBase.Currents;
 				foreach (double num in currents)
 				{
-					flag |= num != 0.0;
+					flag = flag || num != 0.0;
 					flag2 &= !double.IsNaN(num);
 				}
-				if (flag & flag2)
+				if (flag && flag2)
 				{
 					list.Add(wirePartBase);
 				}

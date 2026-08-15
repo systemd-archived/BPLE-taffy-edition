@@ -92,7 +92,7 @@ public class FixedPumpkinManager : PartManager
 		{
 			bool flag = array[item2.StrictConnectedComponent];
 			bool flag2 = array2[item2.StrictConnectedComponent];
-			if (flag | flag2)
+			if (flag || flag2)
 			{
 				if (m_data.ContainsKey(item2))
 				{

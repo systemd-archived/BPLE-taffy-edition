@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class WPFMonoBehaviour : MonoBehaviour
 {
@@ -159,7 +158,8 @@ public class WPFMonoBehaviour : MonoBehaviour
 			{
 				return s_levelManager;
 			}
-			if (!Singleton<GameManager>.Instance.IsInGame())
+			GameManager gameManager = Singleton<GameManager>.Instance;
+			if (gameManager == null || !gameManager.IsInGame())
 			{
 				return null;
 			}
@@ -193,9 +193,9 @@ public class WPFMonoBehaviour : MonoBehaviour
 	{
 		get
 		{
-			if (INSettings.GetBool(INFeature.RuntimeGameData) && INRuntimeGameData.IsInitialized)
+			if (INSettings.GetBool(INFeature.RuntimeGameData) && INPartFactoryManager.Adapter != null)
 			{
-				return Singleton<INRuntimeGameData>.Instance.GameData;
+				return INPartFactoryManager.Adapter;
 			}
 			if ((bool)s_gameData)
 			{
@@ -313,52 +313,5 @@ public class WPFMonoBehaviour : MonoBehaviour
 			}
 		}
 		return list;
-	}
-
-	/// <summary>
-	/// 在场景加载后主动预热静态缓存，避免首次访问时的 FindObjectsOfType 开销。
-	/// 应在 SplashScreen 或 GameManager 初始化时调用。
-	/// </summary>
-	public static void WarmupCaches()
-	{
-		// 订阅场景加载事件，在场景切换时自动重置缓存
-		SceneManager.sceneLoaded -= OnSceneLoadedResetCaches;
-		SceneManager.sceneLoaded += OnSceneLoadedResetCaches;
-
-		RefreshCaches();
-	}
-
-	/// <summary>
-	/// 场景切换时重置被缓存的静态引用（因为场景对象已被销毁）。
-	/// </summary>
-	private static void OnSceneLoadedResetCaches(Scene scene, LoadSceneMode mode)
-	{
-		// 清空场景相关缓存，下一次访问会自动重新查找
-		s_ingameCamera = null;
-		s_hudCamera = null;
-		s_levelManager = null;
-		s_effectManager = null;
-		// Camera.main 通常跨场景有效，但场景切换后也可能需要刷新
-		s_mainCamera = null;
-	}
-
-	/// <summary>
-	/// 主动刷新所有静态缓存引用。
-	/// </summary>
-	private static void RefreshCaches()
-	{
-		Camera cam = Camera.main;
-		if (cam != null) s_mainCamera = cam;
-
-		GameObject hudGo = GameObject.FindGameObjectWithTag("HUDCamera");
-		if (hudGo != null) s_hudCamera = hudGo.GetComponent<Camera>();
-
-		s_ingameCamera = Object.FindObjectOfType<IngameCamera>();
-
-		if (Singleton<GameManager>.IsInstantiated() && Singleton<GameManager>.Instance.IsInGame())
-		{
-			s_levelManager = Object.FindObjectOfType<LevelManager>();
-			s_effectManager = Object.FindObjectOfType<EffectManager>();
-		}
 	}
 }

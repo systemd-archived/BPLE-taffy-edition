@@ -331,7 +331,7 @@ namespace Spine.Unity.Modules
 			bool flipX = skeleton.flipX;
 			bool flipY = skeleton.flipY;
 			bool flag = flipX ^ flipY;
-			bool flag2 = flipX | flipY;
+			bool flag2 = flipX || flipY;
 			foreach (KeyValuePair<Bone, Transform> item in boneTable)
 			{
 				Bone key = item.Key;

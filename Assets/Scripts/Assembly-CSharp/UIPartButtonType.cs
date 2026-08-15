@@ -1,5 +1,5 @@
 public enum UIPartButtonType
 {
-	Trigger,
-	Slider
+	Trigger = 0,
+	Slider = 1
 }

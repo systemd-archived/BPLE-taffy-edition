@@ -9,11 +9,11 @@ public class LeaderboardDialog : TextDialog
 {
 	private enum LeaderboardView
 	{
-		Error,
-		Loading,
-		List,
-		PlayerInfo,
-		CupInfo
+		Error = 0,
+		Loading = 1,
+		List = 2,
+		PlayerInfo = 3,
+		CupInfo = 4
 	}
 
 	[SerializeField]
@@ -506,7 +506,7 @@ public class LeaderboardDialog : TextDialog
 
 	public void ShowPlayerInfo(string playerName, int playerScore, int playerRank, string playfabID)
 	{
-		string[] array = playerName.Split('|');
+		string[] array = playerName.Split(new char[1] { '|' });
 		ChangeView(LeaderboardView.Loading, array[0]);
 		loadingView = LeaderboardView.PlayerInfo;
 		playerInfo.SetRankScoreInfo(playerRank + 1, playerScore, playfabID.Equals(HatchManager.CurrentPlayer.PlayFabID));

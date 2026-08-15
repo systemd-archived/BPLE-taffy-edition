@@ -80,17 +80,17 @@ public class UnlockLevelRowPanel : MonoBehaviour
 
 	public void AdButtonPressed()
 	{
-		if (WatchAd != null)
+		if (this.WatchAd != null)
 		{
-			WatchAd();
+			this.WatchAd();
 		}
 	}
 
 	public void PayButtonPressed()
 	{
-		if (Pay != null)
+		if (this.Pay != null)
 		{
-			Pay();
+			this.Pay();
 		}
 	}
 

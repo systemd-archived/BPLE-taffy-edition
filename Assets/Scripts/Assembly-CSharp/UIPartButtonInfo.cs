@@ -49,7 +49,7 @@ public struct UIPartButtonInfo : IEquatable<UIPartButtonInfo>
 
 	public override int GetHashCode()
 	{
-		return HashCode.Combine<UIPartButtonType, int, BasePart.PartType, int, int>(ButtonType, ButtonIndex, PartType, PartIndex, ComponentRank);
+		return HashCode.Combine(ButtonType, ButtonIndex, PartType, PartIndex, ComponentRank);
 	}
 
 	public static bool operator ==(UIPartButtonInfo left, UIPartButtonInfo right)

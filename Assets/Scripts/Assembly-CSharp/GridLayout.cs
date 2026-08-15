@@ -6,15 +6,15 @@ public class GridLayout : MonoBehaviour
 {
 	private enum GridType
 	{
-		Horizontal,
-		Vertical
+		Horizontal = 0,
+		Vertical = 1
 	}
 
 	private enum GridAlign
 	{
-		Left,
-		Right,
-		Center
+		Left = 0,
+		Right = 1,
+		Center = 2
 	}
 
 	[SerializeField]

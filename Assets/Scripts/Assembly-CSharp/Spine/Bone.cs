@@ -168,9 +168,9 @@ namespace Spine
 
 		public float WorldSignY => worldSignY;
 
-		public float WorldRotationX => MathUtils.Atan2(c, a) * (180f / (float)Math.PI);
+		public float WorldRotationX => MathUtils.Atan2(c, a) * (180f / MathF.PI);
 
-		public float WorldRotationY => MathUtils.Atan2(d, b) * (180f / (float)Math.PI);
+		public float WorldRotationY => MathUtils.Atan2(d, b) * (180f / MathF.PI);
 
 		public float WorldScaleX => (float)Math.Sqrt(a * a + c * c) * worldSignX;
 
@@ -191,7 +191,7 @@ namespace Spine
 				float num4 = bone.d;
 				float num5 = a;
 				float num6 = c;
-				return MathUtils.Atan2(num * num6 - num3 * num5, num4 * num5 - num2 * num6) * (180f / (float)Math.PI);
+				return MathUtils.Atan2(num * num6 - num3 * num5, num4 * num5 - num2 * num6) * (180f / MathF.PI);
 			}
 		}
 
@@ -210,7 +210,7 @@ namespace Spine
 				float num4 = bone.d;
 				float num5 = b;
 				float num6 = d;
-				return MathUtils.Atan2(num * num6 - num3 * num5, num4 * num5 - num2 * num6) * (180f / (float)Math.PI);
+				return MathUtils.Atan2(num * num6 - num3 * num5, num4 * num5 - num2 * num6) * (180f / MathF.PI);
 			}
 		}
 
@@ -414,12 +414,12 @@ namespace Spine
 			{
 				x = worldX;
 				y = worldY;
-				rotation = MathUtils.Atan2(c, a) * (180f / (float)Math.PI);
+				rotation = MathUtils.Atan2(c, a) * (180f / MathF.PI);
 				scaleX = (float)Math.Sqrt(a * a + c * c);
 				scaleY = (float)Math.Sqrt(b * b + d * d);
 				float num = a * d - b * c;
 				shearX = 0f;
-				shearY = MathUtils.Atan2(a * b + c * d, num) * (180f / (float)Math.PI);
+				shearY = MathUtils.Atan2(a * b + c * d, num) * (180f / MathF.PI);
 				return;
 			}
 			float num2 = bone.a;
@@ -445,15 +445,15 @@ namespace Spine
 			{
 				float num17 = num13 * num16 - num14 * num15;
 				scaleY = num17 / scaleX;
-				shearY = MathUtils.Atan2(num13 * num14 + num15 * num16, num17) * (180f / (float)Math.PI);
-				rotation = MathUtils.Atan2(num15, num13) * (180f / (float)Math.PI);
+				shearY = MathUtils.Atan2(num13 * num14 + num15 * num16, num17) * (180f / MathF.PI);
+				rotation = MathUtils.Atan2(num15, num13) * (180f / MathF.PI);
 			}
 			else
 			{
 				scaleX = 0f;
 				scaleY = (float)Math.Sqrt(num14 * num14 + num16 * num16);
 				shearY = 0f;
-				rotation = 90f - MathUtils.Atan2(num16, num14) * (180f / (float)Math.PI);
+				rotation = 90f - MathUtils.Atan2(num16, num14) * (180f / MathF.PI);
 			}
 			appliedRotation = rotation;
 		}

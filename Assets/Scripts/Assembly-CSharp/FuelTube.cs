@@ -6,9 +6,9 @@ public class FuelTube : BasePart
 {
 	public enum TubeType
 	{
-		Common,
-		Auto,
-		Valve
+		Common = 0,
+		Auto = 1,
+		Valve = 2
 	}
 
 	[SerializeField]
@@ -90,7 +90,7 @@ public class FuelTube : BasePart
 		}
 		foreach (BasePart connectedPart in m_connectedParts)
 		{
-			if (!(connectedPart == null) && connectedPart.ConnectedComponent == base.ConnectedComponent && (!(connectedPart is FuelTube fuelTube) || fuelTube.CurrentTubeType != TubeType.Valve || fuelTube.IsEnabled()))
+			if (!(connectedPart == null) && connectedPart.ConnectedComponent == base.ConnectedComponent && (!(connectedPart is FuelTube { CurrentTubeType: TubeType.Valve } fuelTube) || fuelTube.IsEnabled()))
 			{
 				yield return connectedPart;
 			}
@@ -269,24 +269,28 @@ public class FuelTube : BasePart
 		{
 			part = part.m_enclosedPart;
 		}
-		if (part is FuelTube fuelTube && CurrentTubeType == TubeType.Auto && fuelTube.CurrentTubeType != TubeType.Auto)
+		if (part is FuelTube fuelTube)
 		{
-			int num = part.m_coordX - m_coordX;
-			int num2 = part.m_coordY - m_coordY;
-			int rotation = fuelTube.GetRotation();
-			if (num2 != 0 || rotation != 0)
+			if (CurrentTubeType == TubeType.Auto && fuelTube.CurrentTubeType != TubeType.Auto)
 			{
-				if (num == 0)
+				int num = part.m_coordX - m_coordX;
+				int num2 = part.m_coordY - m_coordY;
+				int rotation = fuelTube.GetRotation();
+				if (num2 != 0 || rotation != 0)
 				{
-					return rotation == 1;
+					if (num == 0)
+					{
+						return rotation == 1;
+					}
+					return false;
 				}
-				return false;
+				return true;
 			}
 			return true;
 		}
-		if (!(part is JetEngine) && !(part is FuelTube))
+		if (!(part is IFuelConsumer))
 		{
-			return part is FuelBox;
+			return part is IFuelContainer;
 		}
 		return true;
 	}
